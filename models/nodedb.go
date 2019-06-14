@@ -101,25 +101,27 @@ func GetNodedb(node int64) *gorm.DB {
 				}
 			}
 		}
+	}
+	return nil
+}
+
+func GetNodeALLTable(node int64, ids, icount int, order, table string) (int64, []map[string]string, error) {
+	var count int64
+	db := GetNodedb(node)
+	ns := "%" + table + "%"
+	err := db.Table("pg_tables").Where("schemaname='public' and tablename like ?", ns).Count(&count).Error
+	if err == gorm.ErrRecordNotFound {
+		return count, nil, nil
+	}
+
+	if ids < 1 || icount < 1 {
+		return count, nil, nodeErr
+	}
 
 	rs, err := GetAll(node, fmt.Sprintf(`SELECT tablename FROM pg_tables WHERE schemaname='public' and tablename like %s order by %s offset %d`, "'%"+table+"%'", order, (ids-1)*icount), int(icount))
 	return count, rs, err
 }
 
-// GetAll returns all transaction
-func GetAll(node int64, query string, countRows int, args ...interface{}) ([]map[string]string, error) {
-	db := GetNodedb(node)
-	if db != nil {
-		return GetAllTransaction(db, query, countRows, args)
-	}
-
-	return nil, nodeErr
-}
-
-// GetAllTransaction is retrieve all query result rows
-func GetAllTransaction(db *gorm.DB, query string, countRows int, args ...interface{}) ([]map[string]string, error) {
-	var result []map[string]string
-	rows, err := db.Raw(query, args...).Rows()
 	if err != nil {
 		return result, fmt.Errorf("%s in query %s %s", err, query, args)
 	}
