@@ -1,0 +1,5 @@
+stages:
+- deploy
+
+docker-deploy:
+  stage: deploy
