@@ -12,15 +12,19 @@ import (
 var lpgdb *gorm.DB
 
 type LDatabaseModel struct {
+	Enable  bool   `yaml:"enable"`
+	DBType  string `yaml:"type"`
+	Connect string `yaml:"connect"`
+	Name    string `yaml:"name"`
+	Ver     string `yaml:"ver"`
+	MaxIdle int    `yaml:"max_idle"`
+	MaxOpen int    `yaml:"max_open"`
+}
+
 func (d *LDatabaseModel) Initer() (err error) {
 	dsn := fmt.Sprintf("%s TimeZone=UTC", d.Connect)
 	lpgdb, err = gorm.Open(postgres.New(postgres.Config{
 		DSN: dsn,
-	}), &gorm.Config{
-		AllowGlobalUpdate: true,                                  //allow global update
-		Logger:            logger.Default.LogMode(logger.Silent), // start Logger，show detail log
-	})
-	if err != nil {
 		return err
 	}
 	sqlDB, err := lpgdb.DB()
