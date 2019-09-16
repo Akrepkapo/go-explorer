@@ -122,8 +122,18 @@ func GetNodeALLTable(node int64, ids, icount int, order, table string) (int64, [
 	return count, rs, err
 }
 
-	if err != nil {
-		return result, fmt.Errorf("%s in query %s %s", err, query, args)
+// GetAll returns all transaction
+func GetAll(node int64, query string, countRows int, args ...interface{}) ([]map[string]string, error) {
+	db := GetNodedb(node)
+	if db != nil {
+		return GetAllTransaction(db, query, countRows, args)
+	}
+
+	return nil, nodeErr
+}
+
+// GetAllTransaction is retrieve all query result rows
+func GetAllTransaction(db *gorm.DB, query string, countRows int, args ...interface{}) ([]map[string]string, error) {
 	}
 	defer rows.Close()
 
