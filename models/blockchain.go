@@ -380,21 +380,6 @@ func GetBlocksDetailedInfoHex(bk *Block) (*BlockDetailedInfoHex, error) {
 		}
 
 		if tx.TxHeader != nil {
-			es := Ecosystem{}
-			f, err := es.Get(tx.TxHeader.EcosystemID)
-			if f && err == nil {
-				txDetailedInfo.Ecosystem = tx.TxHeader.EcosystemID
-				txDetailedInfo.Ecosystemname = es.Name
-				if txDetailedInfo.Ecosystem == 0 {
-					txDetailedInfo.Ecosystem = 1
-				}
-				if txDetailedInfo.Ecosystem == 1 {
-					txDetailedInfo.Token_title = consts.SysEcosytemTitle
-					if txDetailedInfo.Ecosystemname == "" {
-						txDetailedInfo.Ecosystemname = "platform ecosystem"
-					}
-				} else {
-					txDetailedInfo.Token_title = es.TokenTitle
 				}
 
 			}
@@ -468,6 +453,13 @@ func GetMineIncomeParam(hash []byte) string {
 		ret["miner"] = ts.Devid
 		ret["minerowner"] = ts.Keyid
 		ret["profiter"] = ts.Mineid
+		ret["type"] = ts.Type
+		ret["staked"] = ts.Nonce
+		ret["earnings"] = ts.Amount
+		//return ret
+	}
+	dataBytes, _ := json.Marshal(ret)
+	return string(dataBytes)
 }
 func SyncBlockinfoToRedis() {
 	var trans []Block
