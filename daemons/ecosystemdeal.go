@@ -30,16 +30,22 @@ func EcosystemDealupdate(ctx context.Context) error {
 		case <-ctx.Done():
 			log.Error("NodeTranStatusSumupdate done his work")
 			return nil
-		case <-models.GetScanOut:
-			if err := models.GetScanOutDataToRedis(); err != nil {
-				log.Info("GetScanOutDataToRedis failed:", err)
+		case <-services.SendWebsocketData:
+			if err := services.Deal_Redis_Dashboard(); err != nil {
+				log.Info("send topdata err:", err)
 			}
-			err := services.WorkDealBlock()
-			if err != nil {
-				log.Info("WorkDealBlock", err)
-			}
+
 		}
 	}
+}
+
+func Sys_BlockWork(ctx context.Context) {
+	models.GetScanOut = make(chan bool, 1)
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		case <-models.GetScanOut:
 }
 
 func Sys_Work_ChainValidBlock(ctx context.Context) {

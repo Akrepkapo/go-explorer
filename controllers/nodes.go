@@ -18,20 +18,6 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
-func GetNodes(c *gin.Context) {
-
-	req := &WebRequest{}
-	rb := &ResponseBoby{
-		Cmd:     "001",
-		Ret:     "1",
-		Retcode: 200,
-		Retinfo: "ok",
-	}
-
-	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
-		rb.Retinfo = err.Error()
-		rb.Retcode = 404
-		GenResponse(c, req.Head, rb)
 	}
 
 	byteNodes := `[`
@@ -61,6 +47,17 @@ func GetNodes(c *gin.Context) {
 func DashboardNodeMap(c *gin.Context) {
 
 	req := &WebRequest{}
+	rb := &ResponseBoby{
+		Cmd: "001",
+		//		Page_size:     "10",
+		//		Current_page:    "1",
+		//		Total: "100",
+		Ret:     "1",
+		Retcode: 200,
+		Retinfo: "ok",
+	}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
 		rb.Retinfo = err.Error()
 		rb.Retcode = 404
 		GenResponse(c, req.Head, rb)
