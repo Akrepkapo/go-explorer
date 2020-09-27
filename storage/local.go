@@ -25,6 +25,11 @@ func (d *LDatabaseModel) Initer() (err error) {
 	dsn := fmt.Sprintf("%s TimeZone=UTC", d.Connect)
 	lpgdb, err = gorm.Open(postgres.New(postgres.Config{
 		DSN: dsn,
+	}), &gorm.Config{
+		AllowGlobalUpdate: true,                                  //allow global update
+		Logger:            logger.Default.LogMode(logger.Silent), // start Logger，show detail log
+	})
+	if err != nil {
 		return err
 	}
 	sqlDB, err := lpgdb.DB()
@@ -44,11 +49,6 @@ func (d *LDatabaseModel) Initer() (err error) {
 	return nil
 }
 
-func (d *LDatabaseModel) Conn() *gorm.DB {
-	return lpgdb
-}
-
-func (d *LDatabaseModel) Close() error {
 	if lpgdb != nil {
 		sqlDB, err := lpgdb.DB()
 		if err != nil {
