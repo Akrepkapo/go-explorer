@@ -263,6 +263,11 @@ func UnmarshallBlock(blockBuffer *bytes.Buffer, fillData bool) (*blocks, error) 
 		}
 		if blockBuffer.Len() < int(transactionSize) {
 			logger.WithFields(log.Fields{"size": blockBuffer.Len(), "match_size": int(transactionSize), "type": consts.SizeDoesNotMatch}).Error("transaction size does not matches encoded length")
+			return nil, fmt.Errorf("bad block format (transaction len is too big: %d)", transactionSize)
+		}
+
+		if transactionSize == 0 {
+			logger.WithFields(log.Fields{"type": consts.EmptyObject}).Error("transaction size is 0")
 			return nil, fmt.Errorf("transaction size is 0")
 		}
 
@@ -303,4 +308,3 @@ func UnmarshallBlock(blockBuffer *bytes.Buffer, fillData bool) (*blocks, error) 
 		Transactions:      transactions,
 		MrklRoot:          mrkl,
 	}, nil
-}
