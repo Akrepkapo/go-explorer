@@ -46,6 +46,15 @@ func Sys_BlockWork(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case <-models.GetScanOut:
+			if err := models.GetScanOutDataToRedis(); err != nil {
+				log.Info("GetScanOutDataToRedis failed:", err)
+			}
+			err := services.WorkDealBlock()
+			if err != nil {
+				log.Info("WorkDealBlock", err)
+			}
+		}
+	}
 }
 
 func Sys_Work_ChainValidBlock(ctx context.Context) {
@@ -113,17 +122,6 @@ func Sys_CentrifugoWork(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			return
-		case <-models.SendScanOut:
-			var scanout models.ScanOut
-			rets, err := scanout.GetRedisdashboard()
-			if err != nil {
-				log.Info("GetRedisdashboard dashboard", err.Error())
-			} else {
-				if err := SendtoWebsocket(rets, &scanout); err != nil {
-					log.Info("SendtoWebsocket dashboard", err.Error())
-				}
-			}
-		}
 	}
 }
 

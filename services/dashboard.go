@@ -36,6 +36,10 @@ func Deal_Redis_Dashboard() error {
 			return err
 		}
 		//}
+	}
+	return err
+}
+
 func Get_history_map() (*[]models.DBTransactionsInfo, error) {
 	var (
 		err error
@@ -125,11 +129,6 @@ func Deal_Dashboard_top_num() (*models.ResponseTopTitle, error) {
 	//if err := SendChannelDashboard(dat); err != nil {
 	//	return &dat, err
 	//}
-
-	toptransactions, err := Get_Group_TransactionBlockLast()
-	if err != nil {
-		return &dat, err
-	}
 	dat.Data = toptransactions
 	dat.Cmd = models.CmdTopTransactions
 	if err := SendChannelTopData(dat); err != nil {
