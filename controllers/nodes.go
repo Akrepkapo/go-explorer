@@ -18,6 +18,20 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+func GetNodes(c *gin.Context) {
+
+	req := &WebRequest{}
+	rb := &ResponseBoby{
+		Cmd:     "001",
+		Ret:     "1",
+		Retcode: 200,
+		Retinfo: "ok",
+	}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
+		rb.Retinfo = err.Error()
+		rb.Retcode = 404
+		GenResponse(c, req.Head, rb)
 	}
 
 	byteNodes := `[`
@@ -54,18 +68,6 @@ func DashboardNodeMap(c *gin.Context) {
 		//		Total: "100",
 		Ret:     "1",
 		Retcode: 200,
-		Retinfo: "ok",
-	}
-
-	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
-		rb.Retinfo = err.Error()
-		rb.Retcode = 404
-		GenResponse(c, req.Head, rb)
-	}
-
-	byteNodes := `[`
-	byteNodes += `{"name": "china-guangzhou", "latitude": 23.1367070000, "longitude": 113.2908070000},`
-	byteNodes += `{"name": "china-guangzhou", "latitude": 23.2367070000, "longitude": 113.3908070000},`
 	byteNodes += `{"name": "china-shanghai", "latitude": 31.2233714132, "longitude": 121.4593505859},`
 	byteNodes += `{"name": "china-shanghai", "latitude": 31.4233714132, "longitude": 121.5593505859},`
 	byteNodes += `{"name": "china-shanghai", "latitude": 31.5233714132, "longitude": 121.6593505859},`

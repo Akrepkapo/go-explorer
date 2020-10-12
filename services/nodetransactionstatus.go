@@ -42,14 +42,18 @@ func DealGetnodetransactionstatus(node *storage.FullNodeDB) (int64, error) {
 				dat := NodeTransactionStatus{}
 				dat.Nodename = node.NodeName
 				dat.NodePosition = node.NodePosition
-				dat.Data = ret
-				NodeTranStatusDaemonCh <- &dat
-
-				node.Nodestatusstime = time.Now()
 				node.Nodestatusstime = node.Nodestatusstime.AddDate(0, 0, -1)
 			}
 		} else {
 			ret, err := bk.DBconnGetTimelimit(node.DBConn, node.Nodestatusstime)
+			if err != nil {
+				log.Info("models.nodeGetTimelimit false: " + node.NodeName + err.Error())
+			} else if len(*ret) > 0 {
+				dat := NodeTransactionStatus{}
+				dat.Nodename = node.NodeName
+				dat.NodePosition = node.NodePosition
+				dat.Data = ret
+				NodeTranStatusDaemonCh <- &dat
 				node.Nodestatusstime = time.Now()
 				node.Nodestatusstime = node.Nodestatusstime.AddDate(0, 0, -1)
 			}
