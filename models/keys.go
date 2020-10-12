@@ -447,6 +447,10 @@ func (m *Key) GetWalletTotal(page, limit int, order string, wallet, logourl stri
 		if err != nil {
 			return &ret, err
 		}
+		df, err := ft.GetEcosyKey(wid, wallet, logourl)
+		if err != nil {
+			return &ret, err
+		}
 		ret.SysEcosy = *df
 
 		err = conf.GetDbConn().Conn().Table("1_keys").Where("id = ? and ecosystem != ?", wid, 1).Order(order).Offset((page - 1) * limit).Limit(limit).Find(&tss).Error
@@ -465,16 +469,6 @@ func (m *Key) GetWalletTotal(page, limit int, order string, wallet, logourl stri
 			return &ret, nil
 
 		}
-
-	}
-
-	return &ret, err
-}
-
-// GetKeysCount returns common count of keys
-func (m *Key) GetTotalAmount() (decimal.Decimal, error) {
-	type result struct {
-		Amount decimal.Decimal
 	}
 	var res result
 	err := conf.GetDbConn().Conn().Table("1_keys").Select("SUM(amount) as amount").Where("ecosystem = 1").Scan(&res).Error

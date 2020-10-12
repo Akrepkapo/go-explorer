@@ -85,18 +85,6 @@ func (ts *TransactionStatus) GetTransactions(page int, size int, order string) (
 			Penalty:   tss[i].Penalty,
 		}
 		es := Ecosystem{}
-		f, err := es.Get(tss[i].Ecosystem)
-		if f && err == nil {
-			tx.Ecosystemname = es.Name
-			if tx.Ecosystem == 1 {
-				tx.Token_title = consts.SysEcosytemTitle
-				if tx.Ecosystemname == "" {
-					tx.Ecosystemname = "platform ecosystem"
-				}
-			} else {
-				tx.Token_title = es.TokenTitle
-			}
-		}
 		ret = append(ret, tx)
 	}
 	return &ret, num, err
@@ -168,6 +156,13 @@ func (ts *TransactionStatus) BatchUpdate_Sqlite(reportForms *[]TransactionStatus
 		}
 	}
 	return nil
+}
+
+func (ts *TransactionStatus) BatchinsertSqlite(objArr *[]TransactionStatus) error {
+	if len(*objArr) == 0 {
+		return nil
+	}
+	//dat := *objArr
 	//mainObj := dat[0]
 	return conf.GetDbConn().Conn().Create(objArr).Error
 	//

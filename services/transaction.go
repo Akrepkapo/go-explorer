@@ -67,16 +67,8 @@ func Get_Group_WalletHistory(id int64, wallet string) (*models.WalletHistoryHex,
 	}
 	ret.Amount = dat.Amount
 
-	return ret, err
-}
-
-func Get_Group_Wallet_Total(ids int, icount int, order string, wallet string) (int64, int, *[]models.EcosyKeyTotalHex, error) {
-	key := &models.Key{}
-	return key.GetTotal(ids, icount, order, wallet)
-}
-
-func Get_transaction_HashHistory(logourl string, hash []byte) (*models.HistoryExplorer, error) {
-	ts := &models.History{}
+	//ret, err := ts.Get(hash)
+	ret, err := ts.GetExplorer(logourl, hash)
 	return ret, err
 }
 
