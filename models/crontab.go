@@ -35,6 +35,7 @@ func NewWithSecond() *cron.Cron {
 	return cron.New(cron.WithParser(secondParser), cron.WithChain())
 }
 func CreateCronTimeFromBlockchain(timeSet string) {
+	c := NewWithSecond()
 	_, err := c.AddFunc(timeSet, func() {
 		SyncBlockinfoToRedis()
 	})
@@ -77,6 +78,3 @@ func CreateCrontabFromTransaction(timeSet string) {
 	})
 	if err != nil {
 		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCrontabFromTransaction addfunc failed")
-	}
-	c.Start()
-}
