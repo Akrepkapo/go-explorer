@@ -72,19 +72,24 @@ func (ts *TransactionStatus) GetTransactions(page int, size int, order string) (
 		return &ret, num, err
 	}
 
-	for i := 0; i < len(tss); i++ {
-
-		var tx = TransactionStatusHex{
-			Hash:      hex.EncodeToString(tss[i].Hash),
-			Time:      tss[i].Time,
-			Type:      tss[i].Type,
-			Ecosystem: tss[i].Ecosystem,
 			WalletID:  strconv.FormatInt(tss[i].WalletID, 10),
 			BlockID:   tss[i].BlockID,
 			Error:     tss[i].Error,
 			Penalty:   tss[i].Penalty,
 		}
 		es := Ecosystem{}
+		f, err := es.Get(tss[i].Ecosystem)
+		if f && err == nil {
+			tx.Ecosystemname = es.Name
+			if tx.Ecosystem == 1 {
+				tx.Token_title = consts.SysEcosytemTitle
+				if tx.Ecosystemname == "" {
+					tx.Ecosystemname = "platform ecosystem"
+				}
+			} else {
+				tx.Token_title = es.TokenTitle
+			}
+		}
 		ret = append(ret, tx)
 	}
 	return &ret, num, err
