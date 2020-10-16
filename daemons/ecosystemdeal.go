@@ -122,6 +122,17 @@ func Sys_CentrifugoWork(ctx context.Context) {
 		select {
 		case <-ctx.Done():
 			return
+		case <-models.SendScanOut:
+			var scanout models.ScanOut
+			rets, err := scanout.GetRedisdashboard()
+			if err != nil {
+				log.Info("GetRedisdashboard dashboard", err.Error())
+			} else {
+				if err := SendtoWebsocket(rets, &scanout); err != nil {
+					log.Info("SendtoWebsocket dashboard", err.Error())
+				}
+			}
+		}
 	}
 }
 
@@ -143,13 +154,5 @@ func SendtoWebsocket(rets *models.ScanOutRet, scanout *models.ScanOut) error {
 	//		log.Info("json.Marshal", err.Error())
 	//		return err
 	//	} else {
-	//		err := services.WriteChannelByte(services.ChannelBlockAndTxsList, ds)
-	//		if err != nil {
-	//			log.Info("WriteChannelByte blocktransactionlist", err.Error())
-	//			return err
-	//		}
-	//	}
-	//}
-
 	return nil
 }
