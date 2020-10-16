@@ -2,16 +2,19 @@
  *  Copyright (c) IBAX All rights reserved.
  *  See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-			Value: string(lg1),
-		}
-		err = rp.Set()
-		if err != nil {
-			logrus.Info("redis Setdb3 err key: %s  value:%s", rp.Key, rp.Value)
-		}
-	}
-	return err
+package services
 
-}
+import (
+	"encoding/json"
+	"strconv"
+
+	"github.com/IBAX-io/go-explorer/models"
+	"github.com/sirupsen/logrus"
+)
+
+func Set_ALLTables(dat []map[string]string) error {
+	lg1, err := json.Marshal(dat)
+	if err == nil {
 
 func Get_ALLTables(id int64) (*[]map[string]string, error) {
 	var fs []map[string]string
