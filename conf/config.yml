@@ -14,17 +14,11 @@ server:
   system_static_file_path: system_statics
 
 url:
-  type: postgres # postgres
-  name: ibax #
-  ver:  20200902 #
-  connect: host=127.0.0.1 port=5432 user=postgres dbname=scan sslmode=disable password=ibax20200916
+  base_url: http://127.0.0.1:8800/api/v2/logo/
 
-# redis config information
-redis:
-  enable: true  #
-  address: 127.0.0.1 # address
-  port: 6379       # address
-  password: ibax,&.0se # password
+log:
+  level: error
+
 
 centrifugo:
   enable: true  #

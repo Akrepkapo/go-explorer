@@ -129,6 +129,11 @@ func Deal_Dashboard_top_num() (*models.ResponseTopTitle, error) {
 	//if err := SendChannelDashboard(dat); err != nil {
 	//	return &dat, err
 	//}
+
+	toptransactions, err := Get_Group_TransactionBlockLast()
+	if err != nil {
+		return &dat, err
+	}
 	dat.Data = toptransactions
 	dat.Cmd = models.CmdTopTransactions
 	if err := SendChannelTopData(dat); err != nil {
@@ -154,10 +159,6 @@ func Get_Dashboard_history_map() (*[]models.DBTransactionsInfo, error) {
 		return &GDashboardDBTransactions, nil
 	}
 	ret, err := Get_history_map()
-	return ret, err
-}
-
-func Get_Dashboard_Get_chain() (*map[string]interface{}, error) {
 	if GDashboardChain != nil {
 		GetCheckchain()
 		return &GDashboardChain, nil
