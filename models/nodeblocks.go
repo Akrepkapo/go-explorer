@@ -95,6 +95,15 @@ func (m *NodeBlocks) AddOneFromRedis(pos string) error {
 			Value: string(val),
 		}
 		err = rd.Set()
+		if err != nil {
+			return err
+		}
+	}
+	return err
+}
+
+func (m *NodeBlocks) Get_redis(pos string) (bool, error) {
+	rd := RedisParams{
 		Key:   nodeblocksPrefix + pos,
 		Value: "",
 	}
@@ -106,11 +115,6 @@ func (m *NodeBlocks) AddOneFromRedis(pos string) error {
 		return false, err
 	}
 	err = m.Unmarshal([]byte(rd.Value))
-	if err != nil {
-		return false, err
-	}
-	return true, err
-}
 
 func (m *NodeBlocks) Get_rediss(pos string) (bool, error) {
 	rd := RedisParams{

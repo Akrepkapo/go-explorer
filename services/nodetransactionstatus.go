@@ -42,6 +42,10 @@ func DealGetnodetransactionstatus(node *storage.FullNodeDB) (int64, error) {
 				dat := NodeTransactionStatus{}
 				dat.Nodename = node.NodeName
 				dat.NodePosition = node.NodePosition
+				dat.Data = ret
+				NodeTranStatusDaemonCh <- &dat
+
+				node.Nodestatusstime = time.Now()
 				node.Nodestatusstime = node.Nodestatusstime.AddDate(0, 0, -1)
 			}
 		} else {
@@ -69,11 +73,3 @@ func DealNodetransactionstatussqlite(ctx context.Context) error {
 		select {
 		case <-ctx.Done():
 			return nil
-		case dat := <-NodeTranStatusDaemonCh:
-			err := bk.DbconnbatchinsertSqlites(dat.Data)
-			if err != nil {
-				return err
-			}
-		}
-	}
-}
