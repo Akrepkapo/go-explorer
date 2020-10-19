@@ -90,6 +90,22 @@ func (lt *LogTransaction) GetBlockTransactionsDashboard(page int, size int) (*[]
 				}
 			}
 		} else {
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+	return &ret, err
+}
+
+func (lt *LogTransaction) Get_BlockTransactions(page int, size int, order string) (*[]BlockTxDetailedInfoHex, int, error) {
+	var (
+		tss    []LogTransaction
+		ret    []BlockTxDetailedInfoHex
+		num    int
+		ioffet int
+		i      int
+		j      int32
 		err    error
 	)
 	if page < 1 || size < 1 {
@@ -337,15 +353,6 @@ func (lt *LogTransaction) Get_BlockTransactionsLast(id int64, page int64, size i
 			}
 
 		} else {
-			if err != nil {
-				log.WithFields(log.Fields{"warn": err.Error()}).Warn("logtran GetBlocks  DetailedInfoHex")
-			}
-		}
-	}
-
-	return &ret, num, err
-}
-
 func quickSort(arr []int64, start, end int64) {
 	if start < end {
 		i, j := start, end
