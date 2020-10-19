@@ -44,13 +44,6 @@ type InfoBlock struct {
 }
 
 // TableName returns name of table
-func (ib *InfoBlock) TableName() string {
-	return "info_block"
-}
-
-// Get is retrieving model from database
-func (ib *InfoBlock) Get() (bool, error) {
-	return isFound(conf.GetDbConn().Conn().Last(ib))
 }
 
 func Deal_TransactionBlockTxDetial(mc *Block) (int64, *BlockDetailedInfoHex, *[]BlockTxDetailedInfoHex, error) {
@@ -308,3 +301,4 @@ func UnmarshallBlock(blockBuffer *bytes.Buffer, fillData bool) (*blocks, error) 
 		Transactions:      transactions,
 		MrklRoot:          mrkl,
 	}, nil
+}

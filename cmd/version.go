@@ -10,7 +10,9 @@ import (
 
 	"github.com/IBAX-io/go-ibax/packages/consts"
 
-			consts.VERSION, consts.BuildInfo}, " ",
-		)))
-	},
-}
+	"github.com/spf13/cobra"
+)
+
+// versionCmd represents the version command
+var versionCmd = &cobra.Command{
+	Use:   "version",
