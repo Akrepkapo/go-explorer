@@ -67,28 +67,22 @@ func Get_Group_WalletHistory(id int64, wallet string) (*models.WalletHistoryHex,
 	}
 	ret.Amount = dat.Amount
 
+	return ret, err
+}
+
+func Get_Group_Wallet_Total(ids int, icount int, order string, wallet string) (int64, int, *[]models.EcosyKeyTotalHex, error) {
+	key := &models.Key{}
+	return key.GetTotal(ids, icount, order, wallet)
+}
+
+func Get_transaction_HashHistory(logourl string, hash []byte) (*models.HistoryExplorer, error) {
+	ts := &models.History{}
 	//ret, err := ts.Get(hash)
 	ret, err := ts.GetExplorer(logourl, hash)
 	return ret, err
 }
 
 func Get_transaction_Hash(logourl string, hash string) (*map[string]interface{}, error) {
-	ret := make(map[string]interface{})
-	hashdat := []byte(converter.HexToBin(hash))
-
-	ret2, err2 := Get_transaction_HashHistory(logourl, hashdat)
-	//ret1, err1 := Get_transaction_Hashstatus(hashdat)
-	if err2 != nil {
-		return &ret, err2
-	}
-
-	var ret3 models.BlockTxDetailedInfoHex
-	f, err3 := ret3.GetDb_txdetailedHash(hash)
-	//ret3, err3 := GetBlockTransactionHash(hashdat)
-	if err3 != nil {
-		return &ret, err3
-	}
-	if f {
 		ret["TxDetailedInfoHex"] = ret3
 	}
 
