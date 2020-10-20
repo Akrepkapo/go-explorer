@@ -131,6 +131,16 @@ func Get_ecosystem_param(c *gin.Context) {
 	//num, rs, err := ap.FindAppParameters(req.Ecosystem, req.Page, req.Limit, req.Search, req.Order)
 	//if err != nil {
 	//	ret.ReturnFailureString(err.Error())
+	//	JsonResponse(c, ret)
+	//	return
+	//}
+	var ap models.SystemParameter
+	num, rs, err := ap.FindAppParameters(req.Page, req.Limit, req.Search, req.Order)
+	if err != nil {
+		ret.ReturnFailureString(err.Error())
+		JsonResponse(c, ret)
+		return
+	}
 	rets.Total = int64(num)
 	rets.Page = req.Page
 	rets.Limit = req.Limit
@@ -183,17 +193,6 @@ func Get_ecosystem_Key(c *gin.Context) {
 		GenResponse(c, req.Head, rb)
 	}
 	key := models.Key{}
-	ret, err := key.Get(req.Params.Ecosystem, req.Params.Wallet)
-	if err != nil {
-		rb.Retinfo = err.Error()
-		rb.Retcode = 404
-		GenResponse(c, req.Head, rb)
-	} else {
-		rb.Data = ret
-		//rb.Total = len(params)
-		GenResponse(c, req.Head, rb)
-	}
-}
 
 func Get_ecosystemall_Key(c *gin.Context) {
 
