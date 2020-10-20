@@ -89,3 +89,4 @@ func WorkDealBlock() error {
 		mc.Del(bdid - 1)
 	}
 
+	return nil
