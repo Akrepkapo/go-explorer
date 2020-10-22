@@ -229,6 +229,23 @@ func FindNodeAddressInsave(list []storage.FullnodeModel) (err error) {
 			} else {
 				ipAddress = addr.String()
 			}
+		}
+		if ipAddress == "" {
+			continue
+		}
+		dBRord, _ := os.Getwd()
+		dBRord = path.Join(dBRord, "geoip-dataBass", "GeoLite2-City.mmdb")
+		info, result := findAddressFromIp(dBRord, ipAddress)
+		if result == 3 {
+			fullNoddeInfo.Address = strings.ToLower(info.CityName)
+		} else if result == 2 {
+			time.Sleep(time.Millisecond * 200)
+			if address := queryAddressByLatitudeAndLongitude(info.Longitude, info.Latitude); address != "" {
+				fullNoddeInfo.Address = strings.ToLower(address)
+			} else {
+				if ipAddress == "127.0.0.1" {
+					fullNoddeInfo.Address = "china-beijing"
+					fullNoddeInfo.Longitude = 116.3952912
 					fullNoddeInfo.Latitude = 39.9087202
 				} else {
 					continue
@@ -663,18 +680,6 @@ func GetNodeListInfo(nodeInfo string) (err error) {
 	if len(node) > 0 {
 		err = FindNodeAddressInsave(node)
 	}
-	return err
-}
-func Translate(text string) string {
-	urls := fmt.Sprintf("https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-cn&tl=en&dt=t&q=%s", url.QueryEscape(text))
-	resp, err := http.Get(urls)
-	if err != nil {
-		log.WithFields(log.Fields{"error": err}).Error("Translate get failed")
-		return ""
-	}
-	defer resp.Body.Close()
-	bs, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("Translate ioutil read failed")
 		return ""
 	}
