@@ -24,13 +24,3 @@ func (rp *RedisParams) Get() error {
 	//}
 	if err != nil {
 		return err
-	}
-	rp.Value = val
-	return nil
-}
-func (rp *RedisParams) Del() error {
-	return conf.GetRedisDbConn().Conn().Del(ctx, rp.Key).Err()
-}
-
-func (rp *RedisParams) Size() (int64, error) {
-	return conf.GetRedisDbConn().Conn().DBSize(ctx).Result()

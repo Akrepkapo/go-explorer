@@ -15,6 +15,13 @@ func Savefile(file string, buf []byte) error {
 	f, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE, 066)
 	if err != nil {
 		return err
+	}
+	defer f.Close()
+	_, err1 := f.Write(buf)
+	return err1
+}
+
+func Loadlogo(id int64) (string, error) {
 	var d, b Binary
 	f, err := d.GetByID(id)
 	if err != nil {
@@ -41,15 +48,3 @@ func Savefile(file string, buf []byte) error {
 					file := b.GetByJpeg()
 					if !IsExist(LogoDir + file) {
 						err := Savefile(LogoDir+file, b.Data)
-						if err != nil {
-							return "", err
-						}
-						return file, nil
-					}
-					return file, nil
-				}
-			}
-		}
-	}
-	return "", nil
-}
