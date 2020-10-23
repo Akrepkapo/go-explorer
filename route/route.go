@@ -49,6 +49,21 @@ func Cors() gin.HandlerFunc {
 		if method == "OPTIONS" {
 			c.JSON(http.StatusOK, "Options Request!")
 		}
+		c.Next()
+	}
+}
+func prefix(s string) string {
+	return "/api/v2/" + s
+}
+func Run(host string) (err error) {
+	r := gin.Default()
+	r.Use(Cors())
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "xxxx-api....：V1.0-2020.11.19",
+		})
+	})
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -86,9 +101,5 @@ func Cors() gin.HandlerFunc {
 		err = r.Run(host)
 	}
 	if err != nil {
-		log.Errorf("server http/https start failed :%s", err.Error())
-		return err
-	}
-
 	return nil
 }
