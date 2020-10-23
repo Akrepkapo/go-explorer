@@ -17,12 +17,6 @@ import (
 )
 
 // TransactionStatus is model
-type TransactionStatus struct {
-	Hash      []byte `gorm:"primary_key;not null"  json:"hash"`
-	Time      int64  `gorm:"not null" json:"time"`
-	Type      int64  `gorm:"not null"  json:"type"`
-	Ecosystem int64  `gorm:"not null"  json:"ecosystem"`
-	WalletID  int64  `gorm:"not null"  json:"wallet_id"`
 	BlockID   int64  `gorm:"not null;index:tsblockid_idx"  json:"block_id"`
 	Error     string `gorm:"not null"  json:"error"`
 	Penalty   int64  `gorm:"not null"  json:"penalty"`
@@ -72,6 +66,13 @@ func (ts *TransactionStatus) GetTransactions(page int, size int, order string) (
 		return &ret, num, err
 	}
 
+	for i := 0; i < len(tss); i++ {
+
+		var tx = TransactionStatusHex{
+			Hash:      hex.EncodeToString(tss[i].Hash),
+			Time:      tss[i].Time,
+			Type:      tss[i].Type,
+			Ecosystem: tss[i].Ecosystem,
 			WalletID:  strconv.FormatInt(tss[i].WalletID, 10),
 			BlockID:   tss[i].BlockID,
 			Error:     tss[i].Error,

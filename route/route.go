@@ -29,6 +29,13 @@ func Cors() gin.HandlerFunc {
 		}
 		headerStr := strings.Join(headerKeys, ", ")
 		if headerStr != "" {
+			headerStr = fmt.Sprintf("access-control-allow-origin, access-control-allow-headers, %s", headerStr)
+		} else {
+			headerStr = "access-control-allow-origin, access-control-allow-headers"
+		}
+		if origin != "" {
+			//c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+			c.Header("Access-Control-Allow-Origin", "*")
 			//c.Header("Access-Control-Allow-Headers", headerStr)
 			c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 			c.Header("Access-Control-Allow-Headers", "Authorization, Content-Length, X-CSRF-Token, Accept, Origin, Host, Connection, Accept-Encoding, Accept-Language,DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Pragma")
@@ -97,6 +104,5 @@ func Run(host string) (err error) {
 		log.Errorf("server http/https start failed :%s", err.Error())
 		return err
 	}
-
 	return nil
 }

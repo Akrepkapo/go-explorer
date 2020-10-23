@@ -44,3 +44,12 @@ func NodeTranStatusSumupdate(ctx context.Context) error {
 			for i := 0; i < dlen; i++ {
 				mlen, _ := services.DealGetnodetransactionstatus(conf.GetFullNodesDbConn()[i])
 				if mlen > maxlen {
+					maxlen = mlen
+				}
+			}
+			//set
+			var bc models.BlockID
+			bc.Time = time.Now().Unix()
+			bc.Name = consts.TransactionsMax
+			bc.ID = maxlen
+			bc.InsertRedis()
