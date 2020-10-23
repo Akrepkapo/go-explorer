@@ -46,12 +46,7 @@ services:
     container_name: postgresql
     ports:
       - "5433:5432"
-    image: redis:5
-    container_name: redis
-    ports:
-      - "6379:6379"
-    command: redis-server --requirepass ${REDIS_PASSWORD}
-  centrifugo:
+    environment:
     container_name: centrifugo
     image: centrifugo/centrifugo:v3
     volumes:
