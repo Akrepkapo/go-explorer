@@ -247,19 +247,6 @@ func Get_Find_history(c *gin.Context) {
 // @Produce  json
 // @Success 200 {string} json "{"code":200,"data":{"id":1,"name":"admin","alias":"","email":"admin@block.vc","password":"","roles":[],"openid":"","active":true,"is_admin":true},"message":"success"}}"
 // @Router /auth/admin/{id} [get]
-func Get_Find_Ecosytemhistory(c *gin.Context) {
-	req := &WebRequest{}
-	rb := &ResponseBoby{
-		Cmd:     "001",
-		Ret:     "1",
-		Retcode: 200,
-		Retinfo: "ok",
-	}
-
-	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
-		rb.Retinfo = err.Error()
-		rb.Retcode = 404
-		GenResponse(c, req.Head, rb)
 	}
 
 	rb.Ecosystem = req.Params.Ecosystem
@@ -477,6 +464,17 @@ func Get_transaction_block_redis(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Success 200 {string} json "{"code":200,"data":{"id":1,"name":"admin","alias":"","email":"admin@block.vc","password":"","roles":[],"openid":"","active":true,"is_admin":true},"message":"success"}}"
+// @Router /auth/admin/{id} [get]
+func Get_Transaction_queue(c *gin.Context) {
+	req := &WebRequest{}
+	rb := &ResponseBoby{
+		Cmd:     "001",
+		Ret:     "1",
+		Retcode: 200,
+		Retinfo: "ok",
+	}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
 		rb.Retinfo = err.Error()
 		rb.Retcode = 404
 		GenResponse(c, req.Head, rb)
