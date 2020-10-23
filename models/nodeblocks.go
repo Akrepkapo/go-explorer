@@ -1,18 +1,4 @@
 package models
-
-import (
-	"github.com/vmihailenco/msgpack/v5"
-)
-
-// NodeBlocks is model
-type NodeBlocks struct {
-	ID    int64
-	Count int64
-	Name  string
-}
-
-var nodeblocksPrefix = "nodeblocks-"
-
 func (b *NodeBlocks) Marshal() ([]byte, error) {
 	if res, err := msgpack.Marshal(b); err != nil {
 		return nil, err
@@ -115,6 +101,11 @@ func (m *NodeBlocks) Get_redis(pos string) (bool, error) {
 		return false, err
 	}
 	err = m.Unmarshal([]byte(rd.Value))
+	if err != nil {
+		return false, err
+	}
+	return true, err
+}
 
 func (m *NodeBlocks) Get_rediss(pos string) (bool, error) {
 	rd := RedisParams{
