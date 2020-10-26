@@ -83,6 +83,4 @@ func loadStartRun() error {
 
 // Load the configuration from file
 func loadInitDatabase() error {
-	models.InitDatabase()
-	return nil
 }
