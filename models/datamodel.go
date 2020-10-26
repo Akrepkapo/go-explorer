@@ -1,9 +1,5 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) IBAX All rights reserved.
- *  See LICENSE in the project root for license information.
-
-//redisModel get redis information from config.yml
-type TableModel struct {
 	ID           int64     `gorm:"primary_key;not_null" json:"id" `
 	NodePosition int64     `gorm:"not null" json:"nodeposition"`
 	Enable       bool      `gorm:"not null" json:"enable"`

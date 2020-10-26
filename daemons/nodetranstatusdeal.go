@@ -9,15 +9,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/IBAX-io/go-explorer/conf"
-
-	"github.com/IBAX-io/go-explorer/consts"
-	"github.com/IBAX-io/go-explorer/models"
-	"github.com/IBAX-io/go-explorer/services"
-	//"encoding/hex"
-)
-
-func NodeTranStatusSumupdate(ctx context.Context) error {
 	var maxlen int64
 	for i := 0; i < len(conf.GetFullNodesDbConn()); i++ {
 		mlen, _ := services.DealGetnodetransactionstatus(conf.GetFullNodesDbConn()[i])
@@ -53,3 +44,7 @@ func NodeTranStatusSumupdate(ctx context.Context) error {
 			bc.Name = consts.TransactionsMax
 			bc.ID = maxlen
 			bc.InsertRedis()
+
+		}
+	}
+}
