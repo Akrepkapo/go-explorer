@@ -2,6 +2,14 @@ package models
 
 import "github.com/IBAX-io/go-explorer/conf"
 
+type Ecosystem struct {
+	ID             int64 `gorm:"primary_key;not null"`
+	Name           string
+	Info           string
+	IsValued       int64
+	EmissionAmount string
+	TokenTitle     string
+	TypeEmission   int64
 	TypeWithdraw   int64
 }
 
@@ -22,9 +30,6 @@ func GetAllSystemStatesIDs() ([]int64, []string, error) {
 	}
 
 	ecosystems := new([]Ecosystem)
-	if err := conf.GetDbConn().Conn().Order("id asc").Find(&ecosystems).Error; err != nil {
-		return nil, nil, err
-	}
 
 	ids := make([]int64, len(*ecosystems))
 	names := make([]string, len(*ecosystems))

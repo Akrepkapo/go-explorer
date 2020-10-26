@@ -1,19 +1,4 @@
 package models
-
-import (
-	"os"
-)
-
-var LogoDir = "./logodir/"
-
-func IsExist(f string) bool {
-	_, err := os.Stat(f)
-	return err == nil || os.IsExist(err)
-}
-
-func Savefile(file string, buf []byte) error {
-	f, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE, 066)
-	if err != nil {
 		return err
 	}
 	defer f.Close()
@@ -48,3 +33,15 @@ func Loadlogo(id int64) (string, error) {
 					file := b.GetByJpeg()
 					if !IsExist(LogoDir + file) {
 						err := Savefile(LogoDir+file, b.Data)
+						if err != nil {
+							return "", err
+						}
+						return file, nil
+					}
+					return file, nil
+				}
+			}
+		}
+	}
+	return "", nil
+}
