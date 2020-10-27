@@ -94,6 +94,15 @@ func GetBlockid(hash []byte) (int64, error) {
 	return -1, err
 }
 
+var (
+	Gret []DBTransactionsInfo
+)
+
+func GetDBDealTraninfo(limit int) error {
+	var (
+		err error
+	)
+	if err = GetBlockInfoToRedis(limit); err != nil {
 		log.WithFields(log.Fields{"warn": err}).Warn("GetDayBlockInfoToRedis err")
 	}
 	return err
@@ -127,17 +136,6 @@ func GetTraninfoFromRedis(limit int) (*[]ScanOutBlockTransactionRet, error) {
 	return &ret, err
 }
 func SendTraninfoToWebsocket(dayblock []DayBlock) error {
-	var ret []ScanOutBlockTransactionRet
-	var err error
-	for i := 0; i < len(dayblock); i++ {
-		var info = ScanOutBlockTransactionRet{
-			BlockId:           dayblock[i].Id,
-			BlockSizes:        dayblock[i].Length,
-			BlockTranscations: int64(dayblock[i].Tx),
-		}
-		ret = append(ret, info)
-	}
-	err = SendTopTransactiontps(&ret)
 	if err != nil {
 		return err
 	}

@@ -135,23 +135,6 @@ func syncNodeDisplayStatus(fullnode []storage.FullnodeModel) (statusDiff bool) {
 	nodeMd := make([]storage.FullnodeModel, len(node))
 	for i := 0; i < len(node); i++ {
 		if err := json.Unmarshal([]byte(node[i].Value), &nodeMd[i]); err != nil {
-			log.WithFields(log.Fields{"error": err}).Error("syn display json failed")
-			continue
-		}
-
-	}
-	if len(fullnode) > 0 {
-		for i := 0; i < len(node); i++ {
-			if node[i].Display == false {
-				for j := 0; j < len(fullnode); j++ {
-					if nodeMd[i].APIAddress == fullnode[j].APIAddress {
-						node[i].Display = true
-						if err := GetDB(nil).Table("fullnode_info").Where("id = ?", node[i].ID).Update("display", node[i].Display).Error; err != nil {
-							log.WithFields(log.Fields{"error": err}).Error("sync display status update1 err")
-							continue
-						}
-						statusDiff = true
-					}
 				}
 			} else {
 				statusIstrue := false
@@ -680,6 +663,18 @@ func GetNodeListInfo(nodeInfo string) (err error) {
 	if len(node) > 0 {
 		err = FindNodeAddressInsave(node)
 	}
+	return err
+}
+func Translate(text string) string {
+	urls := fmt.Sprintf("https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-cn&tl=en&dt=t&q=%s", url.QueryEscape(text))
+	resp, err := http.Get(urls)
+	if err != nil {
+		log.WithFields(log.Fields{"error": err}).Error("Translate get failed")
+		return ""
+	}
+	defer resp.Body.Close()
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("Translate ioutil read failed")
 		return ""
 	}
