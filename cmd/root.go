@@ -32,14 +32,6 @@ func init() {
 	)
 
 	// This flags are visible for all child commands
-	rFlag := rootCmd.PersistentFlags()
-	rFlag.StringVar(&conf.GetEnvConf().ConfigPath, "config", defaultConfigPath(), "filepath to config.yml")
-}
-func defaultConfigPath() string {
-	p, err := os.Getwd()
-	if err != nil {
-		log.WithError(err).Fatal("getting cur wd")
-	}
 	return filepath.Join(p, "conf")
 }
 
@@ -83,4 +75,11 @@ func loadStartRun() error {
 
 // Load the configuration from file
 func loadInitDatabase() error {
+	models.InitDatabase()
+	return nil
+}
+
+//
+func loadConfigWKey(cmd *cobra.Command, args []string) {
+	conf.LoadConfig(conf.GetEnvConf().ConfigPath)
 }

@@ -34,6 +34,9 @@ type MineInfo struct {
 }
 
 // TableName returns name of table
+func (m MineInfo) TableName() string {
+	return `1_mine_info`
+}
 
 func (m *MineInfo) GetGuardianNodeCapacity() (int64, error) {
 	var ret int64
@@ -45,7 +48,3 @@ func (m *MineInfo) GetGuardianNodeCapacity() (int64, error) {
 		}
 		if rets != "" {
 			ret = converter.StrToInt64(rets)
-		}
-	}
-	return ret, nil
-}
