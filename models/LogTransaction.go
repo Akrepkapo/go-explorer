@@ -52,25 +52,6 @@ func (lt *LogTransaction) GetBlockTransactionsDashboard(page int, size int) (*[]
 	if num < ioffet || num < 1 {
 		return &ret, err
 	}
-	TBlock := make(map[string]int64)
-	Thash := make(map[string]bool)
-	for i = 0; i < size; i++ {
-		hash := hex.EncodeToString(tss[ioffet+i].Hash)
-		Thash[hash] = true
-
-		key := strconv.FormatInt(tss[ioffet+i].Block, 10)
-		TBlock[key] = tss[ioffet+i].Block
-	}
-
-	var Blocks []int64
-	for _, k := range TBlock {
-		Blocks = append(Blocks, k)
-	}
-
-	quickSort(Blocks, 0, int64(len(Blocks)-1))
-
-	for i = len(Blocks); i > 0; i-- {
-		bk := &Block{}
 		found, err := bk.Get(Blocks[i-1])
 		if err == nil && found {
 			rt, err := GetBlocksDetailedInfoHex(bk)
@@ -353,6 +334,15 @@ func (lt *LogTransaction) Get_BlockTransactionsLast(id int64, page int64, size i
 			}
 
 		} else {
+			if err != nil {
+				log.WithFields(log.Fields{"warn": err.Error()}).Warn("logtran GetBlocks  DetailedInfoHex")
+			}
+		}
+	}
+
+	return &ret, num, err
+}
+
 func quickSort(arr []int64, start, end int64) {
 	if start < end {
 		i, j := start, end
