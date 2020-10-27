@@ -181,16 +181,6 @@ func (th *History) Get(txHash []byte) (*HistoryMergeHex, error) {
 				tss.Recipientid2 = converter.AddressToString(ts[2].Recipientid) //strconv.FormatInt(ts[2].Recipientid, 10)
 				tss.Recipientid3 = converter.AddressToString(ts[1].Recipientid) //strconv.FormatInt(ts[1].Recipientid, 10)
 				tss.Recipientid4 = converter.AddressToString(ts[0].Recipientid) //strconv.FormatInt(ts[0].Recipientid, 10)
-				tss.Amount1 = ts[3].Amount
-				tss.Amount2 = ts[2].Amount
-				tss.Amount3 = ts[1].Amount
-				tss.Amount4 = ts[0].Amount
-				//				fmt.Println(ts[2].Amount)
-				//				fmt.Println(ts[1].Amount)
-				//				fmt.Println(ts[0].Amount)
-				//				fmt.Println(tss)
-			} else if count == 3 {
-				tss.Recipientid1 = converter.AddressToString(ts[2].Recipientid) //strconv.FormatInt(ts[2].Recipientid, 10)
 				tss.Recipientid2 = converter.AddressToString(ts[1].Recipientid) //strconv.FormatInt(ts[1].Recipientid, 10)
 				tss.Recipientid3 = converter.AddressToString(ts[0].Recipientid) //strconv.FormatInt(ts[0].Recipientid, 10)
 				tss.Amount1 = ts[2].Amount
@@ -520,6 +510,16 @@ func (th *History) GetEcosytemWallets(id int64, page int, size int, wallet strin
 		}
 		err = conf.GetDbConn().Conn().Table("1_history").Select("sum(amount)").Where("sender_id = ? and ecosystem = ?", keyId, id).Row().Scan(&total)
 		if err != nil {
+			return &ret, num, total, err
+		}
+		err = conf.GetDbConn().Conn().Table("1_history").
+			Where("sender_id = ? and ecosystem = ?", keyId, id).
+			Order("id desc").Offset((page - 1) * size).Limit(size).Find(&tss).Error
+	} else {
+		if err = conf.GetDbConn().Conn().Table("1_history").Where("(recipient_id = ? OR sender_id = ?) and ecosystem = ?", keyId, keyId, id).Count(&num).Error; err != nil {
+			return &ret, num, total, err
+		}
+		err = conf.GetDbConn().Conn().Table("1_history").Select("sum(amount)").Where("(recipient_id = ? OR sender_id = ?) and ecosystem = ?", keyId, keyId, id).Row().Scan(&total)
 		if err != nil {
 			return &ret, num, total, err
 		}
