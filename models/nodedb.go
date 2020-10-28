@@ -130,7 +130,6 @@ func GetAll(node int64, query string, countRows int, args ...interface{}) ([]map
 	}
 
 	return nil, nodeErr
-}
 
 // GetAllTransaction is retrieve all query result rows
 func GetAllTransaction(db *gorm.DB, query string, countRows int, args ...interface{}) ([]map[string]string, error) {
@@ -267,6 +266,18 @@ func GetQueryexec(db *gorm.DB, query string, countRows int, args ...interface{})
 		return &result, fmt.Errorf("%s in query %s %s", err, query, args)
 	}
 	return &result, nil
+}
+
+// GetDB is returning gorm.DB
+func GetDB(db *DbTransaction) *gorm.DB {
+	if db != nil && db.conn != nil {
+		return db.conn
+	}
+	return conf.GetDbConn().Conn()
+}
+
+func GetsqliteALLTable() (*[]map[string]string, error) {
+	return GetQueryexec(conf.GetDbConn().Conn(), `select name from sqlite_master where type='table' order by name`, -1)
 }
 
 func GetsqliteblcokALLTable() (*[]map[string]string, error) {
