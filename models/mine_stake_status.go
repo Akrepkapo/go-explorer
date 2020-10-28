@@ -15,6 +15,9 @@ type MinePledgeStatus struct {
 	Poolid       int64           `gorm:"not null" example:"7994306939897545753"`
 	MineType     int64           `gorm:"not null" example:"1"`          //
 	MineNumber   string          `gorm:"not null" example:"P9Mv0FeQ73"` //
+	MineCapacity int64           `gorm:"not null" example:"1"`
+	Cycle        int64           `gorm:"not null" example:"30"`            //
+	Amount       decimal.Decimal `gorm:"not null default 0" example:"100"` //
 	Expired      int64           `gorm:"null" `
 	Status       int64           `gorm:"null" example:"1"`                       //
 	Online       int64           `gorm:"null" example:"1"`                       //
@@ -48,13 +51,6 @@ func (m *MinePledgeStatus) GetCastNodeandGuardianNode() (int64, int64, error) {
 	var gcount, in int64
 	if HasTableOrView(nil, "1_v_mine_stake_status_info") {
 		err := conf.GetDbConn().Conn().Table("1_v_mine_stake_status_info").Select("count(*)").Where("(mine_type = ? or mine_type = ?) and online = ? ", 2, 1, 1).Row().Scan(&in)
-		if err != nil {
-			return gcount, in, err
-		}
-
-		err = conf.GetDbConn().Conn().Table("1_v_mine_stake_status_info").Select("count(*)").Where("(mine_type = ?) and online = ? ", 2, 1).Row().Scan(&gcount)
-		if err != nil {
-			return gcount, in, err
 		}
 	}
 	return gcount, in, nil

@@ -44,6 +44,13 @@ type InfoBlock struct {
 }
 
 // TableName returns name of table
+func (ib *InfoBlock) TableName() string {
+	return "info_block"
+}
+
+// Get is retrieving model from database
+func (ib *InfoBlock) Get() (bool, error) {
+	return isFound(conf.GetDbConn().Conn().Last(ib))
 }
 
 func Deal_TransactionBlockTxDetial(mc *Block) (int64, *BlockDetailedInfoHex, *[]BlockTxDetailedInfoHex, error) {
@@ -173,9 +180,6 @@ func GetBlocksDetailedInfoHexByScanOut(mc *Block) (*BlockDetailedInfoHex, error)
 			}
 			if txDetailedInfo.Ecosystem == 1 || txDetailedInfo.Ecosystem == 0 {
 				txDetailedInfo.Token_title = SysEcosytemTitle
-				if txDetailedInfo.Ecosystemname == "" {
-					txDetailedInfo.Ecosystemname = "platform ecosystem"
-				}
 			}
 		}
 
