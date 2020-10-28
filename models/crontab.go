@@ -36,21 +36,6 @@ func NewWithSecond() *cron.Cron {
 }
 func CreateCronTimeFromBlockchain(timeSet string) {
 	c := NewWithSecond()
-	_, err := c.AddFunc(timeSet, func() {
-		SyncBlockinfoToRedis()
-	})
-	if err != nil {
-		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCronTimeFromBlockchain addfunc failed")
-	}
-	c.Start()
-}
-func CreateCronTimeFromStatistics(timeSet string) {
-	c := NewWithSecond()
-	_, err := c.AddFunc(timeSet, func() {
-		//if err := getStatisticsToRedis(); err != nil {
-		//	log.WithFields(log.Fields{"error": err}).Error("getStatisticsToRedis failed")
-		//}
-		SendStatisticsSignal()
 	})
 	if err != nil {
 		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCronTimeFromStatistics addfunc failed")
@@ -78,3 +63,6 @@ func CreateCrontabFromTransaction(timeSet string) {
 	})
 	if err != nil {
 		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCrontabFromTransaction addfunc failed")
+	}
+	c.Start()
+}

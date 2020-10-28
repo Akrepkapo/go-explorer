@@ -11,6 +11,19 @@ import (
 	"path"
 
 	"github.com/IBAX-io/go-explorer/storage"
+
+	"github.com/sirupsen/logrus"
+
+	"gopkg.in/yaml.v2"
+)
+
+var (
+	configInfo EnvConf // all server config information
+)
+
+type EnvConf struct {
+	ConfigPath   string
+	ServerInfo   *serverModel           `yaml:"server"`
 	DatabaseInfo *storage.DatabaseModel `yaml:"database"`
 	RedisInfo    *storage.RedisModel    `yaml:"redis"`
 	Url          *UrlModel
@@ -50,15 +63,6 @@ func LoadConfig(configPath string) {
 	fmt.Printf("config: %v\n",string(data))
 	if err != nil {
 		logrus.WithError(err).Fatal("config parse failed")
-	}
-}
-
-func Initer() {
-	DatabaseInfo := GetEnvConf().DatabaseInfo
-	RedisInfo := GetEnvConf().RedisInfo
-	Centrifugo := GetEnvConf().Centrifugo
-
-	if err := DatabaseInfo.Initer(); err != nil {
 		logrus.WithError(err).Fatal("postgres database connect failed: %v", DatabaseInfo.Connect)
 	}
 	if err := RedisInfo.Initer(); err != nil {
