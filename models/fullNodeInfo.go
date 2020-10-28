@@ -135,6 +135,23 @@ func syncNodeDisplayStatus(fullnode []storage.FullnodeModel) (statusDiff bool) {
 	nodeMd := make([]storage.FullnodeModel, len(node))
 	for i := 0; i < len(node); i++ {
 		if err := json.Unmarshal([]byte(node[i].Value), &nodeMd[i]); err != nil {
+			log.WithFields(log.Fields{"error": err}).Error("syn display json failed")
+			continue
+		}
+
+	}
+	if len(fullnode) > 0 {
+		for i := 0; i < len(node); i++ {
+			if node[i].Display == false {
+				for j := 0; j < len(fullnode); j++ {
+					if nodeMd[i].APIAddress == fullnode[j].APIAddress {
+						node[i].Display = true
+						if err := GetDB(nil).Table("fullnode_info").Where("id = ?", node[i].ID).Update("display", node[i].Display).Error; err != nil {
+							log.WithFields(log.Fields{"error": err}).Error("sync display status update1 err")
+							continue
+						}
+						statusDiff = true
+					}
 				}
 			} else {
 				statusIstrue := false
@@ -380,12 +397,6 @@ func getIcon(city string) string {
 	return city
 }
 func (p *FullNodeInfo) getAddressList() {
-	if err := GetDB(nil).Table(p.TableName()).Select("address").Order("id desc").Find(&addrList).Error; err != nil {
-		log.WithFields(log.Fields{"error": err}).Error("getAddressList Find err")
-		return
-	}
-}
-
 func getIPAddress(addressName string) (ip string) {
 	ip = addressName
 	if strings.Contains(addressName, "http") {

@@ -35,21 +35,6 @@ type CentJWTToken struct {
 }
 
 func GetJWTCentToken(userID, expire int64) (*CentJWTToken, error) {
-	if conf.GetCentrifugoConn().Enable {
-		var ret CentJWTToken
-		centJWT := CentJWT{
-			Sub: strconv.FormatInt(userID, 10),
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Second * time.Duration(expire)).Unix(),
-			},
-		}
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, centJWT)
-		result, err := token.SignedString([]byte(conf.GetCentrifugoConn().Secret))
-
-		if err != nil {
-			log.WithFields(log.Fields{"type": consts.CryptoError, "error": err}).Error("JWT centrifugo error")
-			return &ret, err
-		}
 		ret.Token = result
 		ret.Url = conf.GetCentrifugoConn().Socket
 		return &ret, nil
@@ -63,3 +48,4 @@ func WriteChannelByte(channel string, data []byte) error {
 	ctx, cancel := context.WithTimeout(context.Background(), centrifugoTimeout)
 	defer cancel()
 	return conf.GetCentrifugoConn().Conn().Publish(ctx, channel, data)
+}

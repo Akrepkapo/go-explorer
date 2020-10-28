@@ -9,17 +9,6 @@ import (
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
-	"strings"
-
-	"github.com/IBAX-io/go-explorer/controllers"
-
-	"github.com/IBAX-io/go-explorer/conf"
-	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
-)
-
-func Cors() gin.HandlerFunc {
-	return func(c *gin.Context) {
 		method := c.Request.Method
 
 		origin := c.Request.Header.Get("Origin")
@@ -104,5 +93,6 @@ func Run(host string) (err error) {
 		log.Errorf("server http/https start failed :%s", err.Error())
 		return err
 	}
+
 	return nil
 }
