@@ -9,19 +9,14 @@ import (
 	"context"
 	"time"
 
-	var maxlen int64
-	for i := 0; i < len(conf.GetFullNodesDbConn()); i++ {
-		mlen, _ := services.DealGetnodetransactionstatus(conf.GetFullNodesDbConn()[i])
-		if mlen > maxlen {
-			maxlen = mlen
-		}
-		var bc models.BlockID
-		bc.Time = time.Now().Unix()
-		bc.Name = consts.TransactionsMax
-		bc.ID = maxlen
-		err := bc.InsertRedis()
-		if err != nil {
-			return err
+	"github.com/IBAX-io/go-explorer/conf"
+
+	"github.com/IBAX-io/go-explorer/consts"
+	"github.com/IBAX-io/go-explorer/models"
+	"github.com/IBAX-io/go-explorer/services"
+	//"encoding/hex"
+)
+
 		}
 	}
 

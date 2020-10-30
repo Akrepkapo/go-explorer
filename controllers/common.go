@@ -75,6 +75,12 @@ func Common_search(c *gin.Context) {
 				GenResponse(c, req.Head, rb)
 			}
 
+		}
+	} else {
+		//
+		ret, _, err1 := services.GetBlockDetailed(req.Params.Block_id)
+		if err1 != nil {
+			rb.Retinfo = err1.Error()
 			rb.Retcode = 404
 			GenResponse(c, req.Head, rb)
 		} else {
@@ -92,17 +98,6 @@ func Common_search(c *gin.Context) {
 // @Produce  json
 // @Success 200 {string} json "{"code":200,"data":{"id":1,"name":"admin","alias":"","email":"admin@block.vc","password":"","roles":[],"openid":"","active":true,"is_admin":true},"message":"success"}}"
 // @Router /auth/admin/{id} [get]
-//TODO:20210901 This interface needs to be changed to read data from redis to fetch from the database
-func GetRedisKey(c *gin.Context) {
-	ret := &Response{}
-	cs := c.Param("key")
-	count := converter.StrToInt64(cs)
-	var scanout models.ScanOut
-	f, err := scanout.Get_Redis(count)
-	if err != nil {
-		ret.ReturnFailureString(err.Error())
-		JsonResponse(c, ret)
-		JsonResponse(c, ret)
 		return
 	}
 	if f {
