@@ -24,6 +24,11 @@ func (ts *TransactionStatus) GetNodecount(db *gorm.DB) (int64, error) {
 		count int64
 	)
 	err := db.Table("transactions_status").Count(&count).Error
+	if err != nil {
+		return 0, err
+	}
+	return count, err
+}
 
 func (ts *TransactionStatus) DBconnGetTransactionlist(db *gorm.DB) (*[]TransactionStatus, error) {
 	var (
@@ -59,15 +64,6 @@ func (ts *TransactionStatus) DBconnGetcount_Sqlite() (int64, error) {
 	err := conf.GetDbConn().Conn().Table("transactions_status").Count(&count).Error
 	if err != nil {
 		return 0, err
-	}
-	return count, err
-}
-
-func (ts *TransactionStatus) DBconnGetTimelimit_Sqlite(time time.Time) (*[]TransactionStatus, error) {
-	var (
-		tss []TransactionStatus
-	)
-	err := conf.GetDbConn().Conn().Where("time >= ?", time.Unix()).Find(&tss).Order("time").Error
 	if err != nil {
 		return nil, err
 	}

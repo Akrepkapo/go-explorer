@@ -6,14 +6,6 @@
 package models
 
 import (
-	"encoding/hex"
-	"encoding/json"
-	"errors"
-	"fmt"
-
-	"github.com/IBAX-io/go-explorer/consts"
-
-	"github.com/IBAX-io/go-explorer/conf"
 
 	"github.com/shopspring/decimal"
 
@@ -469,6 +461,16 @@ func (m *Key) GetWalletTotal(page, limit int, order string, wallet, logourl stri
 			return &ret, nil
 
 		}
+
+	}
+
+	return &ret, err
+}
+
+// GetKeysCount returns common count of keys
+func (m *Key) GetTotalAmount() (decimal.Decimal, error) {
+	type result struct {
+		Amount decimal.Decimal
 	}
 	var res result
 	err := conf.GetDbConn().Conn().Table("1_keys").Select("SUM(amount) as amount").Where("ecosystem = 1").Scan(&res).Error
