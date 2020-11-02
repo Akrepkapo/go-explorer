@@ -40,10 +40,6 @@ func GetDbConn() *storage.DatabaseModel {
 }
 
 func GetFullNodesDbConn() []*storage.FullNodeDB {
-	return storage.Connes()
-}
-
-func GetRedisDbConn() *storage.RedisModel {
 	return GetEnvConf().RedisInfo
 }
 func GetCentrifugoConn() *storage.CentrifugoConfig {
@@ -63,6 +59,15 @@ func LoadConfig(configPath string) {
 	fmt.Printf("config: %v\n",string(data))
 	if err != nil {
 		logrus.WithError(err).Fatal("config parse failed")
+	}
+}
+
+func Initer() {
+	DatabaseInfo := GetEnvConf().DatabaseInfo
+	RedisInfo := GetEnvConf().RedisInfo
+	Centrifugo := GetEnvConf().Centrifugo
+
+	if err := DatabaseInfo.Initer(); err != nil {
 		logrus.WithError(err).Fatal("postgres database connect failed: %v", DatabaseInfo.Connect)
 	}
 	if err := RedisInfo.Initer(); err != nil {
