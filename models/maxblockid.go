@@ -1,3 +1,18 @@
+package models
+
+import (
+	"github.com/vmihailenco/msgpack/v5"
+)
+
+type BlockID struct {
+	ID   int64
+	Time int64
+	Name string
+}
+
+var MaxblockidPrefix = "blockid-"
+
+func (b *BlockID) Marshal() ([]byte, error) {
 	if res, err := msgpack.Marshal(b); err != nil {
 		return nil, err
 	} else {
@@ -43,10 +58,3 @@ func (b *BlockID) InsertRedis() error {
 		Value: string(val),
 	}
 	for i := 0; i < 5; i++ {
-		err = rp.Set()
-		if err == nil {
-			break
-		}
-	}
-	return err
-}
