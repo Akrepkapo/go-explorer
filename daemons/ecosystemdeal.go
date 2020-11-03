@@ -136,14 +136,6 @@ func Sys_CentrifugoWork(ctx context.Context) {
 	}
 }
 
-func SendtoWebsocket(rets *models.ScanOutRet, scanout *models.ScanOut) error {
-
-	data, _ := json.Marshal(rets)
-	err := services.WriteChannelByte(services.ChannelDashboard, data)
-	if err != nil {
-		return err
-	}
-
 	//trans, err := scanout.GetBlockTransactions(15)
 	//if err != nil {
 	//	log.Info("GetBlockTransactions", err.Error())
@@ -154,5 +146,13 @@ func SendtoWebsocket(rets *models.ScanOutRet, scanout *models.ScanOut) error {
 	//		log.Info("json.Marshal", err.Error())
 	//		return err
 	//	} else {
+	//		err := services.WriteChannelByte(services.ChannelBlockAndTxsList, ds)
+	//		if err != nil {
+	//			log.Info("WriteChannelByte blocktransactionlist", err.Error())
+	//			return err
+	//		}
+	//	}
+	//}
+
 	return nil
 }
