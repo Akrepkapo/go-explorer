@@ -77,10 +77,14 @@ func GetTransactionpages(page int, size int) (*[]TransactionpageHex, int64, erro
 			Hash:     hex.EncodeToString(tss[ioffet].Hash),
 			Type:     tss[ioffet].Type,
 			Data:     hex.EncodeToString(tss[ioffet].Data),
+			Used:     tss[ioffet].Used,
+			HighRate: tss[ioffet].HighRate,
+			KeyID:    strconv.FormatInt(tss[ioffet].KeyID, 10),
+			Counter:  tss[ioffet].Counter,
+			Sent:     tss[ioffet].Sent,
+			Attempt:  tss[ioffet].Attempt,
+			Verified: tss[ioffet].Verified,
 		}
 		ret = append(ret, tx)
 		ioffet++
 	}
-
-	return &ret, num, err
-}

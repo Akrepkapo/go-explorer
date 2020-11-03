@@ -159,6 +159,10 @@ func Get_Dashboard_history_map() (*[]models.DBTransactionsInfo, error) {
 		return &GDashboardDBTransactions, nil
 	}
 	ret, err := Get_history_map()
+	return ret, err
+}
+
+func Get_Dashboard_Get_chain() (*map[string]interface{}, error) {
 	if GDashboardChain != nil {
 		GetCheckchain()
 		return &GDashboardChain, nil
@@ -247,12 +251,6 @@ func Getchain() (*map[string]interface{}, error) {
 				logrus.Info("usdt-ibax Not Found")
 				//fmt.Println("Key Not Found")
 			}
-
-		}
-		err = err2
-	}
-
-	if ret3, err3 := GetBlockCCRatesdat("https://data.block.cc/api/v1/exchange_rate?base=usdt"); err3 == nil {
 		//rets = append(rets, *ret1)
 		rets["Rates"] = ret3
 		GDashboardChain["Rates"] = ret3
