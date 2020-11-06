@@ -1,3 +1,17 @@
-  only:
+stages:
+- deploy
+
+docker-deploy:
+  stage: deploy
+  # Job
+  script:
+  # Dockerfile scanapi
+  - docker build -t scanapi .
   #
-  - explorer-server
+  - if [ $(docker ps -aq --filter name=scanapi) ]; then docker rm -f scanapi;fi
+  #
+  - docker run -dit -p 8800:8800  --link ibaxdb:db  --name scanapi scanapi
+  tags:
+  #
+  - scanapi
+  only:
