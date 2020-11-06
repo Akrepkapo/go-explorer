@@ -136,6 +136,17 @@ func GetTraninfoFromRedis(limit int) (*[]ScanOutBlockTransactionRet, error) {
 	return &ret, err
 }
 func SendTraninfoToWebsocket(dayblock []DayBlock) error {
+	var ret []ScanOutBlockTransactionRet
+	var err error
+	for i := 0; i < len(dayblock); i++ {
+		var info = ScanOutBlockTransactionRet{
+			BlockId:           dayblock[i].Id,
+			BlockSizes:        dayblock[i].Length,
+			BlockTranscations: int64(dayblock[i].Tx),
+		}
+		ret = append(ret, info)
+	}
+	err = SendTopTransactiontps(&ret)
 	if err != nil {
 		return err
 	}
@@ -186,10 +197,6 @@ func GetDayblockinfoFromRedis(t1, t2 int64, transBlock []Block) (int32, error) {
 	dat = 0
 	for i := 0; i < dlen; i++ {
 		if transBlock[i].Time > t1 && transBlock[i].Time < t2 {
-			dat += transBlock[i].Tx
-		}
-	}
-	return dat, err
 }
 
 func GetDBDayTraninfo(day int) (*[]DBTransactionsInfo, error) {

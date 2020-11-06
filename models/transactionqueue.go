@@ -29,20 +29,6 @@ type Transaction struct {
 	Counter  int8            `gorm:"not null"`
 	Sent     int8            `gorm:"not null"`
 	Attempt  int8            `gorm:"not null"`
-	Verified int8            `gorm:"not null;default:1"`
-}
-
-type TransactionpageHex struct {
-	Hash     string          `json:"hash"`
-	Data     string          `json:"data"`
-	Used     int8            `json:"used"`
-	HighRate transactionRate `json:"highrate"`
-	Type     int8            `json:"type"`
-	KeyID    string          `json:"key_id"`
-	Counter  int8            `json:"counter"`
-	Sent     int8            `json:"sent"`
-	Attempt  int8            `json:"attempt"`
-	Verified int8            `json:"verified"`
 }
 
 func GetTransactionpages(page int, size int) (*[]TransactionpageHex, int64, error) {
@@ -88,3 +74,6 @@ func GetTransactionpages(page int, size int) (*[]TransactionpageHex, int64, erro
 		ret = append(ret, tx)
 		ioffet++
 	}
+
+	return &ret, num, err
+}

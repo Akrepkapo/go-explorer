@@ -87,14 +87,6 @@ func logoHandler(c *gin.Context) {
 //// @Failure 400 {string} string ""
 //// @Failure 404 {string} string ""
 //// @Failure 500 {string} string ""
-//// @host localhost：7079
-//// @BasePath /api/v2
-//// @Router /getmanagefile/{file} [get]
-//		return
-//	}
-//	file, err := model.Loadlogo(id)
-//	if err != nil {
-//		ret.Return(nil, model.CodeFileOpen.Errorf(err))
 //		JsonCodeResponse(w, &ret)
 //		return
 //	}
