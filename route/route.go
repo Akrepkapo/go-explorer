@@ -9,6 +9,17 @@ import (
 	"fmt"
 	"net/http"
 	_ "net/http/pprof"
+	"strings"
+
+	"github.com/IBAX-io/go-explorer/controllers"
+
+	"github.com/IBAX-io/go-explorer/conf"
+	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
+)
+
+func Cors() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		method := c.Request.Method
 
 		origin := c.Request.Header.Get("Origin")
@@ -72,18 +83,6 @@ func Run(host string) (err error) {
 	r.GET(`/api/v2/block_detail/:blockid`, controllers.Get_BlockDetails)
 
 	r.POST(`/api/v2/block_detail`, controllers.Get_BlockDetail)
-
-	r.POST(`/api/v2/wallettotal`, controllers.Get_WalletTotal)
-	r.POST(`/api/v2/ecosytem_transaction_history`, controllers.Get_EcosytemTranscationhistory)
-	r.POST(`/api/v2/database`, controllers.Get_FindDatabase)
-	r.POST(`/api/v2/ecosystem_param`, controllers.Get_ecosystem_param)
-
-	r.POST(`/api//v2/get_transaction`, controllers.Get_transaction_block_redis)
-
-	r.GET(`/api/v2/leveldb/:key`, controllers.GetRedisKey)
-
-	r.StaticFS("/api/v2/logo", http.Dir("./logodir"))
-
 	if conf.GetEnvConf().ServerInfo.EnableHttps {
 		err = r.RunTLS(host, conf.GetEnvConf().ServerInfo.CertFile, conf.GetEnvConf().ServerInfo.KeyFile)
 	} else {

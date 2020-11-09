@@ -1,4 +1,11 @@
 # config information
+
+# server config information
+server:
+  mode: release # debug,release
+  host: 0.0.0.0
+  port: 8800
+  token_expire_second: 360000
   enable_https: true  # https
   cert_file: ${TLS_CERT}  # https
   key_file:  ${TLS_KEY} # https
@@ -22,19 +29,6 @@ database:
   connect: host=${DB_HOST} port=${DB_PORT} user=${DB_USER} dbname=${DB_NAME} sslmode=disable password=${DB_PASSWORD}
 
 # redis config information
-redis:
-  enable: true  #
-  address: ${REDIS_HOST} # address
-  port: ${REDIS_PORT}       # address
-  password: ${REDIS_PASSWORD} # password
-
-centrifugo:
-  enable: true  #
-  secret: ${CENTRIFUGO_SECRET}  #
-  url: ${CENTRIFUGO_URL} # address
-  socket: ${CENTRIFUGO_WS} # address
-  key: ${CENTRIFUGO_KEY} #
-
 crontab:
   fullnodeTime: "0 0/10 * * * ?"        #node map
   historyupdate: "0/10 * * * * ?"       #line chart
