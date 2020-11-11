@@ -85,11 +85,6 @@ func (b *Block) GetBlocksKey(key int64, order string) ([]Block, error) {
 
 // GetMaxBlock returns last block existence
 func (b *Block) GetMaxBlock() (bool, error) {
-	return isFound(conf.GetDbConn().Conn().Last(b))
-}
-
-// GetBlockchain is retrieving chain of blocks from database
-func GetBlockchain(startBlockID int64, endblockID int64, order string) (*[]Block, error) {
 	var err error
 	blockchain := new([]Block)
 
@@ -380,6 +375,21 @@ func GetBlocksDetailedInfoHex(bk *Block) (*BlockDetailedInfoHex, error) {
 		}
 
 		if tx.TxHeader != nil {
+			es := Ecosystem{}
+			f, err := es.Get(tx.TxHeader.EcosystemID)
+			if f && err == nil {
+				txDetailedInfo.Ecosystem = tx.TxHeader.EcosystemID
+				txDetailedInfo.Ecosystemname = es.Name
+				if txDetailedInfo.Ecosystem == 0 {
+					txDetailedInfo.Ecosystem = 1
+				}
+				if txDetailedInfo.Ecosystem == 1 {
+					txDetailedInfo.Token_title = consts.SysEcosytemTitle
+					if txDetailedInfo.Ecosystemname == "" {
+						txDetailedInfo.Ecosystemname = "platform ecosystem"
+					}
+				} else {
+					txDetailedInfo.Token_title = es.TokenTitle
 				}
 
 			}
