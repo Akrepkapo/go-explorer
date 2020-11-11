@@ -16,6 +16,17 @@ var nodeblocksPrefix = "nodeblocks-"
 func (b *NodeBlocks) Marshal() ([]byte, error) {
 	if res, err := msgpack.Marshal(b); err != nil {
 		return nil, err
+	} else {
+		return res, err
+	}
+}
+
+func (b *NodeBlocks) Unmarshal(bt []byte) error {
+	if err := msgpack.Unmarshal(bt, &b); err != nil {
+		return err
+	}
+	return nil
+}
 
 func (m *NodeBlocks) SubOneRedis(pos string) error {
 
@@ -96,20 +107,6 @@ func (m *NodeBlocks) Get_redis(pos string) (bool, error) {
 		Key:   nodeblocksPrefix + pos,
 		Value: "",
 	}
-	err := rd.Get()
-	if err != nil {
-		if err.Error() == "redis: nil" || err.Error() == "EOF" {
-			return false, nil
-		}
-		return false, err
-	}
-	err = m.Unmarshal([]byte(rd.Value))
-	if err != nil {
-		return false, err
-	}
-	return true, err
-}
-
 func (m *NodeBlocks) Get_rediss(pos string) (bool, error) {
 	rd := RedisParams{
 		Key:   nodeblocksPrefix + pos,
