@@ -10,6 +10,8 @@ import (
 )
 
 var lpgdb *gorm.DB
+
+type LDatabaseModel struct {
 	Enable  bool   `yaml:"enable"`
 	DBType  string `yaml:"type"`
 	Connect string `yaml:"connect"`
@@ -60,7 +62,3 @@ func (d *LDatabaseModel) Close() error {
 		if err = sqlDB.Close(); err != nil {
 			return err
 		}
-		lpgdb = nil
-	}
-	return nil
-}
