@@ -3,18 +3,6 @@
  *  See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 package models
-
-import (
-	"github.com/vmihailenco/msgpack/v5"
-	"strconv"
-)
-
-func (b *Block) Marshal() ([]byte, error) {
-	if res, err := msgpack.Marshal(b); err != nil {
-		return nil, err
-	} else {
-		return res, err
-	}
 }
 
 func (b *Block) Unmarshal(bt []byte) error {
@@ -25,6 +13,13 @@ func (b *Block) Unmarshal(bt []byte) error {
 }
 
 func (b *Block) GetRedisByhash(hash []byte) (bool, error) {
+	rd := RedisParams{
+		Key:   "block-" + string(hash),
+		Value: "",
+	}
+	err := rd.Get()
+	if err != nil {
+		if err.Error() == "redis: nil" || err.Error() == "EOF" {
 			return false, nil
 		}
 		return false, err
