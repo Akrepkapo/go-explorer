@@ -49,16 +49,6 @@ func logoHandler(c *gin.Context) {
 	//	JsonCodeResponse(w, &ret)
 	//	return
 	//}
-	//defer file.Close()
-	//
-	//stat, err := file.Stat() //
-	//if err != nil {
-	//	logger.WithFields(log.Fields{"type": consts.DBError, "error": err}).Error("getting file err")
-	//	//errorResponse(w, err)
-	//	ret.Return(nil, model.CodeFileOpen.Errorf(err))
-	//	JsonCodeResponse(w, &ret)
-	//	return
-	//}
 	//sz := stat.Size()
 	////str := strconv.FormatInt(100,10)
 	//str := strconv.FormatInt(sz, 10)
@@ -87,6 +77,22 @@ func logoHandler(c *gin.Context) {
 //// @Failure 400 {string} string ""
 //// @Failure 404 {string} string ""
 //// @Failure 500 {string} string ""
+//// @host localhost：7079
+//// @BasePath /api/v2
+//// @Router /getmanagefile/{file} [get]
+//func LoadlogoHandler(w http.ResponseWriter, r *http.Request) {
+//	ret := model.Response{}
+//	params := mux.Vars(r)
+//
+//	id, err := strconv.ParseInt(params["id"], 10, 64)
+//	if err != nil {
+//		ret.Return(nil, model.CodeFileOpen.Errorf(err))
+//		JsonCodeResponse(w, &ret)
+//		return
+//	}
+//	file, err := model.Loadlogo(id)
+//	if err != nil {
+//		ret.Return(nil, model.CodeFileOpen.Errorf(err))
 //		JsonCodeResponse(w, &ret)
 //		return
 //	}
