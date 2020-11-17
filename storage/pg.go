@@ -20,15 +20,6 @@ type DatabaseModel struct {
 	Enable  bool   `yaml:"enable"`
 	DBType  string `yaml:"type"`
 	Connect string `yaml:"connect"`
-	Name    string `yaml:"name"`
-	Ver     string `yaml:"ver"`
-	MaxIdle int    `yaml:"max_idle"`
-	MaxOpen int    `yaml:"max_open"`
-}
-
-func (d *DatabaseModel) Initer() (err error) {
-	dsn := fmt.Sprintf("%s TimeZone=UTC", d.Connect)
-	pgdb, err = gorm.Open(postgres.New(postgres.Config{
 		DSN: dsn,
 	}), &gorm.Config{
 		//AllowGlobalUpdate: true,                                  //allow global update
@@ -60,6 +51,16 @@ func (d *DatabaseModel) Initer() (err error) {
 
 func (d *DatabaseModel) Conn() *gorm.DB {
 	return pgdb
+}
+
+func (d *DatabaseModel) Close() error {
+	if pgdb != nil {
+		sqlDB, err := pgdb.DB()
+		if err != nil {
+			return err
+		}
+		if err = sqlDB.Close(); err != nil {
+			return err
 		}
 		pgdb = nil
 	}
