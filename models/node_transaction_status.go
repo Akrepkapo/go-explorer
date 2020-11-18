@@ -64,6 +64,15 @@ func (ts *TransactionStatus) DBconnGetcount_Sqlite() (int64, error) {
 	err := conf.GetDbConn().Conn().Table("transactions_status").Count(&count).Error
 	if err != nil {
 		return 0, err
+	}
+	return count, err
+}
+
+func (ts *TransactionStatus) DBconnGetTimelimit_Sqlite(time time.Time) (*[]TransactionStatus, error) {
+	var (
+		tss []TransactionStatus
+	)
+	err := conf.GetDbConn().Conn().Where("time >= ?", time.Unix()).Find(&tss).Order("time").Error
 	if err != nil {
 		return nil, err
 	}
@@ -72,21 +81,6 @@ func (ts *TransactionStatus) DBconnGetcount_Sqlite() (int64, error) {
 }
 
 func DbconnbatchupdateSqlite(objarr *[]TransactionStatus) error {
-	for _, val := range *objarr {
-		err := conf.GetDbConn().Conn().Model(&TransactionStatus{}).Updates(val).Error
-		if err != nil {
-			log.Info("TransactionStatus update false: "+err.Error(), val)
-			return err
-		}
-	}
-	return nil
-}
-
-func (ts *TransactionStatus) DbconnbatchinsertSqlites(objArr *[]TransactionStatus) error {
-	ret, ret1 := DbconndealReduplictionTransactionstatus(objArr)
-	count := len(*ret)
-	if len(*ret) != 0 {
-		dat := *ret
 		for i := 0; i < count; {
 			if i+100 < count {
 				s := dat[i : i+100]
