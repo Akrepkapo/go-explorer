@@ -1,8 +1,5 @@
 # config information
-
-# server config information
-server:
-  mode: release # debug,release
+  level: error
 
 database:
   enable: true #

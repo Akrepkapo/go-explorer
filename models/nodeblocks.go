@@ -45,15 +45,6 @@ func (m *NodeBlocks) SubOneRedis(pos string) error {
 			}
 			rd := RedisParams{
 				Key:   nodeblocksPrefix + pos,
-				Value: string(val),
-			}
-			err = rd.Set()
-			if err != nil {
-				return err
-			}
-		}
-
-	}
 
 	return err
 }
@@ -107,6 +98,20 @@ func (m *NodeBlocks) Get_redis(pos string) (bool, error) {
 		Key:   nodeblocksPrefix + pos,
 		Value: "",
 	}
+	err := rd.Get()
+	if err != nil {
+		if err.Error() == "redis: nil" || err.Error() == "EOF" {
+			return false, nil
+		}
+		return false, err
+	}
+	err = m.Unmarshal([]byte(rd.Value))
+	if err != nil {
+		return false, err
+	}
+	return true, err
+}
+
 func (m *NodeBlocks) Get_rediss(pos string) (bool, error) {
 	rd := RedisParams{
 		Key:   nodeblocksPrefix + pos,
