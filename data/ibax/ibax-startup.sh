@@ -17,8 +17,9 @@ if [ ! -f "/mnt/ibax/data/config.toml" ]; then
     --httpPort="$HTTP_PORT" \
     --dbHost="$DB_HOST" \
     --dbName="$DB_NAME" \
-    --dbPassword="$DB_PASSWORD" \
-    --dbPort="$DB_PORT" \
+    --redisdb="$REDIS_DBNAME" \
+    --redishost="$REDIS_HOST" \
+    --redispassword="$REDIS_PASSWORD" \
     --redisport="$REDIS_PORT" \
     --centKey="$CENTRIFUGO_KEY" \
     --centSecret="$CENTRIFUGO_SECRET" \

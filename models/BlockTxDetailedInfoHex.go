@@ -441,11 +441,11 @@ func (bt *BlockTxDetailedInfoHex) GetDb_txdetailedKey(key string, order string, 
 					}
 				}
 			}
+			ret = append(ret, obj)
 		}
 	}
-	total = int64(txData)
-
-	for i := 0; i < len(needBlock); i++ {
+	if len(ret) >= endTxiD && len(ret) >= startTxId && (len(ret)-endTxiD) >= startTxId {
+		ret = ret[startTxId : len(ret)-endTxiD]
 	}
 	return ret, total, nil
 }

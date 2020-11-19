@@ -14,14 +14,6 @@ services:
       - ibax
     links:
       - postgresql:postgresql
-      - redis:redis
-      - centrifugo:centrifugo
-    ports:
-      - "8800:8800"
-  ibax:
-    env_file:
-      - .env
-    hostname: ibax
     restart: always
     image: ibax/go-ibax
     container_name: ibax
@@ -77,3 +69,4 @@ services:
         hard: 65536
 #volumes:
 #  postgresql-data:
+#    name: postgresql-data
