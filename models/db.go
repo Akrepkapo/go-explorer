@@ -158,11 +158,15 @@ func SendTopTransactiontps(topBlockTps *[]ScanOutBlockTransactionRet) error {
 	if err != nil {
 		return err
 	}
-	value, err := json.Marshal(trans)
+	err = WriteChannelByte(ChannelBlockAndTxsList, ds)
 	if err != nil {
 		return err
 	}
-	rd := RedisParams{
+	return nil
+}
+
+func GetBlockInfoToRedis(limit int) error {
+
 		Key:   "blockChain-transaction",
 		Value: string(value),
 	}

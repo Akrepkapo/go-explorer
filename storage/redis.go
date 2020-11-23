@@ -19,7 +19,15 @@ type RedisModel struct {
 func (r *RedisModel) Str() string {
 	return fmt.Sprintf("%s:%d", r.Address, r.Port)
 }
-}
-func (l *RedisModel) Close() error {
-	return rc.Close()
-}
+
+func (r *RedisModel) Initer() error {
+	rc = redis.NewClient(&redis.Options{
+		Addr:     r.Str(),
+		Password: r.Password,
+		DB:       0,
+	})
+	_, err := rc.Ping(ctx).Result()
+	if err != nil {
+		return err
+	}
+	return nil
