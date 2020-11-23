@@ -7,16 +7,6 @@ package controllers
 
 import (
 	//"encoding/json"
-	"fmt"
-	"strconv"
-
-	"github.com/IBAX-io/go-explorer/consts"
-
-	"github.com/IBAX-io/go-explorer/models"
-	"github.com/IBAX-io/go-ibax/packages/model"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
-)
 
 func Get_system_param(c *gin.Context) {
 
@@ -193,6 +183,17 @@ func Get_ecosystem_Key(c *gin.Context) {
 		GenResponse(c, req.Head, rb)
 	}
 	key := models.Key{}
+	ret, err := key.Get(req.Params.Ecosystem, req.Params.Wallet)
+	if err != nil {
+		rb.Retinfo = err.Error()
+		rb.Retcode = 404
+		GenResponse(c, req.Head, rb)
+	} else {
+		rb.Data = ret
+		//rb.Total = len(params)
+		GenResponse(c, req.Head, rb)
+	}
+}
 
 func Get_ecosystemall_Key(c *gin.Context) {
 
