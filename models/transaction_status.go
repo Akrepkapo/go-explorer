@@ -37,6 +37,10 @@ func (ts *TransactionStatus) TableName() string {
 	return "transactions_status"
 }
 
+func (ts *TransactionStatus) Create() error {
+	return conf.GetDbConn().Conn().Create(ts).Error
+}
+
 func (ts *TransactionStatus) Get(transactionHash []byte) (bool, error) {
 	return isFound(conf.GetDbConn().Conn().Where("hash = ?", transactionHash).First(ts))
 }
@@ -228,20 +232,6 @@ func (ts *TransactionStatus) BatchInsert_Sqlites(objArr *[]TransactionStatus) er
 		dat := *ret
 		for i := 0; i < count; {
 			if i+100 < count {
-				s := dat[i : i+100]
-				err := ts.BatchinsertSqlite(&s)
-				if err != nil {
-					StUpdate_Sqlite(&s)
-					log.Info("BatchInsert_Sqlite update count err: " + err.Error())
-				}
-				i += 100
-			} else {
-				s := dat[i:]
-				err := ts.BatchinsertSqlite(&s)
-				if err != nil {
-					StUpdate_Sqlite(&s)
-					log.Info("BatchInsert_Sqlite update count err: " + err.Error())
-				}
 				i = count
 			}
 

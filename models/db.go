@@ -158,19 +158,6 @@ func SendTopTransactiontps(topBlockTps *[]ScanOutBlockTransactionRet) error {
 	if err != nil {
 		return err
 	}
-	err = WriteChannelByte(ChannelBlockAndTxsList, ds)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func GetBlockInfoToRedis(limit int) error {
-
-	var trans []DayBlock
-	if err := GetDB(nil).Raw(`SELECT block_chain."id",LENGTH(block_chain."data"),block_chain.tx FROM block_chain ORDER BY id desc LIMIT 30;`).Find(&trans).Error; err != nil {
-		return err
-	}
 	value, err := json.Marshal(trans)
 	if err != nil {
 		return err
@@ -197,6 +184,10 @@ func GetDayblockinfoFromRedis(t1, t2 int64, transBlock []Block) (int32, error) {
 	dat = 0
 	for i := 0; i < dlen; i++ {
 		if transBlock[i].Time > t1 && transBlock[i].Time < t2 {
+			dat += transBlock[i].Tx
+		}
+	}
+	return dat, err
 }
 
 func GetDBDayTraninfo(day int) (*[]DBTransactionsInfo, error) {

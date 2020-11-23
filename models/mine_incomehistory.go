@@ -14,6 +14,17 @@ type MineIncomehistory struct {
 	Devid                   int64           `gorm:"not null"`
 	Keyid                   int64           `gorm:"not null"`
 	Mineid                  int64           `gorm:"not null"`
+	Amount                  decimal.Decimal `gorm:"not null"`
+	Type                    int64           `gorm:"not null"`
+	Nonce                   int64           `gorm:"not null"`
+	Mine_incomehistory_hash []byte          `gorm:"not null`
+	Block_id                int64           `gorm:"not null"`
+	Date_created            int64           `gorm:"not null default 0"`
+}
+
+func (m MineIncomehistory) TableName() string {
+	return `1_mine_incomehistory`
+}
 
 func (ts *MineIncomehistory) Get(hash []byte) (bool, error) {
 	f, err := ts.GetRedisByhash(hash)
@@ -35,4 +46,3 @@ func (m *MineIncomehistory) GetID(id int64) (bool, error) {
 	} else {
 		return false, nil
 	}
-}
