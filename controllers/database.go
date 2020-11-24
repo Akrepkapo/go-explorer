@@ -27,21 +27,13 @@ func Get_FindDatabase(c *gin.Context) {
 
 	rb.Cmd = req.Cmd
 	rb.Current_page = req.Current_page
-	rb.Table_name = req.Table_name
-	rb.NodePosition = req.NodePosition
-	rb.Page_size = req.Page_size
-
-	switch rb.Cmd {
-	case "001":
-		rets, err := GetDBinfo()
-		if err != nil {
-			ret.ReturnFailureString(err.Error())
-			JsonResponse(c, ret)
-			return
 		} else {
 			rb.Total = len(*rets)
 			rb.Data = rets
 			ret.Return(rb, CodeSuccess)
+			JsonResponse(c, ret)
+			return
+		}
 	case "002":
 		total, rets, err := models.GetNodeALLTable(req.NodePosition, req.Current_page, req.Page_size, req.Order, req.Table_name)
 		if err != nil {

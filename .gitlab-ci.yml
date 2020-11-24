@@ -12,6 +12,3 @@ docker-deploy:
   #
   - docker run -dit -p 8800:8800  --link ibaxdb:db  --name scanapi scanapi
   tags:
-  #
-  - scanapi
-  only:

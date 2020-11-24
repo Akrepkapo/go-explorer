@@ -232,6 +232,20 @@ func (ts *TransactionStatus) BatchInsert_Sqlites(objArr *[]TransactionStatus) er
 		dat := *ret
 		for i := 0; i < count; {
 			if i+100 < count {
+				s := dat[i : i+100]
+				err := ts.BatchinsertSqlite(&s)
+				if err != nil {
+					StUpdate_Sqlite(&s)
+					log.Info("BatchInsert_Sqlite update count err: " + err.Error())
+				}
+				i += 100
+			} else {
+				s := dat[i:]
+				err := ts.BatchinsertSqlite(&s)
+				if err != nil {
+					StUpdate_Sqlite(&s)
+					log.Info("BatchInsert_Sqlite update count err: " + err.Error())
+				}
 				i = count
 			}
 
@@ -241,19 +255,6 @@ func (ts *TransactionStatus) BatchInsert_Sqlites(objArr *[]TransactionStatus) er
 		StUpdate_Sqlite(ret1)
 	}
 
-	return nil
-}
-
-func Deal_Redupliction_Transactionstatus(objArr *[]TransactionStatus) (*[]TransactionStatus, *[]TransactionStatus) {
-	var (
-		ret  []TransactionStatus
-		ret1 []TransactionStatus
-	)
-	if GStatusTranHash == nil {
-		GStatusTranHash = make(map[string]TransactionStatus)
-	}
-	for _, val := range *objArr {
-		key := hex.EncodeToString(val.Hash)
 		dat, ok := GStatusTranHash[key]
 		if ok {
 			if dat.BlockID > 0 {
