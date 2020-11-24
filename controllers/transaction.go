@@ -105,6 +105,13 @@ func Get_transaction_block(c *gin.Context) {
 	req := &WebRequest{}
 	rb := &ResponseBoby{
 		Cmd:     "001",
+		Ret:     "1",
+		Retcode: 200,
+		Retinfo: "ok",
+	}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
+		rb.Retinfo = err.Error()
 		rb.Retcode = 404
 		GenResponse(c, req.Head, rb)
 	}
@@ -215,16 +222,6 @@ func Get_Find_history(c *gin.Context) {
 
 	rb.PageSize = req.Params.PageSize
 	rb.CurrentPage = req.Params.CurrentPage
-	rb.RetDataType = req.Params.SearchType
-
-	//ts := &History{}
-	//ret, num, err := ts.GetWallets(req.Params.Current_page, req.Params.Page_size, req.Params.Wallet, req.Params.SearchType)
-	ret, num, total, err := services.Get_Group_TransactionWallet(req.Params.CurrentPage, req.Params.PageSize, req.Params.Wallet, req.Params.SearchType)
-	if err == nil {
-		rb.Data = ret
-		rb.Total = num
-		rb.Sum = total
-		GenResponse(c, req.Head, rb)
 	} else {
 		rb.Retinfo = err.Error()
 		rb.Retcode = 404
