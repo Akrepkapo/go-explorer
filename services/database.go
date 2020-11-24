@@ -15,6 +15,18 @@ import (
 func Set_ALLTables(dat []map[string]string) error {
 	lg1, err := json.Marshal(dat)
 	if err == nil {
+		rp := models.RedisParams{
+			Key:   "ALLTables",
+			Value: string(lg1),
+		}
+		err = rp.Set()
+		if err != nil {
+			logrus.Info("redis Setdb3 err key: %s  value:%s", rp.Key, rp.Value)
+		}
+	}
+	return err
+
+}
 
 func Get_ALLTables(id int64) (*[]map[string]string, error) {
 	var fs []map[string]string
@@ -32,13 +44,6 @@ func Get_ALLTables(id int64) (*[]map[string]string, error) {
 
 func Set_ColumnTypeTables(name string, dat []map[string]string) error {
 	lg1, err := json.Marshal(dat)
-	if err == nil {
-		rp := models.RedisParams{
-			Key:   name + "_ColumnTypeTables",
-			Value: string(lg1),
-		}
-		err = rp.Set()
-		if err != nil {
 			logrus.Info("redis Setdb3 err key: %s  value:%s", rp.Key, rp.Value)
 		}
 	}

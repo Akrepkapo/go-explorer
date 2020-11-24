@@ -4,6 +4,15 @@ import (
 	"path"
 	"strconv"
 	"strings"
+
+	"github.com/IBAX-io/go-explorer/conf"
+
+	"github.com/IBAX-io/go-ibax/packages/converter"
+)
+
+const BinaryTableSuffix = "_binaries"
+
+// Binary represents record of {prefix}_binaries table
 type Binary struct {
 	Ecosystem int64
 	ID        int64
@@ -21,13 +30,6 @@ func (b *Binary) SetTablePrefix(prefix string) {
 }
 
 // SetTableName sets name of table
-func (b *Binary) SetTableName(tableName string) {
-	ecosystem, _ := converter.ParseName(tableName)
-	b.Ecosystem = ecosystem
-}
-
-// TableName returns name of table
-func (b *Binary) TableName() string {
 	if b.Ecosystem == 0 {
 		b.Ecosystem = 1
 	}
