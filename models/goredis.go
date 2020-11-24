@@ -29,6 +29,3 @@ func (rp *RedisParams) Get() error {
 	return nil
 }
 func (rp *RedisParams) Del() error {
-	return conf.GetRedisDbConn().Conn().Del(ctx, rp.Key).Err()
-}
-
