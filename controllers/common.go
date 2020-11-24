@@ -7,6 +7,23 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/IBAX-io/go-explorer/conf"
+	"github.com/IBAX-io/go-ibax/packages/converter"
+
+	"github.com/IBAX-io/go-explorer/models"
+	"github.com/IBAX-io/go-explorer/services"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+)
+
+func JsonResponse(c *gin.Context, body *Response) {
+	c.JSON(http.StatusOK, body)
+}
+
+//GenResponse genrate reponse ,json format
+func GenResponse(c *gin.Context, head *RequestHead, body *ResponseBoby) {
+	c.JSON(http.StatusOK, gin.H{
+		"body": body,
 		"head": head,
 	})
 }
@@ -23,15 +40,6 @@ func Common_search(c *gin.Context) {
 	req := &WebRequest{}
 	rb := &ResponseBoby{
 		Cmd:     "001",
-		Ret:     "1",
-		Retcode: 200,
-		Retinfo: "ok",
-	}
-
-	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
-		rb.Retinfo = err.Error()
-		rb.Retcode = 404
-		GenResponse(c, req.Head, rb)
 	}
 
 	rb.PageSize = req.Params.PageSize
