@@ -22,6 +22,16 @@ func DashboardGetToken(c *gin.Context) {
 		//select {
 		//case services.SendWebsocketData <- true:
 		//default:
+		//}
+		ret.Return(rets, CodeSuccess)
+		JsonResponse(c, ret)
+	}
+}
+
+func GetDashboard(c *gin.Context) {
+	ret := &Response{}
+	var scanout models.ScanOut
+	rets, err := scanout.GetRedisdashboard()
 	if err != nil {
 		ret.ReturnFailureString(err.Error())
 		JsonResponse(c, ret)
@@ -46,17 +56,6 @@ func GetBlockTpsLists(c *gin.Context) {
 }
 
 func GetDashboardBlockTransactions(c *gin.Context) {
-	ret := &Response{}
-	cs := c.Param("count")
-	count := converter.StrToInt(cs)
-	var scanout models.ScanOut
-	rets, err := scanout.GetBlockTransactions(count)
-	if err != nil {
-		ret.ReturnFailureString(err.Error())
-		JsonResponse(c, ret)
-	} else {
-		ret.Return(rets, CodeSuccess)
-		JsonResponse(c, ret)
 	}
 
 }
