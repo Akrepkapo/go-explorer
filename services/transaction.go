@@ -15,20 +15,6 @@ func Get_Group_TransactionStatus(ids int, icount int, order string) (*[]models.T
 	ts := &models.TransactionStatus{}
 	ret, num, err := ts.GetTransactions(ids, icount, order)
 	return ret, num, err
-}
-
-func Get_Group_TransactionHistory(ids int, icount int, order string) (*[]models.HistoryHex, int64, error) {
-	ts := &models.History{}
-	ret, num, err := ts.GetHistorys(ids, icount, order)
-	return ret, num, err
-}
-
-//
-func Get_Group_TransactionBlockLast() (*[]models.BlockTxDetailedInfoHex, error) {
-	ts := &models.LogTransaction{}
-	//bt := &models.BlockTxDetailedInfoHex{}
-
-	//if models.GsqliteIsactive {
 	//	ret, num, err := bt.Get_BlockTransactionsLast_Sqlite(id, ids, icount, order)
 	//	if err == nil && *ret != nil && num > 0 {
 	//		//fmt.Println("Get_BlockTransactions_Sqlite  ok ids:%d icount:%d", ids, icount)
@@ -83,6 +69,22 @@ func Get_transaction_HashHistory(logourl string, hash []byte) (*models.HistoryEx
 }
 
 func Get_transaction_Hash(logourl string, hash string) (*map[string]interface{}, error) {
+	ret := make(map[string]interface{})
+	hashdat := []byte(converter.HexToBin(hash))
+
+	ret2, err2 := Get_transaction_HashHistory(logourl, hashdat)
+	//ret1, err1 := Get_transaction_Hashstatus(hashdat)
+	if err2 != nil {
+		return &ret, err2
+	}
+
+	var ret3 models.BlockTxDetailedInfoHex
+	f, err3 := ret3.GetDb_txdetailedHash(hash)
+	//ret3, err3 := GetBlockTransactionHash(hashdat)
+	if err3 != nil {
+		return &ret, err3
+	}
+	if f {
 		ret["TxDetailedInfoHex"] = ret3
 	}
 
