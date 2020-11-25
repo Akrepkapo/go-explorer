@@ -116,22 +116,6 @@ func GetTraninfoFromRedis(limit int) (*[]ScanOutBlockTransactionRet, error) {
 		Key:   "blockChain-transaction",
 		Value: "",
 	}
-	if err = rd.Get(); err != nil {
-		log.WithFields(log.Fields{"warn": err}).Warn("GetTraninfoFromRedis getdb err")
-		return nil, err
-	}
-	if err = json.Unmarshal([]byte(rd.Value), &transBlock); err != nil {
-		log.WithFields(log.Fields{"warn": err}).Warn("GetTraninfoFromRedis json err")
-		return nil, err
-	}
-
-	for i := 0; i < len(transBlock); i++ {
-		var info = ScanOutBlockTransactionRet{
-			BlockId:           transBlock[i].Id,
-			BlockSizes:        transBlock[i].Length,
-			BlockTranscations: int64(transBlock[i].Tx),
-		}
-		ret = append(ret, info)
 	}
 	return &ret, err
 }
@@ -167,6 +151,15 @@ func SendTopTransactiontps(topBlockTps *[]ScanOutBlockTransactionRet) error {
 
 func GetBlockInfoToRedis(limit int) error {
 
+	var trans []DayBlock
+	if err := GetDB(nil).Raw(`SELECT block_chain."id",LENGTH(block_chain."data"),block_chain.tx FROM block_chain ORDER BY id desc LIMIT 30;`).Find(&trans).Error; err != nil {
+		return err
+	}
+	value, err := json.Marshal(trans)
+	if err != nil {
+		return err
+	}
+	rd := RedisParams{
 		Key:   "blockChain-transaction",
 		Value: string(value),
 	}

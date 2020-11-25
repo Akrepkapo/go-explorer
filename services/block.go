@@ -18,6 +18,16 @@ import (
 func Get_Group_Block_Lists(ids int, icount int, order string) (*[]models.BlocksResult, error) {
 
 	//ret, _, err := models.GetBlocklist(ids, icount, order)
+	ret, _, err := models.GetBlockListFromRedis()
+	return ret, err
+
+}
+
+func Get_Group_Block_TpsLists() (*[]models.ScanOutBlockTransactionRet, error) {
+	ret, err := models.GetBlockTpslistsFromRedis()
+	return ret, err
+}
+
 func Get_Group_Block_Details(id int64) (*models.BlockDetailedInfoHex, error) {
 	ret, _, err := GetBlockDetailed(id)
 	if err == nil && ret.Header.BlockID > 0 {
@@ -29,19 +39,6 @@ func Get_Group_Block_Details(id int64) (*models.BlockDetailedInfoHex, error) {
 				return ret, err1
 			}
 
-		}
-		return ret, err
-	}
-	return ret, err
-
-}
-
-func Get_Group_Block_Detail_hash(hash string) (*models.BlockDetailedInfoHex, error) {
-	ret, _, err := GetBlockHash(converter.HexToBin(hash))
-	return ret, err
-}
-
-func GetBlockDetailed(id int64) (*models.BlockDetailedInfoHex, *models.BlocksResult, error) {
 	bks := &models.Block{}
 	ret, err := bks.Get(id)
 	if err == nil && ret {
