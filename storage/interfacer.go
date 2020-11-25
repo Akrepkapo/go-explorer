@@ -13,10 +13,9 @@ type TransactionStatus struct {
 	Ecosystem int64  `gorm:"not null"  json:"ecosystem"`
 	WalletID  int64  `gorm:"not null"  json:"wallet_id"`
 	BlockID   int64  `gorm:"not null;index:tsblockid_idx"  json:"block_id"`
-	Type   int64  `gorm:"not null" json:"type"`
-	Size   int64  `gorm:"not null" json:"size"`
-
-	Ecosystemname string `gorm:"null" json:"ecosystemname"`
-	Token_title   string `gorm:"null" json:"token_title"`
-	Ecosystem     int64  `gorm:"null" json:"ecosystem"`
+	Error     string `gorm:"not null"  json:"error"`
+	Penalty   int64  `gorm:"not null"  json:"penalty"`
 }
+
+type BlockTxDetailedInfoHex struct {
+	BlockID      int64  `gorm:"not null;index:blockid_idx" json:"block_id"`
