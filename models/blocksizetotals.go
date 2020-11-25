@@ -51,6 +51,13 @@ func (m *BlockSizeTotal) ReSetRedis(blockid, pos int64) error {
 		}
 		err = rd.Set()
 		if err != nil {
+			return err
+		}
+	} else {
+		so.ID = blockid
+		so.Count = pos
+		if so.Count < 0 {
+			so.Count = 0
 		}
 		so.Name = blocksizetotalPrefix + "lastet"
 		val, err := so.Marshal()
@@ -85,5 +92,3 @@ func (m *BlockSizeTotal) Get_Redis() (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return true, err
-}

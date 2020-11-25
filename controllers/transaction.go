@@ -222,6 +222,16 @@ func Get_Find_history(c *gin.Context) {
 
 	rb.PageSize = req.Params.PageSize
 	rb.CurrentPage = req.Params.CurrentPage
+	rb.RetDataType = req.Params.SearchType
+
+	//ts := &History{}
+	//ret, num, err := ts.GetWallets(req.Params.Current_page, req.Params.Page_size, req.Params.Wallet, req.Params.SearchType)
+	ret, num, total, err := services.Get_Group_TransactionWallet(req.Params.CurrentPage, req.Params.PageSize, req.Params.Wallet, req.Params.SearchType)
+	if err == nil {
+		rb.Data = ret
+		rb.Total = num
+		rb.Sum = total
+		GenResponse(c, req.Head, rb)
 	} else {
 		rb.Retinfo = err.Error()
 		rb.Retcode = 404
@@ -431,19 +441,6 @@ func CommonTransactionSearch(c *gin.Context) {
 	ts := &models.BlockTxDetailedInfoHex{}
 	rets, err := ts.GetCommonTransactionSearch(req.Page, req.Limit, req.Search, req.Order)
 	if err != nil {
-		ret.ReturnFailureString(err.Error())
-		JsonResponse(c, ret)
-		return
-	}
-
-	ret.Return(rets, CodeSuccess)
-	JsonResponse(c, ret)
-
-}
-func Get_transaction_block_redis(c *gin.Context) {
-	ret := &Response{}
-	req := &EcosytemTranscationHistoryFind{}
-
 	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
 		ret.ReturnFailureString(err.Error())
 		JsonResponse(c, ret)

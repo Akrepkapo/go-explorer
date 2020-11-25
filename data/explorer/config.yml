@@ -29,8 +29,16 @@ database:
   connect: host=${DB_HOST} port=${DB_PORT} user=${DB_USER} dbname=${DB_NAME} sslmode=disable password=${DB_PASSWORD}
 
 # redis config information
-crontab:
-  fullnodeTime: "0 0/10 * * * ?"        #node map
-  historyupdate: "0/10 * * * * ?"       #line chart
-  statistics: "0/5 * * * * ?"          #statistics
-  transaction: "0/10 * * * * ?"         #latest transaction
+redis:
+  enable: true  #
+  address: ${REDIS_HOST} # address
+  port: ${REDIS_PORT}       # address
+  password: ${REDIS_PASSWORD} # password
+
+centrifugo:
+  enable: true  #
+  secret: ${CENTRIFUGO_SECRET}  #
+  url: ${CENTRIFUGO_URL} # address
+  socket: ${CENTRIFUGO_WS} # address
+  key: ${CENTRIFUGO_KEY} #
+
