@@ -1,11 +1,5 @@
 # IBAX Blockchain browser API service
 
-## Install
-
-
-## Start
-
-```shell
 make startup
 ```
 
