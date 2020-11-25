@@ -16,11 +16,8 @@ type TableModel struct {
 	Name         string    `gorm:"not null" json:"name"`
 	Time         time.Time `gorm:"not null" json:"time"`
 	Dataid       int64     `gorm:"not null" json:"id"`
+	Count        int       `gorm:"not null" json:"count"`
+	Updatetime   int       `gorm:"not null" json:"updatetime"`
 	//Cmdsql string    `gorm:"not null" json:"cmdsql"`
 }
 
-type TableShowModel struct {
-	ID     int    `gorm:"primary_key;not_null" json:"id" `
-	Name   string `gorm:"not null" json:"name"`
-	Cmdsql string `gorm:"not null" json:"_"`
-}
