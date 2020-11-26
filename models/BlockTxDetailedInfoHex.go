@@ -245,22 +245,6 @@ func Deal_LogTransactionBlockTxDetial(objArr *[]LogTransaction) (*[]BlockTxDetai
 	ret1 := Deal_Redupliction_LogTransaction(objArr)
 	count := len(*ret1)
 	if len(*ret1) == 0 {
-		logrus.Info("logtran redup:")
-		return &ret, nil
-	}
-	dat := *ret1
-
-	TBlock := make(map[string]int64)
-	Thash := make(map[string]bool)
-	for i := 0; i < count; i++ {
-		hash := hex.EncodeToString(dat[i].Hash)
-		Thash[hash] = true
-		key := strconv.FormatInt(dat[i].Block, 10)
-		TBlock[key] = dat[i].Block
-	}
-
-	for _, k := range TBlock {
-		Blocks = append(Blocks, k)
 	}
 
 	for i := int64(len(Blocks)); i > 0; i-- {
@@ -441,6 +425,16 @@ func (bt *BlockTxDetailedInfoHex) GetDb_txdetailedKey(key string, order string, 
 					}
 				}
 			}
+		}
+	}
+	total = int64(txData)
+
+	for i := 0; i < len(needBlock); i++ {
+		_, _, bkts, err := Deal_TransactionBlockTxDetial(&needBlock[i])
+		if err != nil {
+			return nil, total, err
+		}
+		for _, obj := range *bkts {
 			ret = append(ret, obj)
 		}
 	}

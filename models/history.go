@@ -347,6 +347,20 @@ func (th *History) GetHistorys(page int, size int, order string) (*[]HistoryHex,
 	if err != nil {
 		return &ret, num, err
 	}
+
+	err = conf.GetDbConn().Conn().Table("1_history").Count(&num).Error
+	if err != nil {
+		return &ret, num, err
+	}
+	for i := 0; i < len(tss); i++ {
+		//fmt.Println("offet Error:%d ", ioffet)
+		da := HistoryHex{}
+		da.Ecosystem = tss[i].Ecosystem
+		es := Ecosystem{}
+		f, err := es.Get(da.Ecosystem)
+		if f && err == nil {
+			da.Ecosystemname = es.Name
+			if da.Ecosystem == 1 {
 				da.Token_title = consts.SysEcosytemTitle
 				if da.Ecosystemname == "" {
 					da.Ecosystemname = "platform ecosystem"
@@ -438,15 +452,6 @@ func (th *History) GetWallets(page int, size int, wallet string, searchType stri
 	//	return &ret, num, total, err
 	//}
 	for i = 0; i < count; i++ {
-		//fmt.Println("offet Error:%d ", ioffet)
-		da := HistoryHex{}
-		da.Ecosystem = tss[i].Ecosystem
-		es := Ecosystem{}
-		f, err := es.Get(da.Ecosystem)
-		if f && err == nil {
-			da.Ecosystemname = es.Name
-			if da.Ecosystem == 1 {
-				da.Token_title = consts.SysEcosytemTitle
 			} else {
 				da.Token_title = es.TokenTitle
 			}
