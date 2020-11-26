@@ -1,10 +1,13 @@
 # IBAX Blockchain browser API service
 
-make startup
+## Install
+
+```shell
+make all
 ```
 
+## Start
 
-
-docker build -t ibax/go-explorer -f Dockerfile .
-docker-compose up
-docker-compose down
+```shell
+make startup
+```
