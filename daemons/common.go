@@ -5,6 +5,13 @@
 
 package daemons
 
+import (
+	"context"
+	"github.com/IBAX-io/go-explorer/services"
+)
+
+			exitCh <- err
+		}
 	}()
 
 	go func() {

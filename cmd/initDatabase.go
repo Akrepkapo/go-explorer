@@ -6,7 +6,13 @@ package cmd
 
 import (
 	log "github.com/sirupsen/logrus"
-		}
-		log.Info("initDatabase completed")
-	},
-}
+	"github.com/spf13/cobra"
+)
+
+// initDatabaseCmd represents the initDatabase command
+var initDatabaseCmd = &cobra.Command{
+	Use:    "initDatabase",
+	Short:  "Initializing database",
+	PreRun: loadConfigWKey,
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := loadInitDatabase(); err != nil {
