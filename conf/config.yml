@@ -1,4 +1,22 @@
 # config information
+
+# server config information
+server:
+  mode: release # debug,release
+  host: 0.0.0.0
+  port: 8800
+  token_expire_second: 360000
+  enable_https: false  # https
+  cert_file: conf/https/ibax.app.crt  # https
+  key_file:  conf/https/ibax.app.key # https
+  jwt_public_key_path: conf/jwt/tm.rsa.pub
+  jwt_private_key_path: conf/jwt/tm.rsa
+  system_static_file_path: system_statics
+
+url:
+  base_url: http://127.0.0.1:8800/api/v2/logo/
+
+log:
   level: error
 
 database:
@@ -9,11 +27,6 @@ database:
   name: ibax #
   ver:  20200902 #
   connect: host=127.0.0.1 port=5432 user=postgres dbname=scan sslmode=disable password=ibax20200916
-
-# redis config information
-redis:
-  enable: true  #
-  address: 127.0.0.1 # address
   port: 6379       # address
   password: ibax,&.0se # password
 
