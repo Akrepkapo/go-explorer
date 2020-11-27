@@ -21,12 +21,6 @@ type StateParameter struct {
 	Value      string `gorm:"not null"`
 	Conditions string `gorm:"not null"`
 }
-
-// TableName returns name of table
-func (sp *StateParameter) TableName() string {
-	if sp.ecosystem == 0 {
-		sp.ecosystem = 1
-	}
 	return `1_parameters`
 }
 
@@ -53,6 +47,17 @@ func (sp *StateParameter) GetMintAmount() (string, error) {
 	if err != nil {
 		return "0", err
 	}
+
+	f2, err := isFound(GetDB(nil).Where("ecosystem = ? and name = ?", sp.ecosystem, "assign_rule").First(&sp2))
+	if err != nil {
+		return "0", err
+	}
+	if !f || !f1 || !f2 {
+		return "0", nil
+	}
+
+	ret := make(map[int64]AssignRules, 1)
+	err = json.Unmarshal([]byte(sp2.Value), &ret)
 	if err != nil {
 		return "0", err
 	}
