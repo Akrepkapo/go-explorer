@@ -45,15 +45,9 @@ func GetDashboard(c *gin.Context) {
 func GetBlockTpsLists(c *gin.Context) {
 	ret := &Response{}
 	rets, err := services.Get_Group_Block_TpsLists()
-	if err != nil {
-		ret.ReturnFailureString(err.Error())
-		JsonResponse(c, ret)
-		return
-	}
-	ret.Return(rets, CodeSuccess)
-	JsonResponse(c, ret)
-	return
-}
+	ret := &Response{}
+	cs := c.Param("count")
+	count := converter.StrToInt(cs)
 	var scanout models.ScanOut
 	rets, err := scanout.GetBlockTransactions(count)
 	if err != nil {
