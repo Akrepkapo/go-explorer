@@ -65,6 +65,21 @@ type ecosystemParamsResult struct {
 
 type listResult struct {
 	Count string              `json:"count"`
+	List  []map[string]string `json:"list"`
+}
+
+type BlocksResult struct {
+	BlockID      int64  `json:"id"`
+	Time         int64  `json:"time"`
+	EcosystemID  int64  `json:"ecosystem_id"`
+	KeyID        string `json:"key_id"`
+	NodePosition int64  `json:"node_position"`
+	PreHash      string `json:"prehash"`
+	Hash         string `json:"hash"`
+	Tx           int32  `json:"tx"`
+}
+
+type BlockHeaderInfoHex struct {
 	BlockID      int64  `json:"block_id"`
 	Time         int64  `json:"time"`
 	EcosystemID  int64  `json:"ecosystem_id"`
@@ -112,13 +127,6 @@ type BlockDetailedInfoHex struct {
 
 type BlockDetailedInfoHexRespone struct {
 	Header        BlockHeaderInfoHex `json:"header"`
-	Hash          string             `json:"hash"`
-	EcosystemID   int64              `json:"ecosystem_id"`
-	NodePosition  int64              `json:"node_position"`
-	KeyID         string             `json:"key_id"`
-	Time          int64              `json:"time"`
-	Tx            int32              `json:"tx_count"`
-	RollbacksHash string             `json:"rollbacks_hash"`
 	MrklRoot      string             `json:"mrkl_root"`
 	BinData       string             `json:"bin_data"`
 	SysUpdate     bool               `json:"sys_update"`
