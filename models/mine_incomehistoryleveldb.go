@@ -56,22 +56,6 @@ func (b *MineIncomehistory) GetRedisbyid(id int64) (bool, error) {
 		return false, err
 	}
 	if err := b.Unmarshal([]byte(rd.Value)); err != nil {
-		return true, err
-	}
-	return true, nil
-}
-
-func (b *MineIncomehistory) Insert_redis() error {
-	val, err := b.Marshal()
-	if err != nil {
-		return err
-	}
-	rd := RedisParams{
-		Key:   "mih-" + string(b.Mine_incomehistory_hash),
-		Value: string(val),
-	}
-	err = rd.Set()
-	if err != nil {
 		return err
 	}
 
@@ -85,3 +69,4 @@ func (b *MineIncomehistory) Insert_redis() error {
 	}
 
 	return nil
+}
