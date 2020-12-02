@@ -35,15 +35,6 @@ func WorkDealBlock() error {
 	if errm != nil {
 		if (errm.Error() == "redis: nil" || errm.Error() == "EOF") && !fm {
 			bm.ID = 0
-			bm.Time = 1
-			bm.Name = consts.MintMax
-			err := bm.InsertRedis()
-			if err != nil {
-				return err
-			}
-		} else {
-			return errm
-		}
 	}
 
 	fc, errc := bc.GetbyName(consts.ChainMax)
@@ -90,3 +81,4 @@ func WorkDealBlock() error {
 	}
 
 	return nil
+}
