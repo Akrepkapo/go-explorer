@@ -30,4 +30,3 @@ func (m *Member) TableName() string {
 // Count returns count of records in table
 func (m *Member) Count() (count int64, err error) {
 	err = conf.GetDbConn().Conn().Table(m.TableName()).Where(`ecosystem=?`, m.Ecosystem).Count(&count).Error
-	return
