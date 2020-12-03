@@ -5,12 +5,6 @@ import (
 
 	"gorm.io/gorm"
 )
-
-var (
-	fullNodedb []*FullNodeDB
-)
-
-type FullnodeModel struct {
 	Enable       bool      `gorm:"not null" yaml:"enable" json:"enable"`
 	Nodename     string    `gorm:"not null" yaml:"nodename" json:"nodename"`
 	TCPAddress   string    `gorm:"not null" yaml:"tcp_address" json:"tcp_address"`
@@ -78,6 +72,13 @@ func (r FullNodeModels) Infos() FullNodeModels {
 func (r FullNodeModels) Close() error {
 	for i := 0; i < len(fullNodedb); i++ {
 		if fullNodedb[i].DBConn != nil {
+			sqlDB, err := fullNodedb[i].DBConn.DB()
+			if err != nil {
+				return err
+			}
+			fullNodedb[i].DBConn = nil
+			if err = sqlDB.Close(); err != nil {
+				return err
 			}
 		}
 	}
