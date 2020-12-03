@@ -7,6 +7,16 @@ package controllers
 
 import (
 	//"encoding/json"
+	"fmt"
+	"strconv"
+
+	"github.com/IBAX-io/go-explorer/consts"
+
+	"github.com/IBAX-io/go-explorer/models"
+	"github.com/IBAX-io/go-ibax/packages/model"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+)
 
 func Get_system_param(c *gin.Context) {
 
@@ -167,18 +177,6 @@ func Get_ecosystem_Keys(c *gin.Context) {
 	}
 }
 
-func Get_ecosystem_Key(c *gin.Context) {
-
-	req := &WebRequest{}
-	rb := &ResponseBoby{
-		Cmd:     "001",
-		Ret:     "1",
-		Retcode: 200,
-		Retinfo: "ok",
-	}
-
-	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
-		rb.Retinfo = err.Error()
 		rb.Retcode = 404
 		GenResponse(c, req.Head, rb)
 	}

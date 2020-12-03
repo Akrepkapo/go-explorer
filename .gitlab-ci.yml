@@ -1,5 +1,4 @@
 stages:
-- deploy
-
+  only:
   #
   - explorer-server
