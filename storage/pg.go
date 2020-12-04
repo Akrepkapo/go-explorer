@@ -62,6 +62,8 @@ func (d *DatabaseModel) Conn() *gorm.DB {
 	return pgdb
 }
 
+func (d *DatabaseModel) Close() error {
+	if pgdb != nil {
 		sqlDB, err := pgdb.DB()
 		if err != nil {
 			return err
@@ -85,11 +87,3 @@ func GormDBInit(engine, connect string) (*gorm.DB, error) {
 		return nil, err
 	}
 	db, err := conn.DB()
-	if err != nil {
-		return nil, err
-	}
-	db.SetConnMaxLifetime(time.Minute * 5)
-	db.SetMaxIdleConns(5)
-	db.SetMaxOpenConns(20)
-	return conn, nil
-}
