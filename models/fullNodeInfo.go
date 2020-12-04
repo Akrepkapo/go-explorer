@@ -107,11 +107,6 @@ func getFullNodeInfoFromDb() {
 	if err = GetNodeListInfo(string(value)); err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("GetNodeListInfo failed")
 		return
-	}
-	syncFullNodeInfoToRedis()
-	SyncFullNodeInfo()
-}
-func fullNodeDbIsExist(apiaddress string, nodeValue []string) bool {
 	for i := 0; i < len(nodeValue); i++ {
 		var fullNode storage.FullnodeModel
 		err := json.Unmarshal([]byte(nodeValue[i]), &fullNode)
@@ -397,6 +392,12 @@ func getIcon(city string) string {
 	return city
 }
 func (p *FullNodeInfo) getAddressList() {
+	if err := GetDB(nil).Table(p.TableName()).Select("address").Order("id desc").Find(&addrList).Error; err != nil {
+		log.WithFields(log.Fields{"error": err}).Error("getAddressList Find err")
+		return
+	}
+}
+
 func getIPAddress(addressName string) (ip string) {
 	ip = addressName
 	if strings.Contains(addressName, "http") {

@@ -10,10 +10,13 @@ import (
 	"github.com/IBAX-io/go-explorer/services"
 )
 
+func StartDaemons(ctx context.Context) <-chan error {
+	exitCh := make(chan error)
+	go func() {
+		err := services.DealNodetransactionstatussqlite(ctx)
+		if err != nil {
 			exitCh <- err
 		}
-	}()
-
 	go func() {
 		err := services.DealNodeblocktransactionchsqlite(ctx)
 		if err != nil {
