@@ -40,6 +40,10 @@ func GetDbConn() *storage.DatabaseModel {
 }
 
 func GetFullNodesDbConn() []*storage.FullNodeDB {
+	return storage.Connes()
+}
+
+func GetRedisDbConn() *storage.RedisModel {
 	return GetEnvConf().RedisInfo
 }
 func GetCentrifugoConn() *storage.CentrifugoConfig {
@@ -74,22 +78,6 @@ func Initer() {
 		logrus.WithError(err).Fatal("redis database config information: %v", RedisInfo)
 	}
 	if err := Centrifugo.Initer(); err != nil {
-		logrus.WithError(err).Fatal("centrifugo config information: %v", Centrifugo)
-	}
-	if err := initLogs(); err != nil {
-		logrus.WithError(err).Fatal("init log file")
-	}
-}
-
-func initLogs() error {
-	fileName := path.Join(GetEnvConf().ConfigPath, "logrus.log")
-	openMode := os.O_APPEND
-	if _, err := os.Stat(fileName); os.IsNotExist(err) {
-		openMode = os.O_CREATE
-	}
-	f, err := os.OpenFile(fileName, os.O_WRONLY|openMode, 0755)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, "Can't open log file: ", fileName)
 		return err
 	}
 	logrus.SetOutput(f)
