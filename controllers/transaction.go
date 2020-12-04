@@ -424,23 +424,23 @@ func Get_WalletTotal(c *gin.Context) {
 
 // @tags  common_transaction_search
 // @Description common_transaction_search
-// @Summary common_transaction_search
-// @Accept  json
-// @Produce  json
-// @Success 200 {string} json "{"code":200,"data":{"id":1,"name":"admin","alias":"","email":"admin@block.vc","password":"","roles":[],"openid":"","active":true,"is_admin":true},"message":"success"}}"
-// @Router /auth/admin/{id} [get]
-func CommonTransactionSearch(c *gin.Context) {
-
-	ret := &Response{}
-	req := &EcosytemTranscationHistoryFind{}
-	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
-		ret.ReturnFailureString(err.Error())
-		JsonResponse(c, ret)
-		return
 	}
 	ts := &models.BlockTxDetailedInfoHex{}
 	rets, err := ts.GetCommonTransactionSearch(req.Page, req.Limit, req.Search, req.Order)
 	if err != nil {
+		ret.ReturnFailureString(err.Error())
+		JsonResponse(c, ret)
+		return
+	}
+
+	ret.Return(rets, CodeSuccess)
+	JsonResponse(c, ret)
+
+}
+func Get_transaction_block_redis(c *gin.Context) {
+	ret := &Response{}
+	req := &EcosytemTranscationHistoryFind{}
+
 	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
 		ret.ReturnFailureString(err.Error())
 		JsonResponse(c, ret)
