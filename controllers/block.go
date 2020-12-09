@@ -86,6 +86,8 @@ func Get_BlockDetails(c *gin.Context) {
 }
 
 func Get_BlockDetail(c *gin.Context) {
+		var bk models.Block
+		fb, err := bk.Get(req.Block_id)
 		if err != nil {
 			ret.ReturnFailureString(err.Error())
 			JsonResponse(c, ret)

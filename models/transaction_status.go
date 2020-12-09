@@ -167,21 +167,6 @@ func (ts *TransactionStatus) BatchUpdate_Sqlite(reportForms *[]TransactionStatus
 			conf.GetDbConn().Conn().Save(&val)
 		}
 	}
-	return nil
-}
-
-func (ts *TransactionStatus) BatchinsertSqlite(objArr *[]TransactionStatus) error {
-	if len(*objArr) == 0 {
-		return nil
-	}
-	//dat := *objArr
-	//mainObj := dat[0]
-	return conf.GetDbConn().Conn().Create(objArr).Error
-	//
-	//mainScope := conf.GetDbConn().Conn().NewScope(mainObj)
-	//mainFields := mainScope.Fields()
-	//quoted := make([]string, 0, len(mainFields))
-	//vquoted := make([]string, 0, len(mainFields))
 	//upstr := " ON DUPLICATE KEY UPDATE  "
 	//for i := range mainFields {
 	//	// If primary key has blank value (0 for int, "" for string, nil for interface ...), skip it.
@@ -255,6 +240,19 @@ func (ts *TransactionStatus) BatchInsert_Sqlites(objArr *[]TransactionStatus) er
 		StUpdate_Sqlite(ret1)
 	}
 
+	return nil
+}
+
+func Deal_Redupliction_Transactionstatus(objArr *[]TransactionStatus) (*[]TransactionStatus, *[]TransactionStatus) {
+	var (
+		ret  []TransactionStatus
+		ret1 []TransactionStatus
+	)
+	if GStatusTranHash == nil {
+		GStatusTranHash = make(map[string]TransactionStatus)
+	}
+	for _, val := range *objArr {
+		key := hex.EncodeToString(val.Hash)
 		dat, ok := GStatusTranHash[key]
 		if ok {
 			if dat.BlockID > 0 {
