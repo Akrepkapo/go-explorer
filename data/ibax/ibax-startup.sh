@@ -17,19 +17,8 @@ if [ ! -f "/mnt/ibax/data/config.toml" ]; then
     --httpPort="$HTTP_PORT" \
     --dbHost="$DB_HOST" \
     --dbName="$DB_NAME" \
-    --redisdb="$REDIS_DBNAME" \
-    --redishost="$REDIS_HOST" \
-    --redispassword="$REDIS_PASSWORD" \
-    --redisport="$REDIS_PORT" \
-    --centKey="$CENTRIFUGO_KEY" \
-    --centSecret="$CENTRIFUGO_SECRET" \
-    --centUrl="$CENTRIFUGO_URL" \
-    --cryptoer="$CRYPTOSETTINGS_CRYPTOER" \
-    --hasher="$CRYPTOSETTINGS_HASHER"
-fi
-
-if [ ! -f "/mnt/ibax/data/NodePublicKey" ]; then
-  /mnt/ibax/go-ibax generateKeys
+    --dbPassword="$DB_PASSWORD" \
+    --dbPort="$DB_PORT" \
 fi
 
 if [ 0"$NODES_ADDR" = "0" ]; then
