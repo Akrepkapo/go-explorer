@@ -23,18 +23,6 @@ func (sys *Ecosystem) Get(id int64) (bool, error) {
 	}
 	return isFound(conf.GetDbConn().Conn().First(sys, "id = ?", id))
 }
-func GetAllSystemStatesIDs() ([]int64, []string, error) {
-	if !IsTable("1_ecosystems") {
-		//return nil, fmt.Errorf("%s does not exists", ecosysTable)
-		return nil, nil, nil
-	}
-
-	ecosystems := new([]Ecosystem)
-
-	ids := make([]int64, len(*ecosystems))
-	names := make([]string, len(*ecosystems))
-	for i, s := range *ecosystems {
-		ids[i] = s.ID
 		names[i] = s.Name
 	}
 

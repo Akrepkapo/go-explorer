@@ -7,7 +7,3 @@ make all
 ```
 
 ## Start
-
-```shell
-make startup
-```

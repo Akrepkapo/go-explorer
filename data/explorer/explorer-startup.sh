@@ -1,5 +1,3 @@
 #!/bin/bash
 set -e -x
-
-cd /mnt/explorer
-sleep 6
+/mnt/explorer/go-explorer start --config /mnt/explorer/data
