@@ -60,6 +60,19 @@ func Sys_BlockWork(ctx context.Context) {
 func Sys_Work_ChainValidBlock(ctx context.Context) {
 	err := ChainValidBlock()
 	if err != nil {
+		log.Info("first Sys_Work_ChainValidBlock")
+	}
+
+	for {
+		select {
+		case <-ctx.Done():
+			log.Info("Sys_Work_ChainValidBlock done his work")
+			return
+		case <-time.After(time.Second * 4):
+			err := ChainValidBlock()
+			if err != nil {
+				log.Info("ChainValidBlock")
+			}
 		}
 	}
 }
@@ -111,16 +124,6 @@ func Sys_CentrifugoWork(ctx context.Context) {
 			return
 		case <-models.SendScanOut:
 			var scanout models.ScanOut
-			rets, err := scanout.GetRedisdashboard()
-			if err != nil {
-				log.Info("GetRedisdashboard dashboard", err.Error())
-			} else {
-				if err := SendtoWebsocket(rets, &scanout); err != nil {
-					log.Info("SendtoWebsocket dashboard", err.Error())
-				}
-			}
-		}
-	}
 }
 
 func SendtoWebsocket(rets *models.ScanOutRet, scanout *models.ScanOut) error {
