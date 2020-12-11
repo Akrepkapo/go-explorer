@@ -28,6 +28,3 @@ func (r *RedisModel) Initer() error {
 	})
 	_, err := rc.Ping(ctx).Result()
 	if err != nil {
-		return err
-	}
-	return nil

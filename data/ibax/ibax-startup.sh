@@ -19,7 +19,6 @@ if [ ! -f "/mnt/ibax/data/config.toml" ]; then
     --dbName="$DB_NAME" \
     --dbPassword="$DB_PASSWORD" \
     --dbPort="$DB_PORT" \
-fi
 
 if [ 0"$NODES_ADDR" = "0" ]; then
   if [ ! -f "/mnt/ibax/data/1block" ]; then

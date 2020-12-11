@@ -45,4 +45,3 @@ func (m *MineIncomehistory) GetID(id int64) (bool, error) {
 		return isFound(conf.GetDbConn().Conn().Where("block_id = ?", id).First(m))
 	} else {
 		return false, nil
-	}
