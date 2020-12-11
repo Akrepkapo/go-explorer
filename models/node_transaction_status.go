@@ -76,11 +76,14 @@ func (ts *TransactionStatus) DBconnGetTimelimit_Sqlite(time time.Time) (*[]Trans
 	if err != nil {
 		return nil, err
 	}
-
-	return &tss, err
+	return nil
 }
 
-func DbconnbatchupdateSqlite(objarr *[]TransactionStatus) error {
+func (ts *TransactionStatus) DbconnbatchinsertSqlites(objArr *[]TransactionStatus) error {
+	ret, ret1 := DbconndealReduplictionTransactionstatus(objArr)
+	count := len(*ret)
+	if len(*ret) != 0 {
+		dat := *ret
 		for i := 0; i < count; {
 			if i+100 < count {
 				s := dat[i : i+100]
