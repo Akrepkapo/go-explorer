@@ -62,3 +62,5 @@ func (d *LDatabaseModel) Close() error {
 		if err = sqlDB.Close(); err != nil {
 			return err
 		}
+		lpgdb = nil
+	}

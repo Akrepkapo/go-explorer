@@ -13,7 +13,3 @@ const (
 	ChannelTopData         = "topdata"
 	ChannelBlockAndTxsList = "blocktransactionlist"
 )
-
-func WriteChannelByte(channel string, data []byte) error {
-	ctx, cancel := context.WithTimeout(context.Background(), centrifugoTimeout)
-	defer cancel()
