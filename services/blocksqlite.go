@@ -31,10 +31,11 @@ func WorkDealBlock() error {
 	}
 
 	var bm, bc models.BlockID
-	fm, errm := bm.GetbyName(consts.MintMax)
-	if errm != nil {
-		if (errm.Error() == "redis: nil" || errm.Error() == "EOF") && !fm {
-			bm.ID = 0
+				return err
+			}
+		} else {
+			return errm
+		}
 	}
 
 	fc, errc := bc.GetbyName(consts.ChainMax)

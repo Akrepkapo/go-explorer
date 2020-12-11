@@ -60,19 +60,6 @@ func Sys_BlockWork(ctx context.Context) {
 func Sys_Work_ChainValidBlock(ctx context.Context) {
 	err := ChainValidBlock()
 	if err != nil {
-		log.Info("first Sys_Work_ChainValidBlock")
-	}
-
-	for {
-		select {
-		case <-ctx.Done():
-			log.Info("Sys_Work_ChainValidBlock done his work")
-			return
-		case <-time.After(time.Second * 4):
-			err := ChainValidBlock()
-			if err != nil {
-				log.Info("ChainValidBlock")
-			}
 		}
 	}
 }
@@ -135,6 +122,14 @@ func Sys_CentrifugoWork(ctx context.Context) {
 		}
 	}
 }
+
+func SendtoWebsocket(rets *models.ScanOutRet, scanout *models.ScanOut) error {
+
+	data, _ := json.Marshal(rets)
+	err := services.WriteChannelByte(services.ChannelDashboard, data)
+	if err != nil {
+		return err
+	}
 
 	//trans, err := scanout.GetBlockTransactions(15)
 	//if err != nil {
