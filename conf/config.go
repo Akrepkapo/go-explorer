@@ -50,6 +50,15 @@ func GetCentrifugoConn() *storage.CentrifugoConfig {
 	return GetEnvConf().Centrifugo
 }
 
+func LoadConfig(configPath string) {
+	filePath := path.Join(configPath, "config.yml")
+	configData, err := os.ReadFile(filePath)
+	if err != nil {
+		logrus.WithError(err).Fatal("config file read failed")
+	}
+	// expand environment variables
+	configData = []byte(os.ExpandEnv(string(configData)))
+	err = yaml.Unmarshal(configData, &configInfo)
 	data,_ :=json.Marshal(&configInfo)
 	fmt.Printf("config: %v\n",string(data))
 	if err != nil {
@@ -86,18 +95,3 @@ func initLogs() error {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Can't open log file: ", fileName)
 		return err
-	}
-	logrus.SetOutput(f)
-	return nil
-}
-
-func PathExists(path string) (bool, error) {
-	_, err := os.Stat(path)
-	if err == nil {
-		return true, nil
-	}
-	if os.IsNotExist(err) {
-		return false, nil
-	}
-	return false, err
-}
