@@ -5,6 +5,12 @@ import (
 
 	"gorm.io/gorm"
 )
+
+var (
+	fullNodedb []*FullNodeDB
+)
+
+type FullnodeModel struct {
 	Enable       bool      `gorm:"not null" yaml:"enable" json:"enable"`
 	Nodename     string    `gorm:"not null" yaml:"nodename" json:"nodename"`
 	TCPAddress   string    `gorm:"not null" yaml:"tcp_address" json:"tcp_address"`
@@ -41,13 +47,6 @@ type Crontab struct {
 }
 
 type FullNodeModels []*FullnodeModel
-
-func (f FullNodeModels) Initer() error {
-	//for i := 0; i < len(f); i++ {
-	//	dbcom := &FullNodeDB{}
-	//	dbcom.Connect = f[i].Connect
-	//	dbcom.Engine = f[i].Engine
-	//	dbcom.NodeName = f[i].NodeName
 	//	dbcom.NodePosition = f[i].NodePosition
 	//	db, err := GormDBInit(f[i].Engine, f[i].Connect)
 	//	if err != nil {

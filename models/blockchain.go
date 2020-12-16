@@ -85,6 +85,11 @@ func (b *Block) GetBlocksKey(key int64, order string) ([]Block, error) {
 
 // GetMaxBlock returns last block existence
 func (b *Block) GetMaxBlock() (bool, error) {
+	return isFound(conf.GetDbConn().Conn().Last(b))
+}
+
+// GetBlockchain is retrieving chain of blocks from database
+func GetBlockchain(startBlockID int64, endblockID int64, order string) (*[]Block, error) {
 	var err error
 	blockchain := new([]Block)
 
@@ -608,14 +613,6 @@ func SendBlockList(topblocks *[]BlocksResult) error {
 		return err
 	}
 	err = WriteChannelByte(ChannelTopData, ds)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-func GetMaxBlockFromRedis(block []Block) (maxid int64) {
-	if len(block) > 0 {
-		maxid = block[0].ID
 	}
 	return maxid
 }
