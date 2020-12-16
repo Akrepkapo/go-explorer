@@ -1,5 +1,12 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) IBAX All rights reserved.
+ *  See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+package services
+
+import (
+	"context"
 	"errors"
 	"strconv"
 	"time"
@@ -30,13 +37,6 @@ type CentJWTToken struct {
 func GetJWTCentToken(userID, expire int64) (*CentJWTToken, error) {
 	if conf.GetCentrifugoConn().Enable {
 		var ret CentJWTToken
-		centJWT := CentJWT{
-			Sub: strconv.FormatInt(userID, 10),
-			StandardClaims: jwt.StandardClaims{
-				ExpiresAt: time.Now().Add(time.Second * time.Duration(expire)).Unix(),
-			},
-		}
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, centJWT)
 		result, err := token.SignedString([]byte(conf.GetCentrifugoConn().Secret))
 
 		if err != nil {
