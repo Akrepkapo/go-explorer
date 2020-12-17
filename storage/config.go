@@ -23,16 +23,6 @@ type FullnodeModel struct {
 	PublicKey    string    `gorm:"not null" yaml:"public_key" json:"public_key"`
 	UnbanTime    time.Time `yaml:"unbantime" json:"unbantime,omitempty"`
 	Latitude     string    `yaml:"latitude" json:"latitude,omitempty"`
-	Longitude    string    `yaml:"longitude" json:"longitude,omitempty"`
-	Name         string    `yaml:"name" json:"name,omitempty"`
-	Display      bool      `json:"display,omitempty" yaml:"display"`
-}
-
-type FullNodeDB struct {
-	Enable          bool   `yaml:"enable"`
-	NodeName        string `yaml:"node_name" json:"node_name"`
-	NodePosition    int64  `yaml:"node_position" json:"node_position"`
-	Engine          string `yaml:"engine" json:"engine"`
 	Connect         string `yaml:"connect" json:"connect"`
 	Nodestatusstime time.Time
 	DBConn          *gorm.DB
@@ -47,6 +37,13 @@ type Crontab struct {
 }
 
 type FullNodeModels []*FullnodeModel
+
+func (f FullNodeModels) Initer() error {
+	//for i := 0; i < len(f); i++ {
+	//	dbcom := &FullNodeDB{}
+	//	dbcom.Connect = f[i].Connect
+	//	dbcom.Engine = f[i].Engine
+	//	dbcom.NodeName = f[i].NodeName
 	//	dbcom.NodePosition = f[i].NodePosition
 	//	db, err := GormDBInit(f[i].Engine, f[i].Connect)
 	//	if err != nil {

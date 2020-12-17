@@ -29,18 +29,6 @@ type MineInfo struct {
 	Atime         int64  `gorm:"not null default 0"`   //
 	ValidTime     int64  `gorm:"not null default 0"`   //
 	Stime         int64  `gorm:"not null default 0"`   //
-	Etime         int64  `gorm:"not null default 0"`   //
-	Date_created  int64  `gorm:"not null default 0"`   //
-}
-
-// TableName returns name of table
-func (m MineInfo) TableName() string {
-	return `1_mine_info`
-}
-
-func (m *MineInfo) GetGuardianNodeCapacity() (int64, error) {
-	var ret int64
-	var rets string
 	if HasTableOrView(nil, "1_mine_info") {
 		err := conf.GetDbConn().Conn().Table("1_mine_info").Select("COALESCE(SUM(capacity),0)").Where("type = ?", 2).Row().Scan(&rets)
 		if err != nil {
@@ -48,3 +36,7 @@ func (m *MineInfo) GetGuardianNodeCapacity() (int64, error) {
 		}
 		if rets != "" {
 			ret = converter.StrToInt64(rets)
+		}
+	}
+	return ret, nil
+}

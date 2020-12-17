@@ -33,8 +33,10 @@ redis:
   enable: true  #
   address: ${REDIS_HOST} # address
   port: ${REDIS_PORT}       # address
-  password: ${REDIS_PASSWORD} # password
+  socket: ${CENTRIFUGO_WS} # address
+  key: ${CENTRIFUGO_KEY} #
 
+crontab:
   fullnodeTime: "0 0/10 * * * ?"        #node map
   historyupdate: "0/10 * * * * ?"       #line chart
   statistics: "0/5 * * * * ?"          #statistics
