@@ -47,15 +47,6 @@ func GetNodes(c *gin.Context) {
 	var fs []models.FullNodeCityJSONHex
 	err := json.Unmarshal([]byte(byteNodes), &fs)
 	if err != nil {
-		rb.Retinfo = err.Error()
-		rb.Retcode = 404
-		GenResponse(c, req.Head, rb)
-	} else {
-		rb.Data = fs
-		rb.Total = int64(len(fs))
-		GenResponse(c, req.Head, rb)
-	}
-
 }
 
 func DashboardNodeMap(c *gin.Context) {
@@ -96,6 +87,14 @@ func DashboardNodeMap(c *gin.Context) {
 	fmt.Println(byteNodes)
 	var fs []NodeMapInfo
 	err := json.Unmarshal([]byte(byteNodes), &fs)
+	if err != nil {
+		rb.Retinfo = err.Error()
+		rb.Retcode = 404
+		GenResponse(c, req.Head, rb)
+	} else {
+		rb.Data = fs
+		rb.Total = int64(len(fs))
+		GenResponse(c, req.Head, rb)
 	}
 
 }
