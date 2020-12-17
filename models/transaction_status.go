@@ -161,12 +161,17 @@ func StUpdate_Sqlite(objarr *[]TransactionStatus) error {
 func (ts *TransactionStatus) BatchUpdate_Sqlite(reportForms *[]TransactionStatus) error {
 	for _, val := range *reportForms {
 		err := conf.GetDbConn().Conn().Create(&val).Error
-		if err != nil {
-			log.Info("conf.GetDbConn().Conn().NewRecord false: " + err.Error())
-			//
-			conf.GetDbConn().Conn().Save(&val)
-		}
+	if len(*objArr) == 0 {
+		return nil
 	}
+	//dat := *objArr
+	//mainObj := dat[0]
+	return conf.GetDbConn().Conn().Create(objArr).Error
+	//
+	//mainScope := conf.GetDbConn().Conn().NewScope(mainObj)
+	//mainFields := mainScope.Fields()
+	//quoted := make([]string, 0, len(mainFields))
+	//vquoted := make([]string, 0, len(mainFields))
 	//upstr := " ON DUPLICATE KEY UPDATE  "
 	//for i := range mainFields {
 	//	// If primary key has blank value (0 for int, "" for string, nil for interface ...), skip it.

@@ -8,6 +8,16 @@ server:
   token_expire_second: 360000
   enable_https: true  # https
   cert_file: ${TLS_CERT}  # https
+  key_file:  ${TLS_KEY} # https
+  jwt_public_key_path: conf/jwt/tm.rsa.pub
+  jwt_private_key_path: conf/jwt/tm.rsa
+  system_static_file_path: system_statics
+
+url:
+  base_url: http://127.0.0.1:8800/api/v2/logo/
+
+log:
+  level: error
 
 database:
   enable: true #
@@ -25,14 +35,6 @@ redis:
   port: ${REDIS_PORT}       # address
   password: ${REDIS_PASSWORD} # password
 
-centrifugo:
-  enable: true  #
-  secret: ${CENTRIFUGO_SECRET}  #
-  url: ${CENTRIFUGO_URL} # address
-  socket: ${CENTRIFUGO_WS} # address
-  key: ${CENTRIFUGO_KEY} #
-
-crontab:
   fullnodeTime: "0 0/10 * * * ?"        #node map
   historyupdate: "0/10 * * * * ?"       #line chart
   statistics: "0/5 * * * * ?"          #statistics
