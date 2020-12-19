@@ -51,6 +51,15 @@ type ScanOutRet struct {
 	Hash              string `gorm:"not null" json:"hash"`
 	RollbacksHash     string `gorm:"not null" json:"rollbacks_hash"`
 	//Data           string `gorm:"not null"`
+	//Tx             int64  `gorm:"not null" json:"tx"`
+	EcosystemID    int64  `gorm:"not null default 0" json:"ecosystem_id"`
+	KeyID          string `gorm:"not null default 0" json:"key_id"`
+	NodePosition   string `gorm:"not null default 0" json:"node_position"`
+	Time           int64  `gorm:"not null" json:"time"`
+	CurrentVersion string `gorm:"not null" json:"current_version"`
+
+	TotalCounts    int64  `gorm:"not null" json:"total_counts"`    //total count
+	TotalCapacitys string `gorm:"not null" json:"total_capacitys"` //total capacity
 	//BlockSizeTotals      int64 `gorm:"not null" json:"block_size_totals"` //
 	BlockTranscationSize int64 `gorm:"not null" json:"block_transcation_size" `
 	QueueTranscations    int64 `gorm:"not null" json:"queue_transcations"`
@@ -556,18 +565,6 @@ func (m *ScanOut) GetBlockTransactions(count int) (*[]ScanOutBlockTransactionRet
 		st.BlockSizes = m.BlockSizes
 		ret = append(ret, st)
 
-		for i := 1; i <= count; i++ {
-			var so ScanOut
-			bid := m.Blockid - int64(i)
-			if bid > 0 {
-				fs, err := so.Get_Db(bid)
-				if err != nil {
-					return &ret, err
-				}
-				if fs {
-					var sti ScanOutBlockTransactionRet
-					sti.BlockId = so.Blockid
-					sti.BlockTranscations = so.BlockTranscations
 					sti.BlockSizes = so.BlockSizes
 					ret = append(ret, sti)
 				}

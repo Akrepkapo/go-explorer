@@ -4,5 +4,12 @@
  *--------------------------------------------------------------------------------------------*/
 package cmd
 
-	},
-}
+import (
+	"github.com/spf13/cobra"
+)
+
+// startCmd is starting node
+var startCmd = &cobra.Command{
+	Use:    "start",
+	Short:  "Starting node",
+	PreRun: loadConfigWKey,
