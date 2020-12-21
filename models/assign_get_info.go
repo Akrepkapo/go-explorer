@@ -22,16 +22,11 @@ type AssignGetInfo struct {
 	Keyid         int64           `gorm:"not null"`
 	TotalAmount   decimal.Decimal `gorm:"not null"`
 	BalanceAmount decimal.Decimal `gorm:"not null"`
-// Get is retrieving model from database
-func (m *AssignGetInfo) GetBalance(db *DbTransaction, wallet int64) (bool, decimal.Decimal, decimal.Decimal, error) {
-
-	var mps []AssignGetInfo
-	var balance, total_balance decimal.Decimal
-	balance = decimal.NewFromFloat(0)
-	total_balance = decimal.NewFromFloat(0)
-	err := GetDB(nil).Table(m.TableName()).
-		Where("keyid = ? and deleted =? ", wallet, 0).
-		Find(&mps).Error
+	Amount        decimal.Decimal `gorm:"not null"`
+	Latestid      int64           `gorm:"not null"`
+	Deleted       int64           `gorm:"not null"`
+	DateUpdated   int64           `gorm:"not null" `
+	DateCreated   int64           `gorm:"not null" `
 	if err != nil {
 		return false, balance, total_balance, err
 	}

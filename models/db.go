@@ -15,14 +15,6 @@ import (
 )
 
 type DbTransaction struct {
-	conn *gorm.DB
-}
-type DayBlock struct {
-	Id     int64 `gorm:"not null"`
-	Tx     int32 `gorm:"not null"`
-	Length int64 `gorm:"not null"`
-}
-
 func isFound(db *gorm.DB) (bool, error) {
 	if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 		return false, nil
@@ -116,6 +108,22 @@ func GetTraninfoFromRedis(limit int) (*[]ScanOutBlockTransactionRet, error) {
 		Key:   "blockChain-transaction",
 		Value: "",
 	}
+	if err = rd.Get(); err != nil {
+		log.WithFields(log.Fields{"warn": err}).Warn("GetTraninfoFromRedis getdb err")
+		return nil, err
+	}
+	if err = json.Unmarshal([]byte(rd.Value), &transBlock); err != nil {
+		log.WithFields(log.Fields{"warn": err}).Warn("GetTraninfoFromRedis json err")
+		return nil, err
+	}
+
+	for i := 0; i < len(transBlock); i++ {
+		var info = ScanOutBlockTransactionRet{
+			BlockId:           transBlock[i].Id,
+			BlockSizes:        transBlock[i].Length,
+			BlockTranscations: int64(transBlock[i].Tx),
+		}
+		ret = append(ret, info)
 	}
 	return &ret, err
 }

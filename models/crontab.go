@@ -36,13 +36,18 @@ func NewWithSecond() *cron.Cron {
 }
 func CreateCronTimeFromBlockchain(timeSet string) {
 	c := NewWithSecond()
+	_, err := c.AddFunc(timeSet, func() {
+		SyncBlockinfoToRedis()
 	})
 	if err != nil {
-		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCronTimeFromStatistics addfunc failed")
+		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCronTimeFromBlockchain addfunc failed")
 	}
 	c.Start()
 }
-func EcosystemDashboard_historyupdate(timeSet string) {
+func CreateCronTimeFromStatistics(timeSet string) {
+	c := NewWithSecond()
+	_, err := c.AddFunc(timeSet, func() {
+		//if err := getStatisticsToRedis(); err != nil {
 	c := NewWithSecond()
 	_, err := c.AddFunc(timeSet, func() {
 		if err := DealRedisDashboardHistoryMap(); err != nil {
