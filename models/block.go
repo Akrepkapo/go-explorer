@@ -20,6 +20,13 @@ func (b *Block) Marshal() ([]byte, error) {
 func (b *Block) Unmarshal(bt []byte) error {
 	if err := msgpack.Unmarshal(bt, &b); err != nil {
 		return err
+	}
+	return nil
+}
+
+func (b *Block) GetRedisByhash(hash []byte) (bool, error) {
+	rd := RedisParams{
+		Key:   "block-" + string(hash),
 		Value: "",
 	}
 	err := rd.Get()
@@ -50,12 +57,6 @@ func (b *Block) GetRedisByid(id int64) (bool, error) {
 	}
 	if err := b.Unmarshal([]byte(rd.Value)); err != nil {
 		return true, err
-	}
-	return true, nil
-}
-
-func (b *Block) InsertRedis() error {
-	val, err := b.Marshal()
 	if err != nil {
 		return err
 	}
