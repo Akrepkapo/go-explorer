@@ -242,10 +242,6 @@ func (m *ScanOut) Get_Db(id int64) (bool, error) {
 	} else {
 		return false, nil
 	}
-	return true, nil
-}
-func (m *ScanOut) Get_Redis(id int64) (bool, error) {
-	rd := RedisParams{
 		Key:   ScanOutStPrefix + strconv.FormatInt(id, 10),
 		Value: "",
 	}
@@ -565,6 +561,18 @@ func (m *ScanOut) GetBlockTransactions(count int) (*[]ScanOutBlockTransactionRet
 		st.BlockSizes = m.BlockSizes
 		ret = append(ret, st)
 
+		for i := 1; i <= count; i++ {
+			var so ScanOut
+			bid := m.Blockid - int64(i)
+			if bid > 0 {
+				fs, err := so.Get_Db(bid)
+				if err != nil {
+					return &ret, err
+				}
+				if fs {
+					var sti ScanOutBlockTransactionRet
+					sti.BlockId = so.Blockid
+					sti.BlockTranscations = so.BlockTranscations
 					sti.BlockSizes = so.BlockSizes
 					ret = append(ret, sti)
 				}

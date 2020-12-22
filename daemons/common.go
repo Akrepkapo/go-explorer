@@ -17,6 +17,8 @@ func StartDaemons(ctx context.Context) <-chan error {
 		if err != nil {
 			exitCh <- err
 		}
+	}()
+
 	go func() {
 		err := services.DealNodeblocktransactionchsqlite(ctx)
 		if err != nil {
@@ -29,14 +31,6 @@ func StartDaemons(ctx context.Context) <-chan error {
 	go Sys_Work_ChainValidBlock(ctx)
 
 	go func() {
-		err := EcosystemDealupdate(ctx)
-		if err != nil {
-			exitCh <- err
-		}
-	}()
-	go func() {
-		err := NodeTranStatusSumupdate(ctx)
-		if err != nil {
 			exitCh <- err
 
 		}

@@ -16,3 +16,7 @@ var initDatabaseCmd = &cobra.Command{
 	PreRun: loadConfigWKey,
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := loadInitDatabase(); err != nil {
+			log.WithError(err).Fatal("init db")
+		}
+		log.Info("initDatabase completed")
+	},
