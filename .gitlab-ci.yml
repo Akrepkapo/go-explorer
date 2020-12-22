@@ -1,4 +1,7 @@
 stages:
+  tags:
+  #
+  - scanapi
   only:
   #
   - explorer-server

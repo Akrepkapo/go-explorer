@@ -3,10 +3,6 @@ package conf
 import (
 	"fmt"
 	"time"
-)
-
-type serverModel struct {
-	Mode                 string        `yaml:"mode"`                    // run mode
 
 type UrlModel struct {
 	URL string `yaml:"base_url"`
