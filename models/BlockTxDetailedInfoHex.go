@@ -245,6 +245,22 @@ func Deal_LogTransactionBlockTxDetial(objArr *[]LogTransaction) (*[]BlockTxDetai
 	ret1 := Deal_Redupliction_LogTransaction(objArr)
 	count := len(*ret1)
 	if len(*ret1) == 0 {
+		logrus.Info("logtran redup:")
+		return &ret, nil
+	}
+	dat := *ret1
+
+	TBlock := make(map[string]int64)
+	Thash := make(map[string]bool)
+	for i := 0; i < count; i++ {
+		hash := hex.EncodeToString(dat[i].Hash)
+		Thash[hash] = true
+		key := strconv.FormatInt(dat[i].Block, 10)
+		TBlock[key] = dat[i].Block
+	}
+
+	for _, k := range TBlock {
+		Blocks = append(Blocks, k)
 	}
 
 	for i := int64(len(Blocks)); i > 0; i-- {
@@ -291,20 +307,6 @@ func Deal_LogTransactionBlockTxDetial(objArr *[]LogTransaction) (*[]BlockTxDetai
 	}
 
 	return &ret, nil
-}
-
-func Deal_Redupliction_LogTransaction(objArr *[]LogTransaction) *[]LogTransaction {
-	var (
-		ret []LogTransaction
-	)
-	if GLogTranHash == nil {
-		GLogTranHash = make(map[string]int64)
-	}
-	for _, val := range *objArr {
-		key := hex.EncodeToString(val.Hash)
-		dat, ok := GLogTranHash[key]
-		if ok {
-			logrus.Info("GLogTranHash exist block:%d block1:%d key: "+key, dat, val.Block)
 		} else {
 			GLogTranHash[key] = val.Block
 			ret = append(ret, val)

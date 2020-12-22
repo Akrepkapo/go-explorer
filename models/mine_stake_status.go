@@ -27,13 +27,16 @@ type MinePledgeStatus struct {
 	Transfers    int64           `gorm:"null"  example:"0"`                      //
 	Stime        int64           `gorm:"not null" example:"2019-07-19 17:45:31"` //
 	Etime        int64           `gorm:"not null" example:"2019-07-19 17:45:31"` //
-	DateUpdated  int64           `gorm:"not null" example:"2019-07-19 17:45:31"` //
-	DateCreated  int64           `gorm:"not null default 0"`                     //
-}
+//			Where("mine_type = ? and online = ? ", 2, 1).
+//			Find(&mps).Error
+//		return int64(len(*mps)), err
+//	}
+//	return 0,nil
+//}
 
-// TableName returns name of table
-func (MinePledgeStatus) TableName() string {
-	return `1_v_mine_pledge_status_info`
+func (m *MinePledgeStatus) GetCastNodeandGuardianNode() (int64, int64, error) {
+	var gcount, in int64
+	if HasTableOrView(nil, "1_v_mine_stake_status_info") {
 		err := conf.GetDbConn().Conn().Table("1_v_mine_stake_status_info").Select("count(*)").Where("(mine_type = ? or mine_type = ?) and online = ? ", 2, 1, 1).Row().Scan(&in)
 		if err != nil {
 			return gcount, in, err
