@@ -130,19 +130,6 @@ func GetAll(node int64, query string, countRows int, args ...interface{}) ([]map
 	}
 
 	return nil, nodeErr
-}
-
-// GetAllTransaction is retrieve all query result rows
-func GetAllTransaction(db *gorm.DB, query string, countRows int, args ...interface{}) ([]map[string]string, error) {
-	var result []map[string]string
-	rows, err := db.Raw(query, args...).Rows()
-	if err != nil {
-		return result, fmt.Errorf("%s in query %s %s", err, query, args)
-	}
-	defer rows.Close()
-
-	// Get column names
-	columns, err := rows.Columns()
 	//columntypes, err1 := rows.ColumnTypes();
 	if err != nil {
 		return result, fmt.Errorf("%s in query %s %s", err, query, args)
@@ -203,6 +190,16 @@ func GetAllTransaction(db *gorm.DB, query string, countRows int, args ...interfa
 
 func GetQueryexec(db *gorm.DB, query string, countRows int, args ...interface{}) (*[]map[string]string, error) {
 	var result []map[string]string
+	rows, err := db.Raw(query, args...).Rows()
+	if err != nil {
+		return &result, fmt.Errorf("%s in query %s %s", err, query, args)
+	}
+	defer rows.Close()
+
+	// Get column names
+	columns, err := rows.Columns()
+	if err != nil {
+		return &result, fmt.Errorf("%s in query %s %s", err, query, args)
 	}
 
 	columntypes, err1 := rows.ColumnTypes()

@@ -11,14 +11,16 @@ import (
 
 type MineIncomehistory struct {
 	ID                      int64           `gorm:"primary_key;not null"`
-
-func (ts *MineIncomehistory) Get(hash []byte) (bool, error) {
-	f, err := ts.GetRedisByhash(hash)
-	if f && err == nil {
-		return f, err
-	}
-
-	f, err = isFound(conf.GetDbConn().Conn().Where("mine_incomehistory_hash = ?", hash).First(ts))
+	Devid                   int64           `gorm:"not null"`
+	Keyid                   int64           `gorm:"not null"`
+	Mineid                  int64           `gorm:"not null"`
+	Amount                  decimal.Decimal `gorm:"not null"`
+	Type                    int64           `gorm:"not null"`
+	Nonce                   int64           `gorm:"not null"`
+	Mine_incomehistory_hash []byte          `gorm:"not null`
+	Block_id                int64           `gorm:"not null"`
+	Date_created            int64           `gorm:"not null default 0"`
+}
 	if f && err == nil {
 		ts.Insert_redis()
 		return f, err
