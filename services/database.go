@@ -2,6 +2,11 @@
  *  Copyright (c) IBAX All rights reserved.
  *  See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
+package services
+
+import (
+	"encoding/json"
+	"strconv"
 
 	"github.com/IBAX-io/go-explorer/models"
 	"github.com/sirupsen/logrus"
@@ -21,16 +26,6 @@ func Set_ALLTables(dat []map[string]string) error {
 	}
 	return err
 
-}
-
-func Get_ALLTables(id int64) (*[]map[string]string, error) {
-	var fs []map[string]string
-	sid := strconv.FormatInt(id, 10)
-	rp := &models.RedisParams{
-		Key: sid + "ALLTables",
-	}
-	err := rp.Get()
-	if err == nil {
 		err = json.Unmarshal([]byte(rp.Value), &fs)
 		return &fs, err
 	}

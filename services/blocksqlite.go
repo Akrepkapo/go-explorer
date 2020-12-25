@@ -31,6 +31,14 @@ func WorkDealBlock() error {
 	}
 
 	var bm, bc models.BlockID
+	fm, errm := bm.GetbyName(consts.MintMax)
+	if errm != nil {
+		if (errm.Error() == "redis: nil" || errm.Error() == "EOF") && !fm {
+			bm.ID = 0
+			bm.Time = 1
+			bm.Name = consts.MintMax
+			err := bm.InsertRedis()
+			if err != nil {
 				return err
 			}
 		} else {
@@ -42,21 +50,6 @@ func WorkDealBlock() error {
 	if errc != nil {
 		return errc
 	}
-	if !fc || !fm {
-		return errors.New("mint or chain block id  not found")
-	}
-	count := bc.ID - bm.ID
-	sc := bm.ID + 1
-	elen := sc + count
-	//fmt.Printf("sc:%d,elen:%d,count:%d\n", sc, elen, count)
-
-	for i := int(sc); i <= int(elen); i++ {
-		bid := int64(i)
-
-		var mc models.ScanOut
-		f, err := mc.Get(bid)
-		if f && err == nil {
-
 			err = mc.Insert_Redis()
 			if err != nil {
 				log.Info(err.Error())
