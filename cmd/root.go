@@ -28,6 +28,23 @@ func init() {
 	rootCmd.AddCommand(
 		initDatabaseCmd,
 		startCmd,
+		versionCmd,
+	)
+
+	// This flags are visible for all child commands
+	rFlag := rootCmd.PersistentFlags()
+	rFlag.StringVar(&conf.GetEnvConf().ConfigPath, "config", defaultConfigPath(), "filepath to config.yml")
+}
+func defaultConfigPath() string {
+	p, err := os.Getwd()
+	if err != nil {
+		log.WithError(err).Fatal("getting cur wd")
+	}
+	return filepath.Join(p, "conf")
+}
+
+// Execute executes rootCmd command.
+// This is called by main.main(). It only needs to happen once to the rootCmd
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		log.WithError(err).Fatal("Executing root command")
@@ -51,17 +68,6 @@ func loadStartRun() error {
 	//sigChan := make(chan os.Signal)
 	//signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	//go func() {
-	//	for {
-	//		select {
-	//		case <-daemonsChan:
-	//			wg.Done()
-	//		case <-sigChan:
-	//			models.GormClose()
-	//		}
-	//	}
-	//}()
-	//wg.Wait()
-	return nil
 }
 
 // Load the configuration from file

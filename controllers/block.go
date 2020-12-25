@@ -24,6 +24,12 @@ func Get_maxblockid(c *gin.Context) {
 	ret := &Response{}
 	bid := getMaxBlockIDResult{}
 	if services.Sqlite_MaxBlockid > 0 {
+		bid.MaxBlockID = services.Sqlite_MaxBlockid
+		ret.Return(bid, CodeSuccess)
+		JsonResponse(c, ret)
+	} else {
+		bk := &models.Block{}
+		f, err := bk.GetMaxBlock()
 		if err != nil {
 			ret.ReturnFailureString(err.Error())
 			JsonResponse(c, ret)
@@ -107,16 +113,4 @@ func Get_BlockDetail(c *gin.Context) {
 			var sc models.ScanOut
 			sc.BlockDetail = *bdt
 			rs := sc.GetBlockDetialRespones(req.Page, req.Limit)
-			rs.Header.NodePosition += 1
-			rs.NodePosition += 1
-			ret.Return(rs, CodeSuccess)
-			JsonResponse(c, ret)
-			return
-		} else {
-			ret.ReturnFailureString("not found blockid in db: " + converter.Int64ToStr(req.Block_id))
-			JsonResponse(c, ret)
-			return
-		}
-	}
-
 }
