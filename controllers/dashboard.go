@@ -4,8 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 package controllers
-
-import (
 	"github.com/IBAX-io/go-explorer/models"
 	"github.com/IBAX-io/go-explorer/services"
 	"github.com/IBAX-io/go-ibax/packages/converter"
@@ -48,6 +46,7 @@ func GetBlockTpsLists(c *gin.Context) {
 	if err != nil {
 		ret.ReturnFailureString(err.Error())
 		JsonResponse(c, ret)
+		return
 	}
 	ret.Return(rets, CodeSuccess)
 	JsonResponse(c, ret)
