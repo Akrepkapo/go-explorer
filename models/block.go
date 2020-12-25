@@ -39,15 +39,6 @@ func (b *Block) GetRedisByhash(hash []byte) (bool, error) {
 
 	if err := b.Unmarshal([]byte(rd.Value)); err != nil {
 		return true, err
-	}
-	return true, nil
-}
-
-func (b *Block) GetRedisByid(id int64) (bool, error) {
-	rd := RedisParams{
-		Key:   "block-" + strconv.FormatInt(id, 10),
-		Value: "",
-	}
 	err := rd.Get()
 	if err != nil {
 		if err.Error() == "redis: nil" || err.Error() == "EOF" {
@@ -57,6 +48,12 @@ func (b *Block) GetRedisByid(id int64) (bool, error) {
 	}
 	if err := b.Unmarshal([]byte(rd.Value)); err != nil {
 		return true, err
+	}
+	return true, nil
+}
+
+func (b *Block) InsertRedis() error {
+	val, err := b.Marshal()
 	if err != nil {
 		return err
 	}
