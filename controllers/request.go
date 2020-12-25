@@ -71,6 +71,17 @@ type DBWebInfo struct {
 	Version  string `json:"backend_version,omitempty"`
 }
 
+type NodeMapInfo struct {
+	Number    int64   `json:"number"`
+	Name      string  `json:"name,omitempty"`
+	Latitude  float64 `json:"latitude,omitempty"`
+	Longitude float64 `json:"longitude,omitempty"`
+}
+
+type DashboardTopInfo struct {
+	Title  string `json:"title"`
+	Number int64  `json:"number"`
+	Icon   string `json:"icon"`
 	Color  string `json:"color"`
 }
 
@@ -98,22 +109,6 @@ type BlockPriceInfo struct {
 	Volume         float32 `json:"volume"`
 	Display_volume float32 `json:"display_volume"`
 	Usd_volume     float32 `json:"usd_volume"`
-	Change_hourly  float32 `json:"change_hourly"`
-	Change_daily   float32 `json:"change_daily"`
-	Change_weekly  float32 `json:"change_weekly"`
-	Change_monthly float32 `json:"change_monthly"`
-}
-
-type FindForm struct {
-	Where map[string]interface{} `json:"where"`                             //
-	Order string                 `json:"order" example:"date_created desc"` //
-	Page  int                    `json:"page"`                              //
-	Limit int                    `json:"limit"`                             //
-}
-
-type FindObjectForm struct {
-	Where map[string]interface{} `json:"where"`                             //
-	Order string                 `json:"order" example:"date_created desc"` //
 	Page  int                    `json:"page"`                              //
 	Limit int                    `json:"limit"`                             //
 }

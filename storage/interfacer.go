@@ -29,3 +29,4 @@ type BlockTxDetailedInfoHex struct {
 	Size   int64  `gorm:"not null" json:"size"`
 
 	Ecosystemname string `gorm:"null" json:"ecosystemname"`
+	Token_title   string `gorm:"null" json:"token_title"`
