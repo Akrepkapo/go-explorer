@@ -25,6 +25,7 @@ func (r *RedisModel) Initer() error {
 		Addr:     r.Str(),
 		Password: r.Password,
 		DB:       0,
-	})
-	_, err := rc.Ping(ctx).Result()
-	if err != nil {
+}
+func (l *RedisModel) Close() error {
+	return rc.Close()
+}

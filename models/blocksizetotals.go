@@ -73,22 +73,7 @@ func (m *BlockSizeTotal) ReSetRedis(blockid, pos int64) error {
 			return err
 		}
 	}
-	return err
+		return false, err
+	}
+	return true, err
 }
-
-func (m *BlockSizeTotal) Get_Redis() (bool, error) {
-	rd := RedisParams{
-		Key:   blocksizetotalPrefix + "lastet",
-		Value: "",
-	}
-	err := rd.Get()
-	if err != nil {
-		if err.Error() == "redis: nil" || err.Error() == "EOF" {
-			return false, nil
-		}
-		return false, err
-	}
-	err = m.Unmarshal([]byte(rd.Value))
-	if err != nil {
-		return false, err
-	}

@@ -27,6 +27,17 @@ func Get_FindDatabase(c *gin.Context) {
 
 	rb.Cmd = req.Cmd
 	rb.Current_page = req.Current_page
+	rb.Table_name = req.Table_name
+	rb.NodePosition = req.NodePosition
+	rb.Page_size = req.Page_size
+
+	switch rb.Cmd {
+	case "001":
+		rets, err := GetDBinfo()
+		if err != nil {
+			ret.ReturnFailureString(err.Error())
+			JsonResponse(c, ret)
+			return
 		} else {
 			rb.Total = len(*rets)
 			rb.Data = rets
@@ -112,7 +123,6 @@ func Get_FindDatabase(c *gin.Context) {
 
 }
 
-func GetDBinfo() (*[]DBWebInfo, error) {
 	var (
 		ret []DBWebInfo
 	)
