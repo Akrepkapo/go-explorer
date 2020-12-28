@@ -146,15 +146,6 @@ func (th *History) Get(txHash []byte) (*HistoryMergeHex, error) {
 	)
 
 	err := conf.GetDbConn().Conn().Where("txhash = ?", txHash).Order("id ASC").Find(&ts).Error
-	count := len(ts)
-	if err == nil && count > 0 {
-		if ts[0].Blockid > 0 {
-			sort.Sort(Historys(ts))
-
-			//fmt.Println(ts)
-			tss.Ecosystem = ts[0].Ecosystem
-			es := Ecosystem{}
-			f, err := es.Get(tss.Ecosystem)
 			if f && err == nil {
 				tss.Ecosystemname = es.Name
 				if tss.Ecosystem == 1 {
@@ -452,6 +443,15 @@ func (th *History) GetWallets(page int, size int, wallet string, searchType stri
 	//	return &ret, num, total, err
 	//}
 	for i = 0; i < count; i++ {
+		//fmt.Println("offet Error:%d ", ioffet)
+		da := HistoryHex{}
+		da.Ecosystem = tss[i].Ecosystem
+		es := Ecosystem{}
+		f, err := es.Get(da.Ecosystem)
+		if f && err == nil {
+			da.Ecosystemname = es.Name
+			if da.Ecosystem == 1 {
+				da.Token_title = consts.SysEcosytemTitle
 			} else {
 				da.Token_title = es.TokenTitle
 			}
