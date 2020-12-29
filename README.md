@@ -12,7 +12,3 @@ make all
 make startup
 ```
 
-
-
-docker build -t ibax/go-explorer -f Dockerfile .
-docker-compose up

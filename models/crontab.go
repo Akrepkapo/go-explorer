@@ -18,23 +18,6 @@ func CreateCrontab() {
 
 }
 
-func CreateCronTimeFromFullNode(timeSet string) {
-	c := NewWithSecond()
-	_, err := c.AddFunc(timeSet, func() {
-		getFullNodeInfoFromDb()
-	})
-	if err != nil {
-		log.WithFields(log.Fields{"error": err}).Error("CreateCronTimeFromFullNode addfunc failed")
-	}
-	c.Start()
-}
-
-func NewWithSecond() *cron.Cron {
-	secondParser := cron.NewParser(cron.Second | cron.Minute |
-		cron.Hour | cron.Dom | cron.Month | cron.DowOptional | cron.Descriptor)
-	return cron.New(cron.WithParser(secondParser), cron.WithChain())
-}
-func CreateCronTimeFromBlockchain(timeSet string) {
 	c := NewWithSecond()
 	_, err := c.AddFunc(timeSet, func() {
 		SyncBlockinfoToRedis()
@@ -48,6 +31,16 @@ func CreateCronTimeFromStatistics(timeSet string) {
 	c := NewWithSecond()
 	_, err := c.AddFunc(timeSet, func() {
 		//if err := getStatisticsToRedis(); err != nil {
+		//	log.WithFields(log.Fields{"error": err}).Error("getStatisticsToRedis failed")
+		//}
+		SendStatisticsSignal()
+	})
+	if err != nil {
+		log.WithFields(log.Fields{"error": err, "timeset": timeSet}).Error("CreateCronTimeFromStatistics addfunc failed")
+	}
+	c.Start()
+}
+func EcosystemDashboard_historyupdate(timeSet string) {
 	c := NewWithSecond()
 	_, err := c.AddFunc(timeSet, func() {
 		if err := DealRedisDashboardHistoryMap(); err != nil {

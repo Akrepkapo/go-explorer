@@ -33,6 +33,10 @@ func Get_Group_Block_Details(id int64) (*models.BlockDetailedInfoHex, error) {
 	if err == nil && ret.Header.BlockID > 0 {
 
 		if ret.Header.BlockID-1 > 0 {
+			ret1, _, err1 := GetBlockDetailed(ret.Header.BlockID - 1)
+			if err1 == nil || ret.Header.BlockID > 0 {
+				ret.Header.PreHash = ret1.Hash
+
 }
 
 func Get_Group_Block_Detail_hash(hash string) (*models.BlockDetailedInfoHex, error) {
