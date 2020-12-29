@@ -68,6 +68,15 @@ func loadStartRun() error {
 	//sigChan := make(chan os.Signal)
 	//signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	//go func() {
+	//	for {
+	//			wg.Done()
+	//		case <-sigChan:
+	//			models.GormClose()
+	//		}
+	//	}
+	//}()
+	//wg.Wait()
+	return nil
 }
 
 // Load the configuration from file
