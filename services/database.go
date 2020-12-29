@@ -26,6 +26,13 @@ func Set_ALLTables(dat []map[string]string) error {
 	}
 	return err
 
+}
+	sid := strconv.FormatInt(id, 10)
+	rp := &models.RedisParams{
+		Key: sid + "ALLTables",
+	}
+	err := rp.Get()
+	if err == nil {
 		err = json.Unmarshal([]byte(rp.Value), &fs)
 		return &fs, err
 	}
