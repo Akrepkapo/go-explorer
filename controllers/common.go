@@ -37,9 +37,7 @@ func GenResponse(c *gin.Context, head *RequestHead, body *ResponseBoby) {
 // @Router /auth/admin/{id} [get]
 func Common_search(c *gin.Context) {
 
-	req := &WebRequest{}
-	rb := &ResponseBoby{
-		Cmd:     "001",
+		GenResponse(c, req.Head, rb)
 	}
 
 	rb.PageSize = req.Params.PageSize
