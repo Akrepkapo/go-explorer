@@ -3,9 +3,6 @@
  *  See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 package models
-
-import "time"
-
 //redisModel get redis information from config.yml
 type TableModel struct {
 	ID           int64     `gorm:"primary_key;not_null" json:"id" `
@@ -21,3 +18,8 @@ type TableModel struct {
 	//Cmdsql string    `gorm:"not null" json:"cmdsql"`
 }
 
+type TableShowModel struct {
+	ID     int    `gorm:"primary_key;not_null" json:"id" `
+	Name   string `gorm:"not null" json:"name"`
+	Cmdsql string `gorm:"not null" json:"_"`
+}
