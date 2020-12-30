@@ -11,21 +11,6 @@ type ResObject struct{}
 
 type WebRequest struct {
 	Head   *RequestHead   ` json:"head"`
-	Params *RequestParams ` json:"params"`
-}
-
-type WebResponse struct {
-	Head *RequestHead  ` json:"head"`
-	Body *ResponseBoby ` json:"body"`
-}
-
-type RequestHead struct {
-	Version   string ` json:"version"`
-	Msgtype   string `json:"msgtype"`
-	Interface string `json:"interface"`
-	Remark    string `json:"remark"`
-}
-
 type RequestParams struct {
 	Cmd          string `json:"cmd,omitempty"`
 	PageSize     int    `json:"page_size,omitempty"`
@@ -109,6 +94,22 @@ type BlockPriceInfo struct {
 	Volume         float32 `json:"volume"`
 	Display_volume float32 `json:"display_volume"`
 	Usd_volume     float32 `json:"usd_volume"`
+	Change_hourly  float32 `json:"change_hourly"`
+	Change_daily   float32 `json:"change_daily"`
+	Change_weekly  float32 `json:"change_weekly"`
+	Change_monthly float32 `json:"change_monthly"`
+}
+
+type FindForm struct {
+	Where map[string]interface{} `json:"where"`                             //
+	Order string                 `json:"order" example:"date_created desc"` //
+	Page  int                    `json:"page"`                              //
+	Limit int                    `json:"limit"`                             //
+}
+
+type FindObjectForm struct {
+	Where map[string]interface{} `json:"where"`                             //
+	Order string                 `json:"order" example:"date_created desc"` //
 	Page  int                    `json:"page"`                              //
 	Limit int                    `json:"limit"`                             //
 }

@@ -24,17 +24,6 @@ func Get_Group_TransactionHistory(ids int, icount int, order string) (*[]models.
 }
 
 //
-func Get_Group_TransactionBlockLast() (*[]models.BlockTxDetailedInfoHex, error) {
-	ts := &models.LogTransaction{}
-	//bt := &models.BlockTxDetailedInfoHex{}
-
-	//if models.GsqliteIsactive {
-	//	ret, num, err := bt.Get_BlockTransactionsLast_Sqlite(id, ids, icount, order)
-	//	if err == nil && *ret != nil && num > 0 {
-	//		//fmt.Println("Get_BlockTransactions_Sqlite  ok ids:%d icount:%d", ids, icount)
-	//		return ret, num, err
-	//	}
-	//}
 	ret, err := ts.GetTransactionBlockLastFromRedis()
 	//ret, num, err := ts.Get_BlockTransactionsLast(id, int64(ids), int64(icount), order)
 	//fmt.Println("Get_BlockTransactions pg  ok ids:%d icount:%d", ids, icount)
@@ -105,3 +94,13 @@ func Get_transaction_Hash(logourl string, hash string) (*map[string]interface{},
 	if ret2.Blockid == 0 {
 		ret2.Senderid = ret3.KeyID
 		ret2.Ecosystemname = ret3.Ecosystemname
+		ret2.Ecosystem = ret3.Ecosystem
+		ret2.Token_title = ret3.Token_title
+		ret2.Txhash = ret3.Hash
+		ret2.Createdat = ret3.Time
+		ret2.CreateSetup = ret3.Time
+	}
+	ret["TransactionHistory"] = ret2
+
+	return &ret, nil
+}
