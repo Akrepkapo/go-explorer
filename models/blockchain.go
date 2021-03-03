@@ -405,19 +405,6 @@ func GetBlocksDetailedInfoHex(bk *Block) (*BlockDetailedInfoHex, error) {
 		//log.WithFields(log.Fields{"block_id": blockModel.ID, "tx hash": txDetailedInfo.Hash, "contract_name": txDetailedInfo.ContractName, "key_id": txDetailedInfo.KeyID, "time": txDetailedInfo.Time, "type": txDetailedInfo.Type, "params": txDetailedInfoCollection}).Debug("Block Transactions Information")
 	}
 	if blck.Header.EcosystemID == 0 {
-		blck.Header.EcosystemID = 1
-	}
-	if bk.EcosystemID == 0 {
-		bk.EcosystemID = 1
-	}
-	header := BlockHeaderInfoHex{
-		BlockID:      blck.Header.BlockID,
-		Time:         blck.Header.Time,
-		EcosystemID:  blck.Header.EcosystemID,
-		KeyID:        converter.AddressToString(blck.Header.KeyID),
-		NodePosition: blck.Header.NodePosition,
-		Sign:         hex.EncodeToString(blck.Header.Sign),
-		Hash:         hex.EncodeToString(blck.Header.Hash),
 		Version:      blck.Header.Version,
 	}
 
@@ -613,6 +600,14 @@ func SendBlockList(topblocks *[]BlocksResult) error {
 		return err
 	}
 	err = WriteChannelByte(ChannelTopData, ds)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func GetMaxBlockFromRedis(block []Block) (maxid int64) {
+	if len(block) > 0 {
+		maxid = block[0].ID
 	}
 	return maxid
 }

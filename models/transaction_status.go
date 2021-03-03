@@ -161,6 +161,16 @@ func StUpdate_Sqlite(objarr *[]TransactionStatus) error {
 func (ts *TransactionStatus) BatchUpdate_Sqlite(reportForms *[]TransactionStatus) error {
 	for _, val := range *reportForms {
 		err := conf.GetDbConn().Conn().Create(&val).Error
+		if err != nil {
+			log.Info("conf.GetDbConn().Conn().NewRecord false: " + err.Error())
+			//
+			conf.GetDbConn().Conn().Save(&val)
+		}
+	}
+	return nil
+}
+
+func (ts *TransactionStatus) BatchinsertSqlite(objArr *[]TransactionStatus) error {
 	if len(*objArr) == 0 {
 		return nil
 	}
@@ -239,8 +249,6 @@ func (ts *TransactionStatus) BatchInsert_Sqlites(objArr *[]TransactionStatus) er
 				i = count
 			}
 
-		}
-	}
 	if len(*ret1) > 0 {
 		StUpdate_Sqlite(ret1)
 	}

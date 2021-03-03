@@ -1,10 +1,12 @@
 package models
-		return err
-	}
-	defer f.Close()
-	_, err1 := f.Write(buf)
-	return err1
-}
+
+import (
+	"os"
+)
+
+var LogoDir = "./logodir/"
+
+func IsExist(f string) bool {
 
 func Loadlogo(id int64) (string, error) {
 	var d, b Binary
