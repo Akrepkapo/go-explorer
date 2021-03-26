@@ -12,14 +12,6 @@ import (
 	"github.com/IBAX-io/go-explorer/consts"
 	log "github.com/sirupsen/logrus"
 	"strconv"
-	"unsafe"
-)
-
-// LogTransaction is model
-type LogTransaction struct {
-	Hash  []byte `gorm:"primary_key;not null"`
-	Block int64  `gorm:"not null"`
-}
 
 var (
 	GLogTranHash map[string]int64
@@ -176,6 +168,14 @@ func (lt *LogTransaction) Get_BlockTransactions(page int, size int, order string
 				}
 			}
 		} else {
+			if err != nil {
+				return nil, 0, err
+			}
+		}
+	}
+	return &ret, num, err
+}
+
 func SetTransactionBlockLastToRedis(blockid int64) {
 	ts := &LogTransaction{}
 	ret, _, err := ts.Get_BlockTransactionsLast(blockid, 1, 5, "block desc")

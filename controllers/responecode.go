@@ -35,15 +35,6 @@ var (
 	CodeReleaseRule         = CodeType{400026, "Release rule error  ", defaultStatus, ""}
 	CodeDeleteRule          = CodeType{400027, "Delete Record  delete rule error  ", defaultStatus, ""}
 	CodeHelpDirNotExists    = CodeType{400028, "Help parentdir  not exists error  ", defaultStatus, ""}
-
-	CodeDBfinderr     = CodeType{400029, "DB find error   ", defaultStatus, ""}
-	CodeDBcreateerr   = CodeType{400030, "DB create error  ", defaultStatus, ""}
-	CodeDBupdateerr   = CodeType{400031, "DB update error  ", defaultStatus, ""}
-	CodeDBdeleteerr   = CodeType{400032, "DB delete error  ", defaultStatus, ""}
-	CodeDBopertionerr = CodeType{400033, "DB opertion error  ", defaultStatus, ""}
-	CodeJsonformaterr = CodeType{400034, "Json format error  ", defaultStatus, ""}
-	CodeBodyformaterr = CodeType{400035, "Body format error  ", defaultStatus, ""}
-
 	CodeFileNotExists         = CodeType{400036, "File not exists", defaultStatus, ""}
 	CodeFileExists            = CodeType{400037, "File already exists", defaultStatus, ""}
 	CodeFileFormatNotSupports = CodeType{400038, "File format is not supported", defaultStatus, ""}
@@ -101,3 +92,4 @@ func (ct CodeType) String(dat string) CodeType {
 func (ct CodeType) Success() CodeType {
 	ct.Msg = http.StatusText(ct.Status)
 	return ct
+}

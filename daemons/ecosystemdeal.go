@@ -108,22 +108,22 @@ func ChainValidBlock() error {
 		}
 		if cf.BlockID > bc.ID {
 			bc.ID = cf.BlockID
-			bc.Time = cf.Time
-			return bc.InsertRedis()
-		}
-	}
-
-	return nil
-}
-
-func Sys_CentrifugoWork(ctx context.Context) {
-	models.SendScanOut = make(chan bool, 1)
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		case <-models.SendScanOut:
 			var scanout models.ScanOut
+			rets, err := scanout.GetRedisdashboard()
+			if err != nil {
+				log.Info("GetRedisdashboard dashboard", err.Error())
+			} else {
+				if err := SendtoWebsocket(rets, &scanout); err != nil {
+					log.Info("SendtoWebsocket dashboard", err.Error())
+				}
+			}
+		}
+	}
 }
 
 func SendtoWebsocket(rets *models.ScanOutRet, scanout *models.ScanOut) error {
