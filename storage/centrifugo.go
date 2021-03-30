@@ -22,4 +22,3 @@ func (c *CentrifugoConfig) Initer() error {
 	return nil
 }
 
-func (c *CentrifugoConfig) Conn() *gocent.Client {

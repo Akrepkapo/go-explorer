@@ -17,10 +17,9 @@ url:
   base_url: http://127.0.0.1:8800/api/v2/logo/
 
 log:
-  address: ${REDIS_HOST} # address
-  port: ${REDIS_PORT}       # address
-  password: ${REDIS_PASSWORD} # password
+  level: error
 
+database:
 centrifugo:
   enable: true  #
   secret: ${CENTRIFUGO_SECRET}  #

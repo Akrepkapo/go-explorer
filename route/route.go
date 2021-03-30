@@ -4,11 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 package route
-
-import (
-	"fmt"
-	"net/http"
-	_ "net/http/pprof"
 	"strings"
 
 	"github.com/IBAX-io/go-explorer/controllers"
@@ -74,6 +69,10 @@ func Run(host string) (err error) {
 	r.GET(`/api/v2/websocket_token`, controllers.DashboardGetToken)
 	r.GET(`/api/v2/honor_nodelist`, controllers.GetHonorNodelists)
 
+	r.GET(`/api/v2/dashboard`, controllers.GetDashboard)
+	r.GET(`/api/v2/block_tpslist`, controllers.GetBlockTpsLists)
+	r.GET(`/api/v2/blocktransactionlist/:count`, controllers.GetDashboardBlockTransactions)
+	r.POST(`/api/v2/common_transaction_search`, controllers.CommonTransactionSearch)
 
 	r.GET(`/api/v2/transaction_detail/:hash`, controllers.Get_TransactionDetails)
 	r.GET(`/api/v2/block_detail/:blockid`, controllers.Get_BlockDetails)

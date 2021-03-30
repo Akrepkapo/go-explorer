@@ -15,16 +15,6 @@ import (
 	"github.com/IBAX-io/go-explorer/daemons"
 	"github.com/IBAX-io/go-explorer/route"
 	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-)
-
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "go-explorer",
-	Short: "scan application",
-}
-
-func init() {
 	rootCmd.AddCommand(
 		initDatabaseCmd,
 		startCmd,
@@ -69,6 +59,8 @@ func loadStartRun() error {
 	//signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	//go func() {
 	//	for {
+	//		select {
+	//		case <-daemonsChan:
 	//			wg.Done()
 	//		case <-sigChan:
 	//			models.GormClose()
