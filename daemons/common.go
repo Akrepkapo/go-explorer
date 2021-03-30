@@ -17,6 +17,10 @@ func StartDaemons(ctx context.Context) <-chan error {
 		if err != nil {
 			exitCh <- err
 		}
+	}()
+
+	go func() {
+		err := services.DealNodeblocktransactionchsqlite(ctx)
 		if err != nil {
 			exitCh <- err
 
@@ -41,5 +45,3 @@ func StartDaemons(ctx context.Context) <-chan error {
 	}()
 
 	go Sys_CentrifugoWork(ctx)
-	return exitCh
-}

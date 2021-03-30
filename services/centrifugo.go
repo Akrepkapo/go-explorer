@@ -18,18 +18,6 @@ import (
 )
 
 var centrifugoTimeout = time.Second * 5
-
-const (
-	ChannelDashboard       = "dashboard"
-	ChannelBlockAndTxsList = "blocktransactionlist"
-)
-
-type CentJWT struct {
-	Sub string
-	jwt.StandardClaims
-}
-
-type CentJWTToken struct {
 	Token string `json:"token"`
 	Url   string `json:"url"`
 }
@@ -37,6 +25,13 @@ type CentJWTToken struct {
 func GetJWTCentToken(userID, expire int64) (*CentJWTToken, error) {
 	if conf.GetCentrifugoConn().Enable {
 		var ret CentJWTToken
+		centJWT := CentJWT{
+			Sub: strconv.FormatInt(userID, 10),
+			StandardClaims: jwt.StandardClaims{
+				ExpiresAt: time.Now().Add(time.Second * time.Duration(expire)).Unix(),
+			},
+		}
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, centJWT)
 		result, err := token.SignedString([]byte(conf.GetCentrifugoConn().Secret))
 
 		if err != nil {

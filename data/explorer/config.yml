@@ -1,9 +1,4 @@
 # config information
-
-# server config information
-server:
-  mode: release # debug,release
-  host: 0.0.0.0
   port: 8800
   token_expire_second: 360000
   enable_https: true  # https
@@ -20,6 +15,21 @@ log:
   level: error
 
 database:
+  enable: true #
+  max_idle: 10 # max idle connections
+  max_open: 100  #max open connections
+  type: postgres # postgres
+  name: ibax #
+  ver:  20200902 #
+  connect: host=${DB_HOST} port=${DB_PORT} user=${DB_USER} dbname=${DB_NAME} sslmode=disable password=${DB_PASSWORD}
+
+# redis config information
+redis:
+  enable: true  #
+  address: ${REDIS_HOST} # address
+  port: ${REDIS_PORT}       # address
+  password: ${REDIS_PASSWORD} # password
+
 centrifugo:
   enable: true  #
   secret: ${CENTRIFUGO_SECRET}  #
