@@ -191,20 +191,6 @@ func GetCheckchain() {
 			}
 		}
 
-		if _, ok := GDashboardChain["Rates"]; ok {
-		} else {
-			if ret3, err3 := GetBlockCCRatesdat("https://data.block.cc/api/v1/exchange_rate?base=usdt"); err3 == nil {
-				GDashboardChain["Rates"] = ret3
-			} else {
-				logrus.Info("Rates Not Found")
-			}
-		}
-
-		if _, ok := GDashboardChain["Price"]; ok {
-		} else {
-			if ret4, err4 := GetBlockCCPricedat("https://data.block.cc/api/v1/price?symbol_name=bitcoin"); err4 == nil {
-				GDashboardChain["Price"] = ret4
-			} else {
 				logrus.Info("Price Not Found")
 			}
 
@@ -251,6 +237,12 @@ func Getchain() (*map[string]interface{}, error) {
 				logrus.Info("usdt-ibax Not Found")
 				//fmt.Println("Key Not Found")
 			}
+
+		}
+		err = err2
+	}
+
+	if ret3, err3 := GetBlockCCRatesdat("https://data.block.cc/api/v1/exchange_rate?base=usdt"); err3 == nil {
 		//rets = append(rets, *ret1)
 		rets["Rates"] = ret3
 		GDashboardChain["Rates"] = ret3
