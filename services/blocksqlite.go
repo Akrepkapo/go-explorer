@@ -50,6 +50,21 @@ func WorkDealBlock() error {
 	if errc != nil {
 		return errc
 	}
+	if !fc || !fm {
+		return errors.New("mint or chain block id  not found")
+	}
+	count := bc.ID - bm.ID
+	sc := bm.ID + 1
+	elen := sc + count
+	//fmt.Printf("sc:%d,elen:%d,count:%d\n", sc, elen, count)
+
+	for i := int(sc); i <= int(elen); i++ {
+		bid := int64(i)
+
+		var mc models.ScanOut
+		f, err := mc.Get(bid)
+		if f && err == nil {
+
 			err = mc.Insert_Redis()
 			if err != nil {
 				log.Info(err.Error())
@@ -71,8 +86,3 @@ func WorkDealBlock() error {
 		}
 
 		bdid := int64(i)
-		mc.Del(bdid - 1)
-	}
-
-	return nil
-}

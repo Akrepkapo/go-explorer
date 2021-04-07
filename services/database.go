@@ -27,6 +27,9 @@ func Set_ALLTables(dat []map[string]string) error {
 	return err
 
 }
+
+func Get_ALLTables(id int64) (*[]map[string]string, error) {
+	var fs []map[string]string
 	sid := strconv.FormatInt(id, 10)
 	rp := &models.RedisParams{
 		Key: sid + "ALLTables",
@@ -54,12 +57,6 @@ func Set_ColumnTypeTables(name string, dat []map[string]string) error {
 	return err
 
 }
-func Get_ColumnTypeTables(name string) (*[]map[string]string, error) {
-	var fs []map[string]string
-	rp := &models.RedisParams{
-		Key: name + "_ColumnTypeTables",
-	}
-	err := rp.Get()
 	if err == nil {
 		err = json.Unmarshal([]byte(rp.Value), &fs)
 		return &fs, err
