@@ -1,8 +1,3 @@
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) IBAX  All rights reserved.
- *  See LICENSE in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-package models
 
 import (
 	"encoding/json"
@@ -47,6 +42,13 @@ func (sp *StateParameter) GetMintAmount() (string, error) {
 	f, err := isFound(GetDB(nil).Where("ecosystem = ? and name = ?", sp.ecosystem, "mint_balance").First(sp))
 	if err != nil {
 		return "0", err
+	}
+
+	f1, err := isFound(GetDB(nil).Where("ecosystem = ? and name = ?", sp.ecosystem, "foundation_balance").First(&sp1))
+	if err != nil {
+		return "0", err
+	}
+
 	f2, err := isFound(GetDB(nil).Where("ecosystem = ? and name = ?", sp.ecosystem, "assign_rule").First(&sp2))
 	if err != nil {
 		return "0", err
