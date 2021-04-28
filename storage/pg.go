@@ -6,6 +6,22 @@ import (
 
 	"github.com/IBAX-io/go-ibax/packages/smart"
 
+	"github.com/IBAX-io/go-ibax/packages/conf/syspar"
+	"github.com/IBAX-io/go-ibax/packages/model"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+)
+
+var pgdb *gorm.DB
+
+type DatabaseModel struct {
+	Enable  bool   `yaml:"enable"`
+	DBType  string `yaml:"type"`
+	Connect string `yaml:"connect"`
+	Name    string `yaml:"name"`
+	Ver     string `yaml:"ver"`
 	MaxIdle int    `yaml:"max_idle"`
 	MaxOpen int    `yaml:"max_open"`
 }
@@ -37,18 +53,6 @@ func (d *DatabaseModel) Initer() (err error) {
 		return err
 	}
 	// Stats returns database statistics.
-	//sqlDB.Stats()
-	return nil
-
-}
-
-func (d *DatabaseModel) Conn() *gorm.DB {
-	return pgdb
-}
-
-func (d *DatabaseModel) Close() error {
-	if pgdb != nil {
-		sqlDB, err := pgdb.DB()
 		if err != nil {
 			return err
 		}
