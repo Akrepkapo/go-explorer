@@ -6,6 +6,14 @@
 package models
 
 import (
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+
+	"github.com/IBAX-io/go-explorer/consts"
+
+	"github.com/IBAX-io/go-explorer/conf"
 
 	"github.com/shopspring/decimal"
 
@@ -280,25 +288,6 @@ func (m *Key) GetTotal(page, limit int, order, wallet string) (int64, int, *[]Ec
 					return 0, 0, &da, err
 				}
 				if f {
-					d.Ecosystemname = ems.Name
-					d.IsValued = ems.IsValued
-					if d.Ecosystem == 1 {
-						d.Token_title = consts.SysEcosytemTitle
-					} else {
-						d.Token_title = ems.TokenTitle
-					}
-				}
-				//
-				ts := &History{}
-				dh, err := ts.GetWalletHistoryTotals(ds.Ecosystem, wallet)
-				if err != nil {
-					return 0, 0, &da, err
-				}
-				d.Transaction = dh.Transaction
-				d.Inamount = dh.Inamount
-				d.Outamount = dh.Outamount
-
-				da = append(da, d)
 			}
 
 			return total, limit, &da, nil

@@ -15,10 +15,10 @@ import (
 	"github.com/IBAX-io/go-explorer/daemons"
 	"github.com/IBAX-io/go-explorer/route"
 	log "github.com/sirupsen/logrus"
-	rootCmd.AddCommand(
-		initDatabaseCmd,
-		startCmd,
-		versionCmd,
+	"github.com/spf13/cobra"
+)
+
+// rootCmd represents the base command when called without any subcommands
 	)
 
 	// This flags are visible for all child commands

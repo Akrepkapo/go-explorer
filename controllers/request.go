@@ -11,6 +11,21 @@ type ResObject struct{}
 
 type WebRequest struct {
 	Head   *RequestHead   ` json:"head"`
+	Params *RequestParams ` json:"params"`
+}
+
+type WebResponse struct {
+	Head *RequestHead  ` json:"head"`
+	Body *ResponseBoby ` json:"body"`
+}
+
+type RequestHead struct {
+	Version   string ` json:"version"`
+	Msgtype   string `json:"msgtype"`
+	Interface string `json:"interface"`
+	Remark    string `json:"remark"`
+}
+
 type RequestParams struct {
 	Cmd          string `json:"cmd,omitempty"`
 	PageSize     int    `json:"page_size,omitempty"`
@@ -153,9 +168,6 @@ type DataBaseRespone struct {
 	Block_id      int64           `json:"database_id,omitempty"`
 	Table_name    string          `json:"table_name,omitempty"`
 	Order         string          `json:"order,omitempty"`
-	Hash          string          `json:"hash,omitempty"`
-	Total         int             `json:"total"`
-	Sum           decimal.Decimal `json:"sum,omitempty"`
 	Data          interface{}     `json:"data,omitempty"`
 	Ret           string          `json:"ret,omitempty"`
 	Retcode       int             `json:"retcode,omitempty"`

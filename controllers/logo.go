@@ -49,6 +49,16 @@ func logoHandler(c *gin.Context) {
 	//	JsonCodeResponse(w, &ret)
 	//	return
 	//}
+	//defer file.Close()
+	//
+	//stat, err := file.Stat() //
+	//if err != nil {
+	//	logger.WithFields(log.Fields{"type": consts.DBError, "error": err}).Error("getting file err")
+	//	//errorResponse(w, err)
+	//	ret.Return(nil, model.CodeFileOpen.Errorf(err))
+	//	JsonCodeResponse(w, &ret)
+	//	return
+	//}
 	//sz := stat.Size()
 	////str := strconv.FormatInt(100,10)
 	//str := strconv.FormatInt(sz, 10)
@@ -85,8 +95,6 @@ func logoHandler(c *gin.Context) {
 //	params := mux.Vars(r)
 //
 //	id, err := strconv.ParseInt(params["id"], 10, 64)
-//	if err != nil {
-//		ret.Return(nil, model.CodeFileOpen.Errorf(err))
 //		JsonCodeResponse(w, &ret)
 //		return
 //	}
