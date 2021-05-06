@@ -24,6 +24,13 @@ func (b *Block) Unmarshal(bt []byte) error {
 	return nil
 }
 
+			return false, nil
+		}
+		return false, err
+	}
+
+	if err := b.Unmarshal([]byte(rd.Value)); err != nil {
+		return true, err
 	}
 	return true, nil
 }

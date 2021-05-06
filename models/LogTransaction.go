@@ -12,6 +12,14 @@ import (
 	"github.com/IBAX-io/go-explorer/consts"
 	log "github.com/sirupsen/logrus"
 	"strconv"
+	"unsafe"
+)
+
+// LogTransaction is model
+type LogTransaction struct {
+	Hash  []byte `gorm:"primary_key;not null"`
+	Block int64  `gorm:"not null"`
+}
 
 var (
 	GLogTranHash map[string]int64
@@ -147,18 +155,6 @@ func (lt *LogTransaction) Get_BlockTransactions(page int, size int, order string
 				bh.BlockID = rt.Header.BlockID
 				bh.ContractName = rt.Transactions[j].ContractName
 				bh.Hash = rt.Transactions[j].Hash
-				bh.KeyID = rt.Transactions[j].KeyID
-				bh.Params = rt.Transactions[j].Params
-				bh.Time = rt.Transactions[j].Time
-				bh.Type = rt.Transactions[j].Type
-				bh.Ecosystem = rt.Transactions[j].Ecosystem
-				bh.Ecosystemname = rt.Transactions[j].Ecosystemname
-				if bh.Ecosystem == 1 {
-					bh.Token_title = consts.SysEcosytemTitle
-					if bh.Ecosystemname == "" {
-						bh.Ecosystemname = "platform ecosystem"
-					}
-				} else {
 					bh.Token_title = rt.Transactions[j].Token_title
 				}
 				Ten := unsafe.Sizeof(rt.Transactions[j])
