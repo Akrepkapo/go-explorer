@@ -18,6 +18,18 @@ func (b *BlockSizeTotal) Marshal() ([]byte, error) {
 	} else {
 		return res, err
 	}
+}
+
+func (b *BlockSizeTotal) Unmarshal(bt []byte) error {
+	if err := msgpack.Unmarshal(bt, &b); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *BlockSizeTotal) ReSetRedis(blockid, pos int64) error {
+
+	var so BlockSizeTotal
 	f, err := so.Get_Redis()
 	if err != nil {
 		return err
@@ -77,8 +89,3 @@ func (m *BlockSizeTotal) Get_Redis() (bool, error) {
 		return false, err
 	}
 	err = m.Unmarshal([]byte(rd.Value))
-	if err != nil {
-		return false, err
-	}
-	return true, err
-}
