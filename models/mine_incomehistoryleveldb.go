@@ -18,6 +18,18 @@ func (b *MineIncomehistory) Marshal() ([]byte, error) {
 	}
 }
 
+func (b *MineIncomehistory) Unmarshal(bt []byte) error {
+	if err := msgpack.Unmarshal(bt, &b); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b *MineIncomehistory) GetRedisByhash(hash []byte) (bool, error) {
+	rd := RedisParams{
+		Key:   "mih-" + string(hash),
+		Value: "",
+	}
 	err := rd.Get()
 	if err != nil {
 		if err.Error() == "redis: nil" || err.Error() == "EOF" {
@@ -67,10 +79,4 @@ func (b *MineIncomehistory) Insert_redis() error {
 		Key:   "mih-" + strconv.FormatInt(b.ID, 10),
 		Value: string(val),
 	}
-	err = rd.Set()
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
