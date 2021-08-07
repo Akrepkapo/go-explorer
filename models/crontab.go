@@ -10,14 +10,26 @@ func CreateCrontab() {
 	CrontabInfo := conf.GetEnvConf().Crontab
 	if CrontabInfo != nil {
 		go CreateCronTimeFromFullNode(CrontabInfo.FullNodeTime)
-		//go CreateCronTimeFromBlockchain(CrontabInfo.BlockchainTime)
-		go CreateCronTimeFromStatistics(CrontabInfo.Statistics)
-		go EcosystemDashboard_historyupdate(CrontabInfo.Historyupdate)
-		go CreateCrontabFromTransaction(CrontabInfo.Transaction)
-	}
 
 }
 
+func CreateCronTimeFromFullNode(timeSet string) {
+	c := NewWithSecond()
+	_, err := c.AddFunc(timeSet, func() {
+		getFullNodeInfoFromDb()
+	})
+	if err != nil {
+		log.WithFields(log.Fields{"error": err}).Error("CreateCronTimeFromFullNode addfunc failed")
+	}
+	c.Start()
+}
+
+func NewWithSecond() *cron.Cron {
+	secondParser := cron.NewParser(cron.Second | cron.Minute |
+		cron.Hour | cron.Dom | cron.Month | cron.DowOptional | cron.Descriptor)
+	return cron.New(cron.WithParser(secondParser), cron.WithChain())
+}
+func CreateCronTimeFromBlockchain(timeSet string) {
 	c := NewWithSecond()
 	_, err := c.AddFunc(timeSet, func() {
 		SyncBlockinfoToRedis()
