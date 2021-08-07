@@ -4,11 +4,6 @@
  *--------------------------------------------------------------------------------------------*/
 
 package services
-
-import (
-	NodeTranStatusCh = make(chan *NodeTranStatuslistData, 10)
-)
-
 func DealNodeblocktransactionchsqlite(ctx context.Context) error {
 	bk := &models.TransactionStatus{}
 	for {
