@@ -23,17 +23,6 @@ func logoHandler(c *gin.Context) {
 	rets, err := scanout.GetRedisdashboard()
 	if err != nil {
 		ret.ReturnFailureString(err.Error())
-		JsonResponse(c, ret)
-		return
-	}
-
-	ret.Return(rets, CodeSuccess)
-	JsonResponse(c, ret)
-	//logger := getLogger(r)
-	//ret := model.Response{}
-	//params := mux.Vars(r)
-	//fileName := params["file"]
-	//
 	//if !IsExist(LogoDir + fileName) {
 	//	//errorResponse(w, errFileNotExists.Errorf(fileName))
 	//	ret.Return(nil, model.CodeFileNotExists.String(fileName))
@@ -95,6 +84,8 @@ func logoHandler(c *gin.Context) {
 //	params := mux.Vars(r)
 //
 //	id, err := strconv.ParseInt(params["id"], 10, 64)
+//	if err != nil {
+//		ret.Return(nil, model.CodeFileOpen.Errorf(err))
 //		JsonCodeResponse(w, &ret)
 //		return
 //	}
