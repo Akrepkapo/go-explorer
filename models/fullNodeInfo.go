@@ -348,7 +348,7 @@ func (p *FullNodeInfo) GetNodeList() (node []storage.FullnodeModel, err error) {
 		node[i].UnbanTime = time.Now()
 		node[i].Latitude = strconv.FormatFloat(info[i].Latitude, 'f', 5, 64)
 		node[i].Longitude = strconv.FormatFloat(info[i].Longitude, 'f', 5, 64)
-		node[i].Name = "gachain"
+		node[i].Name = "ibax"
 		//node[i].Engine = "postgres"
 		//node[i].Version = "10.3"
 		node[i].Display = info[i].Display
