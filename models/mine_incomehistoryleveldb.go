@@ -79,4 +79,10 @@ func (b *MineIncomehistory) Insert_redis() error {
 		Key:   "mih-" + strconv.FormatInt(b.ID, 10),
 		Value: string(val),
 	}
+	err = rd.Set()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

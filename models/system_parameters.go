@@ -73,6 +73,10 @@ func (sp *SystemParameter) SaveArray(list [][]string) error {
 	if err != nil {
 		return err
 	}
+	return sp.Update(string(ret))
+}
+
+func (sp *SystemParameter) FindAppParameters(page int, size int, name, order string) (num int64, rets []SystemParameter, err error) {
 	ns := "%" + name + "%"
 	if err := conf.GetDbConn().Conn().Table(sp.TableName()).Where("name like ?", ns).Count(&num).Error; err != nil {
 		return num, rets, err

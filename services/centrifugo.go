@@ -13,11 +13,23 @@ import (
 
 	"github.com/IBAX-io/go-explorer/conf"
 	"github.com/IBAX-io/go-explorer/consts"
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 	log "github.com/sirupsen/logrus"
 )
 
 var centrifugoTimeout = time.Second * 5
+
+const (
+	ChannelDashboard       = "dashboard"
+	ChannelBlockAndTxsList = "blocktransactionlist"
+)
+
+type CentJWT struct {
+	Sub string
+	jwt.StandardClaims
+}
+
+type CentJWTToken struct {
 	Token string `json:"token"`
 	Url   string `json:"url"`
 }

@@ -108,6 +108,16 @@ func ChainValidBlock() error {
 		}
 		if cf.BlockID > bc.ID {
 			bc.ID = cf.BlockID
+			bc.Time = cf.Time
+			return bc.InsertRedis()
+		}
+	}
+
+	return nil
+}
+
+func Sys_CentrifugoWork(ctx context.Context) {
+	models.SendScanOut = make(chan bool, 1)
 	for {
 		select {
 		case <-ctx.Done():

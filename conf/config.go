@@ -59,8 +59,8 @@ func LoadConfig(configPath string) {
 	// expand environment variables
 	configData = []byte(os.ExpandEnv(string(configData)))
 	err = yaml.Unmarshal(configData, &configInfo)
-	data,_ :=json.Marshal(&configInfo)
-	fmt.Printf("config: %v\n",string(data))
+	data, _ := json.Marshal(&configInfo)
+	fmt.Printf("config: %v\n", string(data))
 	if err != nil {
 		logrus.WithError(err).Fatal("config parse failed")
 	}
@@ -95,3 +95,18 @@ func initLogs() error {
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Can't open log file: ", fileName)
 		return err
+	}
+	logrus.SetOutput(f)
+	return nil
+}
+
+func PathExists(path string) (bool, error) {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if os.IsNotExist(err) {
+		return false, nil
+	}
+	return false, err
+}

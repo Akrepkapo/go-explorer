@@ -24,6 +24,14 @@ func (b *Block) Unmarshal(bt []byte) error {
 	return nil
 }
 
+func (b *Block) GetRedisByhash(hash []byte) (bool, error) {
+	rd := RedisParams{
+		Key:   "block-" + string(hash),
+		Value: "",
+	}
+	err := rd.Get()
+	if err != nil {
+		if err.Error() == "redis: nil" || err.Error() == "EOF" {
 			return false, nil
 		}
 		return false, err

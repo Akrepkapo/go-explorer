@@ -57,6 +57,12 @@ func Set_ColumnTypeTables(name string, dat []map[string]string) error {
 	return err
 
 }
+func Get_ColumnTypeTables(name string) (*[]map[string]string, error) {
+	var fs []map[string]string
+	rp := &models.RedisParams{
+		Key: name + "_ColumnTypeTables",
+	}
+	err := rp.Get()
 	if err == nil {
 		err = json.Unmarshal([]byte(rp.Value), &fs)
 		return &fs, err

@@ -50,6 +50,15 @@ func GetTransactionpages(page int, size int) (*[]TransactionpageHex, int64, erro
 		tss    []Transaction
 		ret    []TransactionpageHex
 		num    int64
+		ioffet int
+	)
+
+	err := conf.GetDbConn().Conn().Find(&tss).Error
+	if err != nil {
+		return &ret, num, err
+	}
+	if page < 1 || size < 1 {
+		return &ret, num, err
 	}
 	num = int64(len(tss))
 

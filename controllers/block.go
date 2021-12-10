@@ -87,6 +87,23 @@ func Get_BlockDetails(c *gin.Context) {
 
 func Get_BlockDetail(c *gin.Context) {
 	ret := &Response{}
+
+	req := &DataBaseFind{}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
+		ret.ReturnFailureString(err.Error())
+		JsonResponse(c, ret)
+		return
+	}
+	if req.Block_id > 0 {
+		var bk models.Block
+		fb, err := bk.Get(req.Block_id)
+		if err != nil {
+			ret.ReturnFailureString(err.Error())
+			JsonResponse(c, ret)
+			return
+		}
+		if fb {
 			bdt, err := models.GetBlocksDetailedInfoHexByScanOut(&bk)
 			if err != nil {
 				ret.ReturnFailureString(err.Error())

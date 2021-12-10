@@ -58,3 +58,10 @@ func (b *BlockID) InsertRedis() error {
 		Value: string(val),
 	}
 	for i := 0; i < 5; i++ {
+		err = rp.Set()
+		if err == nil {
+			break
+		}
+	}
+	return err
+}

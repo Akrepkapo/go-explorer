@@ -5,6 +5,7 @@
 package controllers
 
 import (
+	"errors"
 	//"encoding/json"
 	"fmt"
 	"strconv"
@@ -33,14 +34,14 @@ func Get_FindDatabase(c *gin.Context) {
 
 	switch rb.Cmd {
 	case "001":
-		rets, err := GetDBinfo()
+		rets, err, total := GetDBinfo(req.Current_page, req.Page_size)
 		if err != nil {
 			ret.ReturnFailureString(err.Error())
 			JsonResponse(c, ret)
 			return
 		} else {
-			rb.Total = len(*rets)
-			rb.Data = rets
+			rb.Total = total
+			rb.Data = &rets
 			ret.Return(rb, CodeSuccess)
 			JsonResponse(c, ret)
 			return
@@ -123,17 +124,24 @@ func Get_FindDatabase(c *gin.Context) {
 
 }
 
+func GetDBinfo(ids, icount int) ([]DBWebInfo, error, int) {
 	var (
 		ret []DBWebInfo
 	)
+	if ids < 1 || icount < 1 {
+		return nil, errors.New("page or limit is unvalid !!!"), 0
+	}
+	offset := (ids - 1) * icount
 	dat := models.FullnodesInfo
 	dlen := len(dat)
+	var total int
 	for i := 0; i < dlen; i++ {
 		dat1 := DBWebInfo{
-			Id:       strconv.FormatInt(dat[i].NodePosition, 10),
-			Nodename: dat[i].Nodename,
-			IconUrl:  dat[i].IconUrl,
-			Name:     dat[i].Name,
+			Id:         strconv.FormatInt(dat[i].NodePosition, 10),
+			Nodename:   dat[i].Nodename,
+			IconUrl:    dat[i].IconUrl,
+			Name:       dat[i].Name,
+			APIAddress: dat[i].APIAddress,
 			//Engine:   dat[i].Engine,
 			//Version:  dat[i].Version,
 		}
@@ -141,5 +149,14 @@ func Get_FindDatabase(c *gin.Context) {
 			ret = append(ret, dat1)
 		}
 	}
-	return &ret, nil
+	total = len(ret)
+	if len(ret) >= offset {
+		ret = ret[offset:]
+		if len(ret) >= icount {
+			ret = ret[:icount]
+		}
+	} else {
+		return nil, nil, 0
+	}
+	return ret, nil, total
 }

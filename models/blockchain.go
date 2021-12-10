@@ -367,17 +367,18 @@ func GetBlocksDetailedInfoHex(bk *Block) (*BlockDetailedInfoHex, error) {
 		txDetailedInfo := TxDetailedInfoHex{
 			Hash: hex.EncodeToString(tx.TxHash),
 		}
-
 		if tx.TxContract != nil {
 			txDetailedInfo.ContractName, txDetailedInfo.Params = GetMineParam(tx.TxHeader.EcosystemID, tx.TxContract.Name, tx.TxData, tx.TxHash)
 			//txDetailedInfo.ContractName = tx.TxContract.Name
 			//txDetailedInfo.Params = tx.TxData
-			txDetailedInfo.KeyID = converter.AddressToString(tx.TxKeyID)
-			txDetailedInfo.Time = tx.TxTime
-			txDetailedInfo.Type = tx.TxType
-			txDetailedInfo.Size = int64(len(tx.TxFullData))
-			transize += txDetailedInfo.Size
+
 		}
+		//first block txcontract is nil,but time is not null
+		txDetailedInfo.KeyID = converter.AddressToString(tx.TxKeyID)
+		txDetailedInfo.Time = tx.TxTime
+		txDetailedInfo.Type = tx.TxType
+		txDetailedInfo.Size = int64(len(tx.TxFullData))
+		transize += txDetailedInfo.Size
 
 		if tx.TxHeader != nil {
 			es := Ecosystem{}
@@ -405,6 +406,19 @@ func GetBlocksDetailedInfoHex(bk *Block) (*BlockDetailedInfoHex, error) {
 		//log.WithFields(log.Fields{"block_id": blockModel.ID, "tx hash": txDetailedInfo.Hash, "contract_name": txDetailedInfo.ContractName, "key_id": txDetailedInfo.KeyID, "time": txDetailedInfo.Time, "type": txDetailedInfo.Type, "params": txDetailedInfoCollection}).Debug("Block Transactions Information")
 	}
 	if blck.Header.EcosystemID == 0 {
+		blck.Header.EcosystemID = 1
+	}
+	if bk.EcosystemID == 0 {
+		bk.EcosystemID = 1
+	}
+	header := BlockHeaderInfoHex{
+		BlockID:      blck.Header.BlockID,
+		Time:         blck.Header.Time,
+		EcosystemID:  blck.Header.EcosystemID,
+		KeyID:        converter.AddressToString(blck.Header.KeyID),
+		NodePosition: blck.Header.NodePosition,
+		Sign:         hex.EncodeToString(blck.Header.Sign),
+		Hash:         hex.EncodeToString(blck.Header.Hash),
 		Version:      blck.Header.Version,
 	}
 

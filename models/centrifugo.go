@@ -16,3 +16,6 @@ const (
 
 func WriteChannelByte(channel string, data []byte) error {
 	ctx, cancel := context.WithTimeout(context.Background(), centrifugoTimeout)
+	defer cancel()
+	return conf.GetCentrifugoConn().Conn().Publish(ctx, channel, data)
+}

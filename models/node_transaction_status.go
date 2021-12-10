@@ -100,6 +100,16 @@ func (ts *TransactionStatus) DbconnbatchinsertSqlites(objArr *[]TransactionStatu
 			if i+100 < count {
 				s := dat[i : i+100]
 				err := DbconnbatchupdateSqlite(&s)
+				if err != nil {
+					log.Info("node TransactionStatus update count err: " + err.Error())
+				}
+				i += 100
+			} else {
+				s := dat[i:]
+				err := DbconnbatchupdateSqlite(&s)
+				if err != nil {
+					log.Info("node TransactionStatus update count err: " + err.Error())
+				}
 				i = count
 			}
 		}

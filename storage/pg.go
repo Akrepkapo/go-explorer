@@ -53,6 +53,18 @@ func (d *DatabaseModel) Initer() (err error) {
 		return err
 	}
 	// Stats returns database statistics.
+	//sqlDB.Stats()
+	return nil
+
+}
+
+func (d *DatabaseModel) Conn() *gorm.DB {
+	return pgdb
+}
+
+func (d *DatabaseModel) Close() error {
+	if pgdb != nil {
+		sqlDB, err := pgdb.DB()
 		if err != nil {
 			return err
 		}

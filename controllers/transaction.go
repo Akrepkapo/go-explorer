@@ -456,6 +456,22 @@ func Get_transaction_block_redis(c *gin.Context) {
 
 	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
 		ret.ReturnFailureString(err.Error())
+		JsonResponse(c, ret)
+		return
+	}
+
+	rets, _, err := models.GetTransactionBlockFromRedis()
+	if err != nil {
+		ret.ReturnFailureString(err.Error())
+		JsonResponse(c, ret)
+		return
+	}
+
+	ret.Return(rets, CodeSuccess)
+	JsonResponse(c, ret)
+}
+
+// @tags  transaction history
 // @Description transaction history
 // @Summary transaction history
 // @Accept  json

@@ -10,6 +10,11 @@ func CreateCrontab() {
 	CrontabInfo := conf.GetEnvConf().Crontab
 	if CrontabInfo != nil {
 		go CreateCronTimeFromFullNode(CrontabInfo.FullNodeTime)
+		//go CreateCronTimeFromBlockchain(CrontabInfo.BlockchainTime)
+		go CreateCronTimeFromStatistics(CrontabInfo.Statistics)
+		go EcosystemDashboard_historyupdate(CrontabInfo.Historyupdate)
+		go CreateCrontabFromTransaction(CrontabInfo.Transaction)
+	}
 
 }
 

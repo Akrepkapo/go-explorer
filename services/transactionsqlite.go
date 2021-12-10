@@ -4,6 +4,21 @@
  *--------------------------------------------------------------------------------------------*/
 
 package services
+
+import (
+	"context"
+
+	"github.com/IBAX-io/go-explorer/models"
+)
+
+type NodeTranStatuslistData struct {
+	Data *[]models.TransactionStatus
+}
+
+var (
+	NodeTranStatusCh = make(chan *NodeTranStatuslistData, 10)
+)
+
 func DealNodeblocktransactionchsqlite(ctx context.Context) error {
 	bk := &models.TransactionStatus{}
 	for {

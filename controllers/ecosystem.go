@@ -26,6 +26,19 @@ func Get_system_param(c *gin.Context) {
 		Ret:     "1",
 		Retcode: 200,
 		Retinfo: "ok",
+	}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
+		rb.Retinfo = err.Error()
+		rb.Retcode = 404
+		GenResponse(c, req.Head, rb)
+	}
+	ret, err := model.GetAll(fmt.Sprintf(`select * from "%s" order by %s`, "1_system_parameters", req.Params.Order), 5000)
+	if err != nil {
+		rb.Retinfo = err.Error()
+		rb.Retcode = 404
+		GenResponse(c, req.Head, rb)
+	} else {
 		rb.Data = ret
 		rb.Total = int64(len(ret))
 		GenResponse(c, req.Head, rb)

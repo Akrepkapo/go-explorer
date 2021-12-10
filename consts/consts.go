@@ -7,3 +7,4 @@ const (
 
 const (
 	TotalSupplyToken = "2100000000000000000000"
+)

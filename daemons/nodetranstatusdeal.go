@@ -38,6 +38,15 @@ func NodeTranStatusSumupdate(ctx context.Context) error {
 		select {
 		case <-ctx.Done():
 			return nil
+		case <-time.After(30 * time.Second):
+			dlen := len(conf.GetFullNodesDbConn())
+			maxlen = 0
+			for i := 0; i < dlen; i++ {
+				mlen, _ := services.DealGetnodetransactionstatus(conf.GetFullNodesDbConn()[i])
+				if mlen > maxlen {
+					maxlen = mlen
+				}
+			}
 			//set
 			var bc models.BlockID
 			bc.Time = time.Now().Unix()

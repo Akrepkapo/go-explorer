@@ -242,6 +242,10 @@ func (m *ScanOut) Get_Db(id int64) (bool, error) {
 	} else {
 		return false, nil
 	}
+	return true, nil
+}
+func (m *ScanOut) Get_Redis(id int64) (bool, error) {
+	rd := RedisParams{
 		Key:   ScanOutStPrefix + strconv.FormatInt(id, 10),
 		Value: "",
 	}

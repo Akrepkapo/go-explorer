@@ -24,6 +24,17 @@ func Get_Group_TransactionHistory(ids int, icount int, order string) (*[]models.
 }
 
 //
+func Get_Group_TransactionBlockLast() (*[]models.BlockTxDetailedInfoHex, error) {
+	ts := &models.LogTransaction{}
+	//bt := &models.BlockTxDetailedInfoHex{}
+
+	//if models.GsqliteIsactive {
+	//	ret, num, err := bt.Get_BlockTransactionsLast_Sqlite(id, ids, icount, order)
+	//	if err == nil && *ret != nil && num > 0 {
+	//		//fmt.Println("Get_BlockTransactions_Sqlite  ok ids:%d icount:%d", ids, icount)
+	//		return ret, num, err
+	//	}
+	//}
 	ret, err := ts.GetTransactionBlockLastFromRedis()
 	//ret, num, err := ts.Get_BlockTransactionsLast(id, int64(ids), int64(icount), order)
 	//fmt.Println("Get_BlockTransactions pg  ok ids:%d icount:%d", ids, icount)

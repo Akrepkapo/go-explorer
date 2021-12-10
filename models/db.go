@@ -15,6 +15,14 @@ import (
 )
 
 type DbTransaction struct {
+	conn *gorm.DB
+}
+type DayBlock struct {
+	Id     int64 `gorm:"not null"`
+	Tx     int32 `gorm:"not null"`
+	Length int64 `gorm:"not null"`
+}
+
 func isFound(db *gorm.DB) (bool, error) {
 	if errors.Is(db.Error, gorm.ErrRecordNotFound) {
 		return false, nil

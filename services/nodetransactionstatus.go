@@ -28,6 +28,12 @@ func DealGetnodetransactionstatus(node *storage.FullNodeDB) (int64, error) {
 	bk := &models.TransactionStatus{}
 	var count int64
 	if node.Enable {
+		err := node.DBConn.Table("transactions").Count(&count).Error
+		if err != nil {
+			log.Info("models.DBconnGetTransactionlist transactions false: " + node.NodeName + err.Error())
+		}
+		if node.Nodestatusstime.IsZero() {
+			ret, err := bk.DBconnGetTransactionlist(node.DBConn)
 			if err != nil {
 				log.Info("models.DBconnGetTransactionlist false: " + node.NodeName + err.Error())
 				return 0, err

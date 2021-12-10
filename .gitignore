@@ -1,0 +1,15 @@
+
+go-explorer
+/.idea/
+/go-explorer.exe
+/data/ibax/PublicKey
+/data/ibax/PrivateKey
+/data/ibax/NodePublicKey
+/data/ibax/NodePrivateKey
+/data/ibax/KeyID
+/data/ibax/initDatabase.txt
+/data/ibax/go-ibax.pid
+/data/ibax/go-ibax.lock
+/data/ibax/1block
+/data/explorer/logrus.log
+/data/ibax/config.toml

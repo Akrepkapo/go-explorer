@@ -21,6 +21,18 @@ type MineIncomehistory struct {
 	Block_id                int64           `gorm:"not null"`
 	Date_created            int64           `gorm:"not null default 0"`
 }
+
+func (m MineIncomehistory) TableName() string {
+	return `1_mine_incomehistory`
+}
+
+func (ts *MineIncomehistory) Get(hash []byte) (bool, error) {
+	f, err := ts.GetRedisByhash(hash)
+	if f && err == nil {
+		return f, err
+	}
+
+	f, err = isFound(conf.GetDbConn().Conn().Where("mine_incomehistory_hash = ?", hash).First(ts))
 	if f && err == nil {
 		ts.Insert_redis()
 		return f, err

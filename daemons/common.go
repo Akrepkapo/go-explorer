@@ -45,3 +45,5 @@ func StartDaemons(ctx context.Context) <-chan error {
 	}()
 
 	go Sys_CentrifugoWork(ctx)
+	return exitCh
+}

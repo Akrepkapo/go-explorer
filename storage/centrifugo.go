@@ -22,3 +22,10 @@ func (c *CentrifugoConfig) Initer() error {
 	return nil
 }
 
+func (c *CentrifugoConfig) Conn() *gocent.Client {
+	return publisher
+}
+
+func (l *CentrifugoConfig) Close() error {
+	return nil
+}

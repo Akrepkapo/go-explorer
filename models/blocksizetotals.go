@@ -89,3 +89,8 @@ func (m *BlockSizeTotal) Get_Redis() (bool, error) {
 		return false, err
 	}
 	err = m.Unmarshal([]byte(rd.Value))
+	if err != nil {
+		return false, err
+	}
+	return true, err
+}

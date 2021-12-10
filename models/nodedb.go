@@ -87,6 +87,13 @@ func GetNodedb(node int64) *gorm.DB {
 			if FullNodedb[i].Enable {
 				return FullNodedb[i].DBConn
 			} else {
+				db, err := storage.GormDBInit(FullNodedb[i].Engine, FullNodedb[i].Connect)
+				if err != nil {
+					//return err
+					log.Info("node dblink err", FullNodedb[i].NodeName, FullNodedb[i].NodePosition)
+					FullNodedb[i].Enable = false
+					FullNodedb[i].DBConn = nil
+				} else {
 					log.Info("node dblink ok", FullNodedb[i].NodeName, FullNodedb[i].NodePosition)
 					FullNodedb[i].Enable = true
 					FullNodedb[i].DBConn = db

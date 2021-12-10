@@ -71,6 +71,19 @@ func Connes() []*FullNodeDB {
 	return fullNodedb
 }
 
+func (r FullNodeModels) Infos() FullNodeModels {
+	return r
+}
+
+func (r FullNodeModels) Close() error {
+	for i := 0; i < len(fullNodedb); i++ {
+		if fullNodedb[i].DBConn != nil {
+			sqlDB, err := fullNodedb[i].DBConn.DB()
+			if err != nil {
+				return err
+			}
+			fullNodedb[i].DBConn = nil
+			if err = sqlDB.Close(); err != nil {
 				return err
 			}
 		}

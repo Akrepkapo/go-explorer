@@ -86,3 +86,8 @@ func WorkDealBlock() error {
 		}
 
 		bdid := int64(i)
+		mc.Del(bdid - 1)
+	}
+
+	return nil
+}

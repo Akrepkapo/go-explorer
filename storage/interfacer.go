@@ -30,3 +30,5 @@ type BlockTxDetailedInfoHex struct {
 
 	Ecosystemname string `gorm:"null" json:"ecosystemname"`
 	Token_title   string `gorm:"null" json:"token_title"`
+	Ecosystem     int64  `gorm:"null" json:"ecosystem"`
+}

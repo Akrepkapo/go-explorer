@@ -17,3 +17,7 @@ var initDatabaseCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := loadInitDatabase(); err != nil {
 			log.WithError(err).Fatal("init db")
+		}
+		log.Info("initDatabase completed")
+	},
+}

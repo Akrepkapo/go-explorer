@@ -57,6 +57,23 @@ func Deal_TransactionBlockTxDetial(mc *Block) (int64, *BlockDetailedInfoHex, *[]
 	var (
 		ret []BlockTxDetailedInfoHex
 		ts  int64
+	)
+
+	//bk := &Block{}
+	rt, err := GetBlocksDetailedInfoHexByScanOut(mc)
+	if err == nil {
+		for j := 0; j < int(rt.Tx); j++ {
+			bh := BlockTxDetailedInfoHex{}
+			bh.BlockID = rt.Header.BlockID
+			bh.ContractName = rt.Transactions[j].ContractName
+			bh.Hash = rt.Transactions[j].Hash
+			bh.KeyID = rt.Transactions[j].KeyID
+			//bh.Params = rt.Transactions[j].Params
+			bh.Time = rt.Transactions[j].Time
+			bh.Type = rt.Transactions[j].Type
+			if bh.Time == 0 {
+				bh.Time = rt.Time
+			}
 			if bh.KeyID == "" {
 				bh.KeyID = rt.KeyID
 			}

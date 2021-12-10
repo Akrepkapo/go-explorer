@@ -155,6 +155,18 @@ func (lt *LogTransaction) Get_BlockTransactions(page int, size int, order string
 				bh.BlockID = rt.Header.BlockID
 				bh.ContractName = rt.Transactions[j].ContractName
 				bh.Hash = rt.Transactions[j].Hash
+				bh.KeyID = rt.Transactions[j].KeyID
+				bh.Params = rt.Transactions[j].Params
+				bh.Time = rt.Transactions[j].Time
+				bh.Type = rt.Transactions[j].Type
+				bh.Ecosystem = rt.Transactions[j].Ecosystem
+				bh.Ecosystemname = rt.Transactions[j].Ecosystemname
+				if bh.Ecosystem == 1 {
+					bh.Token_title = consts.SysEcosytemTitle
+					if bh.Ecosystemname == "" {
+						bh.Ecosystemname = "platform ecosystem"
+					}
+				} else {
 					bh.Token_title = rt.Transactions[j].Token_title
 				}
 				Ten := unsafe.Sizeof(rt.Transactions[j])
@@ -397,11 +409,15 @@ func getTransactionBlockToRedis() error {
 	return nil
 }
 
-func GetTransactionBlockFromRedis() (*[]BlockTxDetailedInfoHex, int, error) {
+func GetTransactionBlockFromRedis() (*[]BlockTxDetailedInfoHex, int64, error) {
 	var ret []BlockTxDetailedInfoHex
 	rd := RedisParams{
 		Key:   "transaction-block",
 		Value: "",
+	}
+	var num int64
+	if err := GetDB(nil).Model(LogTransaction{}).Order("block desc").Count(&num).Error; err != nil {
+		return nil, 0, err
 	}
 	if err := rd.Get(); err != nil {
 		return nil, 0, err
@@ -409,7 +425,7 @@ func GetTransactionBlockFromRedis() (*[]BlockTxDetailedInfoHex, int, error) {
 	if err := json.Unmarshal([]byte(rd.Value), &ret); err != nil {
 		return nil, 0, err
 	}
-	return &ret, len(ret), nil
+	return &ret, num, nil
 }
 
 func (lt *LogTransaction) getTransactionIdFromHash(hash []byte) (bool, error) {

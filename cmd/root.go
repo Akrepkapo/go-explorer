@@ -19,6 +19,16 @@ import (
 )
 
 // rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use:   "go-explorer",
+	Short: "scan application",
+}
+
+func init() {
+	rootCmd.AddCommand(
+		initDatabaseCmd,
+		startCmd,
+		versionCmd,
 	)
 
 	// This flags are visible for all child commands

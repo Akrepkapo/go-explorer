@@ -4,6 +4,11 @@
  *--------------------------------------------------------------------------------------------*/
 
 package route
+
+import (
+	"fmt"
+	"net/http"
+	_ "net/http/pprof"
 	"strings"
 
 	"github.com/IBAX-io/go-explorer/controllers"

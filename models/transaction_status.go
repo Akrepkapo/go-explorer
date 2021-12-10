@@ -249,6 +249,8 @@ func (ts *TransactionStatus) BatchInsert_Sqlites(objArr *[]TransactionStatus) er
 				i = count
 			}
 
+		}
+	}
 	if len(*ret1) > 0 {
 		StUpdate_Sqlite(ret1)
 	}

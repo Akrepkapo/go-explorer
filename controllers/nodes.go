@@ -78,6 +78,12 @@ func DashboardNodeMap(c *gin.Context) {
 	}
 
 	byteNodes := `[`
+	byteNodes += `{"name": "china-guangzhou", "latitude": 23.1367070000, "longitude": 113.2908070000},`
+	byteNodes += `{"name": "china-guangzhou", "latitude": 23.2367070000, "longitude": 113.3908070000},`
+	byteNodes += `{"name": "china-shanghai", "latitude": 31.2233714132, "longitude": 121.4593505859},`
+	byteNodes += `{"name": "china-shanghai", "latitude": 31.4233714132, "longitude": 121.5593505859},`
+	byteNodes += `{"name": "china-shanghai", "latitude": 31.5233714132, "longitude": 121.6593505859},`
+	byteNodes += `{"name": "china-beijing", "latitude": 39.8097362345, "longitude": 116.6221191406},`
 	byteNodes += `{"name": "china-beijing", "latitude": 39.9097362345, "longitude": 116.4221191406},`
 	byteNodes += `{"name": "china-chengdu", "latitude": 30.4804397865, "longitude": 104.4899658203},`
 	byteNodes += `{"name": "china-chengdu", "latitude": 30.6804397865, "longitude": 104.0899658203},`

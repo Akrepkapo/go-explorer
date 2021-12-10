@@ -37,6 +37,17 @@ func GenResponse(c *gin.Context, head *RequestHead, body *ResponseBoby) {
 // @Router /auth/admin/{id} [get]
 func Common_search(c *gin.Context) {
 
+	req := &WebRequest{}
+	rb := &ResponseBoby{
+		Cmd:     "001",
+		Ret:     "1",
+		Retcode: 200,
+		Retinfo: "ok",
+	}
+
+	if err := c.ShouldBindWith(req, binding.JSON); err != nil {
+		rb.Retinfo = err.Error()
+		rb.Retcode = 404
 		GenResponse(c, req.Head, rb)
 	}
 

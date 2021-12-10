@@ -64,3 +64,5 @@ func (d *LDatabaseModel) Close() error {
 		}
 		lpgdb = nil
 	}
+	return nil
+}

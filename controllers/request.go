@@ -69,6 +69,7 @@ type DBWebInfo struct {
 	Name     string `json:"name,omitempty"`
 	Engine   string `json:"engine,omitempty"`
 	Version  string `json:"backend_version,omitempty"`
+	APIAddress   string `json:"api_address,omitempty"`
 }
 
 type NodeMapInfo struct {
@@ -149,6 +150,18 @@ type DataBaseFind struct {
 	SearchType   string `json:"searchType,omitempty"`
 	Block_id     int64  `json:"block_id,omitempty"`
 	Table_name   string `json:"table_name,omitempty"`
+	NodePosition int64  `json:"nodeposition,omitempty"`
+	Hash         string `json:"hash,omitempty"`
+	Where        string `json:"where"`                             //
+	Order        string `json:"order" example:"date_created desc"` //
+	Page         int    `json:"page"`                              //
+	Limit        int    `json:"limit"`                             //
+}
+
+type DataBaseRespone struct {
+	Cmd           string          `json:"cmd"`
+	Page_size     int             `json:"page_size"`
+	Current_page  int             `json:"current_page"`
 	Ret_data_type string          `json:"ret_data_type,omitempty"`
 	NodePosition  int64           `json:"nodeposition"`
 	Wallet        string          `json:"wallet,omitempty"`

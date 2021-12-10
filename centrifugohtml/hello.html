@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>socktest</title>
+    <script src="centrifuge.min.js"></script>
+</head>
+<body>
+<button onclick="init()">connection</button>
+<button onclick="closeit()">disconnect</button>
+<button onclick="publish()">publish</button>
+<button onclick="subscribe()">subscribe</button>
+<button onclick="unsubscribe()">unsubscribe</button>
+<button onclick="history()">Pull the history message</button>
+</body>
+</html>
+<script>
+    // js code
+function init() {
+    // Initialize the centrifugo client
+        window.centrifuge = new Centrifuge('ws://localhost:8000/connection/websocket');
+    // Set the token
+        centrifuge.setToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTdWIiOiIxIiwiZXhwIjoxNjIxNTk3MDQ1fQ.hXMFYyMq8ZFKn7ks_ahPmO_r6zaXdCBzAbLwNWklzV8");
+    // Listen for connection events
+        centrifuge.on('connect',function(context) {
+            console.log(context)
+        })
+    // Listen for disconnection events
+        centrifuge.on('disconnect', function(context) {
+            console.log(context)
+        });
+    // Start the connection
+        centrifuge.connect();
+    }
+
+    // Publish a message to a channel
+    function publish () {
+        centrifuge.publish("1maxblock", {"input": "hello-publish123"}).then(function(res) {
+            console.log(res);
+        }, function(err) {
+            console.log('publish error', err);
+        });
+    }
+
+    // Subscribe to the channel
+    function subscribe() {
+        // Monitor the channel for messages
+        var callbacks = {
+            "publish": function(message) {
+                console.log(message);
+            },
+            "join": function(message) {
+                console.log(message);
+            },
+            "leave": function(message) {
+                console.log(message);
+            },
+            "subscribe": function(context) {
+                console.log(context);
+            },
+            "error": function(errContext) {
+                console.log(err);
+            },
+            "unsubscribe": function(context) {
+                console.log(context);
+            }
+        }
+       // window.subscription = centrifuge.subscribe("dashboard", callbacks);
+        window.subscription = centrifuge.subscribe("1mineinfosummary", callbacks);
+    }
+
+    // unsubscribe
+    function unsubscribe() {
+        subscription.unsubscribe();
+        subscription.removeAllListeners();
+    }
+
+    // Viewing Historical Messages
+    function history() {
+        subscription.history().then(function(message) {
+            console.log(message);
+        }, function(err) {
+            console.log(err);
+        });
+    }
+
+    // Close the connection
+    function closeit() {
+        centrifuge.disconnect();
+    }
+</script>

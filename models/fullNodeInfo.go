@@ -107,6 +107,11 @@ func getFullNodeInfoFromDb() {
 	if err = GetNodeListInfo(string(value)); err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("GetNodeListInfo failed")
 		return
+	}
+	syncFullNodeInfoToRedis()
+	SyncFullNodeInfo()
+}
+func fullNodeDbIsExist(apiaddress string, nodeValue []string) bool {
 	for i := 0; i < len(nodeValue); i++ {
 		var fullNode storage.FullnodeModel
 		err := json.Unmarshal([]byte(nodeValue[i]), &fullNode)
@@ -337,11 +342,11 @@ func (p *FullNodeInfo) GetNodeList() (node []storage.FullnodeModel, err error) {
 			continue
 		}
 		node[i].Enable = true
-		node[i].Nodename = "node-" + getCity(info[i].Address)
+		node[i].Nodename = "node-" + getCountry(info[i].Address)
 		node[i].TCPAddress = nodeValue.TcpAddress
 		node[i].APIAddress = nodeValue.ApiAddress
-		node[i].City = info[i].Address
-		node[i].Icon = getIcon(info[i].Address)
+		node[i].City = getCountry(info[i].Address)
+		node[i].Icon = getCountry(info[i].Address)
 		node[i].NodePosition = int64(i + 1)
 		node[i].KeyID = strconv.FormatInt(crypto2.Address([]byte(nodeValue.PublicKey)), 10)
 		node[i].PublicKey = nodeValue.PublicKey
@@ -357,21 +362,13 @@ func (p *FullNodeInfo) GetNodeList() (node []storage.FullnodeModel, err error) {
 	return node, nil
 }
 func getIconNationalFlag(icon string) string {
+	IconFileName := strings.ToLower(icon) + ".png"
+	var pictureName = conf.GetEnvConf().Url.URL + "default.png"
 	road, _ := os.Getwd()
-	road = path.Join(road, "logodir")
-	var pictureName string
-	picturefiles, _ := ioutil.ReadDir(road)
-	for _, f := range picturefiles {
-		if strings.Contains(f.Name(), ".png") {
-			fn := strings.Replace(f.Name(), ".png", "", -1)
-			if strings.Contains(icon, fn) {
-				pictureName = conf.GetEnvConf().Url.URL + f.Name()
-			} else if strings.EqualFold(strings.Replace(icon, " ", "", -1), "unitedstates") {
-				if fn == "usa" {
-					pictureName = conf.GetEnvConf().Url.URL + f.Name()
-				}
-			}
-		}
+	road = path.Join(road, "logodir", IconFileName)
+	_, err := os.Stat(road)
+	if !os.IsNotExist(err) {
+		pictureName = conf.GetEnvConf().Url.URL + IconFileName
 	}
 	return pictureName
 }
@@ -383,14 +380,16 @@ func getCity(city string) string {
 	}
 	return city
 }
-func getIcon(city string) string {
-	if strings.Contains(city, "-") {
-		if index := strings.Index(city, "-"); index != -1 {
-			return city[:index]
+
+func getCountry(addr string) string {
+	if strings.Contains(addr, "-") {
+		if index := strings.Index(addr, "-"); index != -1 {
+			return addr[:index]
 		}
 	}
-	return city
+	return addr
 }
+
 func (p *FullNodeInfo) getAddressList() {
 	if err := GetDB(nil).Table(p.TableName()).Select("address").Order("id desc").Find(&addrList).Error; err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("getAddressList Find err")

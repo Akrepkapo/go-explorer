@@ -142,7 +142,7 @@ func (bt *BlockTxDetailedInfoHex) GetCommonTransactionSearch(page, limit int, se
 					if err != nil {
 						return &ret, err
 					}
-					ret.Total = int64(total)
+					ret.Total = total
 					ret.Rets = *rets
 					return &ret, err
 				}
@@ -307,6 +307,20 @@ func Deal_LogTransactionBlockTxDetial(objArr *[]LogTransaction) (*[]BlockTxDetai
 	}
 
 	return &ret, nil
+}
+
+func Deal_Redupliction_LogTransaction(objArr *[]LogTransaction) *[]LogTransaction {
+	var (
+		ret []LogTransaction
+	)
+	if GLogTranHash == nil {
+		GLogTranHash = make(map[string]int64)
+	}
+	for _, val := range *objArr {
+		key := hex.EncodeToString(val.Hash)
+		dat, ok := GLogTranHash[key]
+		if ok {
+			logrus.Info("GLogTranHash exist block:%d block1:%d key: "+key, dat, val.Block)
 		} else {
 			GLogTranHash[key] = val.Block
 			ret = append(ret, val)

@@ -4,6 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 package controllers
+
+import (
 	"github.com/IBAX-io/go-explorer/models"
 	"github.com/IBAX-io/go-explorer/services"
 	"github.com/IBAX-io/go-ibax/packages/converter"

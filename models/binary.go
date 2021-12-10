@@ -1,5 +1,20 @@
 package models
 
+import (
+	"path"
+	"strconv"
+	"strings"
+
+	"github.com/IBAX-io/go-explorer/conf"
+
+	"github.com/IBAX-io/go-ibax/packages/converter"
+)
+
+const BinaryTableSuffix = "_binaries"
+
+// Binary represents record of {prefix}_binaries table
+type Binary struct {
+	Ecosystem int64
 	ID        int64
 	AppId     int64
 	Name      string

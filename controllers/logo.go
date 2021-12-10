@@ -23,6 +23,17 @@ func logoHandler(c *gin.Context) {
 	rets, err := scanout.GetRedisdashboard()
 	if err != nil {
 		ret.ReturnFailureString(err.Error())
+		JsonResponse(c, ret)
+		return
+	}
+
+	ret.Return(rets, CodeSuccess)
+	JsonResponse(c, ret)
+	//logger := getLogger(r)
+	//ret := model.Response{}
+	//params := mux.Vars(r)
+	//fileName := params["file"]
+	//
 	//if !IsExist(LogoDir + fileName) {
 	//	//errorResponse(w, errFileNotExists.Errorf(fileName))
 	//	ret.Return(nil, model.CodeFileNotExists.String(fileName))
